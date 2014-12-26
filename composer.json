@@ -1,0 +1,37 @@
+{
+  "name": "xparse/parser",
+  "description": "Parser client",
+  "keywords": [
+    "grabber",
+    "parser"
+  ],
+  "homepage": "https://github.com/xparse/Parser",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ivan Scherbak",
+      "email": "dev@funivan.com",
+      "homepage": "http://funivan.com/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.0",
+    "guzzlehttp/guzzle": "~5.1"
+  },
+  "require-dev": {
+    "xparse/element-finder": "0.0.1",
+    "xparse/parser-interface": "0.0.1",
+    "phpunit/phpunit": "4.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Xparse\\Parser\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Xparse\\Parser\\Test\\": "tests"
+    }
+  }
+}
