@@ -10,6 +10,10 @@
    */
   class Parser implements \Xparse\ParserInterface\ParserInterface {
 
+    protected $convertRelativeLinksState = true;
+
+    protected $convertEncodingState = true;
+
     /**
      *
      * @var null|\Xparse\ElementFinder\ElementFinder
@@ -20,7 +24,7 @@
      *
      * @param ClientInterface|null $client
      */
-    public function __construct(ClientInterface $client = null, \Xparse\ElementFinder\ElementFinder $elementFinder = null) {
+    public function __construct(ClientInterface $client = null) {
       if (empty($client)) {
         $client = new \GuzzleHttp\Client();
       }
@@ -34,9 +38,11 @@
      */
     public function get($url) {
       $html = $this->client->get($url)->getBody();
-      $this->lastPage = $this->createPage($html);
 
-      return $this->lastPage;
+      $page = $this->createPage($html);
+      $this->setLastPage($page);
+
+      return $page;
     }
 
     /**
@@ -48,25 +54,74 @@
       $html = $this->client->post($url, array(
         'body' => $data
       ))->getBody();
-      $this->lastPage = $this->createPage($html);
 
-      return $this->lastPage;
+      $page = $this->createPage($html);
+      $this->setLastPage($page);
+      return $page;
+    }
+
+
+    /**
+     * @param string $html
+     * @return Page
+     */
+    public function createPage($html) {
+      $page = new Page($html);
+
+      //@todo convert links to absolute
+      //@todo convert encoding
+
+      return $page;
     }
 
     /**
      * @return \Xparse\ElementFinder\ElementFinder
      */
     public function getLastPage() {
-
+      return $this->lastPage;
     }
 
     /**
-     * @param $html
-     * @return ParserElementFinder
+     * @param \Xparse\ElementFinder\ElementFinder $lastPage
+     * @return $this
      */
-    protected function createPage($html) {
-      $page = new ParserElementFinder($html);
-      $page->convertLinksToAbsolute($this->client->getBaseUrl());
-      return $page;
+    public function setLastPage($lastPage) {
+      $this->lastPage = $lastPage;
+      return $this;
     }
+
+
+    /**
+     *
+     * @return boolean
+     */
+    public function getConvertRelativeLinksState() {
+      return $this->convertRelativeLinksState;
+    }
+
+    /**
+     * @param boolean $convertRelativeLinksState
+     * @return $this
+     */
+    public function setConvertRelativeLinksState($convertRelativeLinksState) {
+      $this->convertRelativeLinksState = $convertRelativeLinksState;
+      return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getConvertEncodingState() {
+      return $this->convertEncodingState;
+    }
+
+    /**
+     * @param boolean $convertEncodingState
+     * @return $this
+     */
+    public function setConvertEncodingState($convertEncodingState) {
+      $this->convertEncodingState = $convertEncodingState;
+      return $this;
+    }
+
   }
