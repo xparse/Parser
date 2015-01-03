@@ -10,8 +10,14 @@
    */
   class Parser implements \Xparse\ParserInterface\ParserInterface {
 
+    /**
+     * Set true if we need to automaticaly convert reletive links to absolute
+     */
     protected $convertRelativeLinksState = true;
 
+    /**
+     * Set true if we need automaticaly convert encoding to utf-8
+     */
     protected $convertEncodingState = true;
 
     /**

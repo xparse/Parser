@@ -7,17 +7,20 @@
    */
   class Page extends \Xparse\ElementFinder\ElementFinder {
 
+    /**
+     * Last effectd url
+     */
     protected $effectedUrl = null;
 
     /**
-     * @return null
+     * @return string|null
      */
     public function getEffectedUrl() {
       return $this->effectedUrl;
     }
 
     /**
-     * @param null $effectedUrl
+     * @param string $effectedUrl
      * @return $this
      */
     public function setEffectedUrl($effectedUrl) {
@@ -27,7 +30,7 @@
 
 
     /**
-     * @param $xpath
+     * @param string $xpath
      * @param array $data
      */
     public function submitForm($xpath, $data = []) {
