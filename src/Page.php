@@ -8,7 +8,7 @@
   class Page extends \Xparse\ElementFinder\ElementFinder {
 
     /**
-     * Last effectd url
+     * Last effected url
      */
     protected $effectedUrl = null;
 

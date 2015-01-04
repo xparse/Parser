@@ -27,6 +27,11 @@
     protected $lastPage = null;
 
     /**
+     * @var ClientInterface
+     */
+    protected $client = null;
+
+    /**
      *
      * @param ClientInterface|null $client
      */
@@ -128,6 +133,13 @@
     public function setConvertEncodingState($convertEncodingState) {
       $this->convertEncodingState = $convertEncodingState;
       return $this;
+    }
+
+    /**
+     * @return ClientInterface
+     */
+    public function getClient() {
+      return $this->client;
     }
 
   }
