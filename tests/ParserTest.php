@@ -2,6 +2,7 @@
 
   namespace Xparse\Parser\Test;
 
+  use GuzzleHttp\Client;
   use GuzzleHttp\Ring\Client\MockHandler;
 
   /**
@@ -13,7 +14,7 @@
     public function testInit() {
 
       $parser = new \Xparse\Parser\Parser();
-      $this->assertEquals(new \GuzzleHttp\Client(), $parser->getClient());
+      $this->assertEquals(new Client(), $parser->getClient());
     }
 
     public function testGet() {
@@ -24,7 +25,7 @@
         'body' => $this->getHtmlData('/test-get.html')
       ));
 
-      $client = new \GuzzleHttp\Client(['handler' => $mock]);
+      $client = new Client(['handler' => $mock]);
       $parser = new \Xparse\Parser\Parser($client);
 
       $this->assertEquals($client, $parser->getClient());

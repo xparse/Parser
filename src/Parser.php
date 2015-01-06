@@ -103,6 +103,13 @@
 
 
     /**
+     * @return ClientInterface
+     */
+    public function getClient() {
+      return $this->client;
+    }
+
+    /**
      *
      * @return boolean
      */
@@ -133,13 +140,6 @@
     public function setConvertEncodingState($convertEncodingState) {
       $this->convertEncodingState = $convertEncodingState;
       return $this;
-    }
-
-    /**
-     * @return ClientInterface
-     */
-    public function getClient() {
-      return $this->client;
     }
 
   }
