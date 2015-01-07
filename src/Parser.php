@@ -45,7 +45,7 @@
 
     /**
      * @param string $url
-     * @return \Xparse\ElementFinder\ElementFinder
+     * @return Page
      */
     public function get($url) {
       $html = $this->client->get($url)->getBody();
@@ -59,7 +59,7 @@
     /**
      * @param string $url
      * @param array $data
-     * @return \Xparse\ElementFinder\ElementFinder
+     * @return Page
      */
     public function post($url, $data) {
       $html = $this->client->post($url, array(
@@ -78,7 +78,8 @@
      */
     public function createPage($html) {
       $page = new Page($html);
-
+      $page->setParser($this);
+      
       //@todo convert links to absolute
       //@todo convert encoding
 

@@ -19,13 +19,7 @@
 
     public function testGet() {
 
-      $mock = new MockHandler(array(
-        'status' => 200,
-        'headers' => array(),
-        'body' => $this->getHtmlData('/test-get.html')
-      ));
-
-      $client = new Client(['handler' => $mock]);
+      $client = $this->getDemoClinet();
       $parser = new \Xparse\Parser\Parser($client);
 
       $this->assertEquals($client, $parser->getClient());
@@ -34,8 +28,10 @@
 
       $this->assertInstanceOf(get_class(new \Xparse\Parser\Page()), $page);
       $this->assertEquals($page, $parser->getLastPage());
+      $this->assertEquals($parser, $page->getParser());
 
     }
+
 
     /**
      * @param $url
@@ -44,6 +40,20 @@
     protected function getHtmlData($url) {
       $html = file_get_contents(__DIR__ . '/data' . $url);
       return $html;
+    }
+
+    /**
+     * @return Client
+     */
+    protected function getDemoClinet() {
+      $mock = new MockHandler(array(
+        'status' => 200,
+        'headers' => array(),
+        'body' => $this->getHtmlData('/test-get.html')
+      ));
+
+      $client = new Client(['handler' => $mock]);
+      return $client;
     }
 
   }
