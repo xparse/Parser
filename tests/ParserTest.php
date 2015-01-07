@@ -29,6 +29,7 @@
       $this->assertInstanceOf(get_class(new \Xparse\Parser\Page()), $page);
       $this->assertEquals($page, $parser->getLastPage());
       $this->assertEquals($parser, $page->getParser());
+      $this->assertEquals(null, $page->getEffectedUrl());
 
     }
 
