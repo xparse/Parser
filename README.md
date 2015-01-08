@@ -1,6 +1,6 @@
 # Parser
 
-[![Github tag](https://img.shields.io/github/tag/xparse/Parser.svg?style=flat-square)](https://github.com/xparse/Parser/tags)
+[![GitHub tag](https://img.shields.io/github/tag/xparse/Parser.svg?style=flat-square)](https://github.com/xparse/Parser/tags)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Build Status](https://img.shields.io/travis/xparse/Parser/master.svg?style=flat-square)](https://travis-ci.org/xparse/Parser)
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/xparse/Parser.svg?style=flat-square)](https://scrutinizer-ci.com/g/xparse/Parser/code-structure)

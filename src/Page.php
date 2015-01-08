@@ -9,11 +9,12 @@
 
     /**
      * Last effected url
+     * @var null|string
      */
     protected $effectedUrl = null;
 
     /**
-     * @var \Xparse\ParserInterface\ParserInterface
+     * @var null|\Xparse\ParserInterface\ParserInterface
      */
     protected $parser = null;
 

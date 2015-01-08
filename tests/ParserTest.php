@@ -19,7 +19,7 @@
 
     public function testGet() {
 
-      $client = $this->getDemoClinet();
+      $client = $this->getDemoClient();
       $parser = new \Xparse\Parser\Parser($client);
 
       $this->assertEquals($client, $parser->getClient());
@@ -29,8 +29,6 @@
       $this->assertInstanceOf(get_class(new \Xparse\Parser\Page()), $page);
       $this->assertEquals($page, $parser->getLastPage());
       $this->assertEquals($parser, $page->getParser());
-      $this->assertEquals(null, $page->getEffectedUrl());
-
     }
 
 
@@ -46,7 +44,7 @@
     /**
      * @return Client
      */
-    protected function getDemoClinet() {
+    protected function getDemoClient() {
       $mock = new MockHandler(array(
         'status' => 200,
         'headers' => array(),
@@ -55,6 +53,31 @@
 
       $client = new Client(['handler' => $mock]);
       return $client;
+    }
+
+    public function testEffectedUrl() {
+      $parser = new \Xparse\Parser\Parser($this->getDemoClient());
+
+      $url = 'http://test.com/df';
+      $page = $parser->get($url);
+      $this->assertEquals($url, $page->getEffectedUrl());
+
+    }
+
+    public function testGetLastResponse() {
+      $parser = new \Xparse\Parser\Parser($this->getDemoClient());
+      $url = 'http://test.com/url/';
+      $parser->get($url);
+      $this->assertEquals($url, $parser->getLastResponse()->getEffectiveUrl());
+
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetInvalidUrl() {
+      $parser = new \Xparse\Parser\Parser($this->getDemoClient());
+      $parser->get(null);
     }
 
   }

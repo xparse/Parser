@@ -32,6 +32,11 @@
     protected $client = null;
 
     /**
+     * @var \GuzzleHttp\Message\ResponseInterface
+     */
+    protected $lastResponse = null;
+
+    /**
      *
      * @param ClientInterface|null $client
      */
@@ -48,10 +53,16 @@
      * @return Page
      */
     public function get($url) {
-      $html = $this->client->get($url)->getBody();
+      if (empty($url) or !is_string($url)) {
+        throw new \InvalidArgumentException("Url must be not empty and string.");
+      }
+      $response = $this->client->get($url);
 
-      $page = $this->createPage($html);
+      $page = $this->createPage($response->getBody());
+      $page->setEffectedUrl($response->getEffectiveUrl());
+
       $this->setLastPage($page);
+      $this->lastResponse = $response;
 
       return $page;
     }
@@ -62,12 +73,21 @@
      * @return Page
      */
     public function post($url, $data) {
-      $html = $this->client->post($url, array(
+      
+      if (empty($url) or !is_string($url)) {
+        throw new \InvalidArgumentException("Url must be not empty and string.");
+      }
+      
+      $response = $this->client->post($url, array(
         'body' => $data
-      ))->getBody();
+      ));
 
-      $page = $this->createPage($html);
+      $page = $this->createPage($response->getBody());
+      $page->setEffectedUrl($response->getEffectiveUrl());
+
       $this->setLastPage($page);
+      $this->lastResponse = $response;
+
       return $page;
     }
 
@@ -79,7 +99,7 @@
     public function createPage($html) {
       $page = new Page($html);
       $page->setParser($this);
-      
+
       //@todo convert links to absolute
       //@todo convert encoding
 
@@ -100,6 +120,13 @@
     public function setLastPage($lastPage) {
       $this->lastPage = $lastPage;
       return $this;
+    }
+
+    /**
+     * @return \Guzzle\Http\Message\Response
+     */
+    public function getLastResponse() {
+      return $this->lastResponse;
     }
 
 
