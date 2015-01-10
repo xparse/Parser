@@ -14,5 +14,12 @@
       $page = new \Xparse\Parser\Page();
       $page->setEffectedUrl(null);
     }
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testInvalidXpathGetPageByLink() {
+      $page = new \Xparse\Parser\Page();
+      $page->getPageByLink(null);
+    }
 
   }
