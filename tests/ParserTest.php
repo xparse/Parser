@@ -31,6 +31,21 @@
       $this->assertEquals($parser, $page->getParser());
     }
 
+    public function testPost() {
+
+      $client = $this->getDemoClient();
+      $parser = new \Xparse\Parser\Parser($client);
+
+      $this->assertEquals($client, $parser->getClient());
+
+      $page = $parser->post('http://test.com/info', array('data' => '123'));
+
+      $this->assertInstanceOf(get_class(new \Xparse\Parser\Page()), $page);
+      $this->assertEquals($page, $parser->getLastPage());
+      $this->assertEquals($parser, $page->getParser());
+
+    }
+
 
     /**
      * @param $url
@@ -78,6 +93,14 @@
     public function testGetInvalidUrl() {
       $parser = new \Xparse\Parser\Parser($this->getDemoClient());
       $parser->get(null);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testPostWithInvalidParams() {
+      $parser = new \Xparse\Parser\Parser($this->getDemoClient());
+      $parser->post(new \stdClass(), null);
     }
 
   }
