@@ -11,15 +11,46 @@
      * @expectedException \InvalidArgumentException
      */
     public function testInvalidEffectedUrl() {
-      $page = new \Xparse\Parser\Page();
+      $page = $this->getPage();
       $page->setEffectedUrl(null);
     }
+
+
     /**
      * @expectedException \InvalidArgumentException
      */
     public function testInvalidXpathGetPageByLink() {
-      $page = new \Xparse\Parser\Page();
-      $page->getPageByLink(null);
+      $page = $this->getPage();
+      $page->setParser(new \Xparse\Parser\Parser());
+      $page->fetchPageByLink(null);
+    }
+
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testFetchPageByUrlWithoutParser() {
+      $page = $this->getPage();
+      $page->fetchPageByLink('//a');
+    }
+
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testFetchPageByUrlWithoutValidHref() {
+      $page = $this->getPage();
+      $page->setParser(new \Xparse\Parser\Parser());
+      $page->fetchPageByLink('//a');
+    }
+
+
+    /**
+     * @return \Xparse\Parser\Page
+     */
+    protected function getPage() {
+      $page = new \Xparse\Parser\Page("<html>123</html>");
+      return $page;
     }
 
   }

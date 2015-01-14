@@ -26,7 +26,7 @@
 
       $page = $parser->get('http://test.com');
 
-      $this->assertInstanceOf(get_class(new \Xparse\Parser\Page()), $page);
+      $this->assertInstanceOf(get_class(new \Xparse\Parser\Page("<html><a href='1'>1</a></html>")), $page);
       $this->assertEquals($page, $parser->getLastPage());
       $this->assertEquals($parser, $page->getParser());
     }

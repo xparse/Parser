@@ -20,7 +20,7 @@
     "guzzlehttp/guzzle": "~5.1"
   },
   "require-dev": {
-    "xparse/element-finder": "0.0.1",
+    "xparse/element-finder": "dev-master",
     "xparse/parser-interface": "0.0.1",
     "phpunit/phpunit": "4.*"
   },

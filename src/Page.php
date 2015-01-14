@@ -9,6 +9,7 @@
 
     /**
      * Last effected url
+     *
      * @var null|string
      */
     protected $effectedUrl = null;
@@ -17,6 +18,7 @@
      * @var null|\Xparse\ParserInterface\ParserInterface
      */
     protected $parser = null;
+
 
     /**
      * @param \Xparse\ParserInterface\ParserInterface $parser
@@ -27,12 +29,14 @@
       return $this;
     }
 
+
     /**
      * @return \Xparse\ParserInterface\ParserInterface
      */
     public function getParser() {
       return $this->parser;
     }
+
 
     /**
      * @param string $effectedUrl
@@ -89,22 +93,30 @@
       //@todo
     }
 
+
     /**
-     * Send get request and return new page
+     * Fetch url by xpath and get page with this url
+     *
      * @param string $xpath
+     * @return \Xparse\ElementFinder\ElementFinder
      * @throws \Exception
      */
-    public function getPageByLink($xpath) {
+    public function fetchPageByLink($xpath) {
+
+      if (empty($this->parser)) {
+        throw new \Exception("Empty parser object. Cant fetch page.");
+      }
+
       if (!is_string($xpath)) {
         throw new \InvalidArgumentException("Expect string. " . gettype($xpath) . ' given');
       }
 
       $href = $this->attribute($xpath)->getFirst();
       if (empty($href)) {
-        throw new \Exception('Empty href link. Possible invalid xpath expression');
+        throw new \Exception('Empty href link. Possible invalid xpath expression:' . $xpath);
       }
-      //@todo get page via parser
 
+      return $this->getParser()->get($href);
     }
 
   }
