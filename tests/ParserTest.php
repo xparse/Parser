@@ -40,7 +40,7 @@
 
       $page = $parser->post('http://test.com/info', array('data' => '123'));
 
-      $this->assertInstanceOf(get_class(new \Xparse\Parser\Page()), $page);
+      $this->assertInstanceOf(get_class(new \Xparse\Parser\Page("<html></html>")), $page);
       $this->assertEquals($page, $parser->getLastPage());
       $this->assertEquals($parser, $page->getParser());
 

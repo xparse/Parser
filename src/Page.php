@@ -29,14 +29,12 @@
       return $this;
     }
 
-
     /**
      * @return \Xparse\ParserInterface\ParserInterface
      */
     public function getParser() {
       return $this->parser;
     }
-
 
     /**
      * @param string $effectedUrl
@@ -52,7 +50,6 @@
       return $this;
     }
 
-
     /**
      * @return string|null
      */
@@ -60,18 +57,23 @@
       return $this->effectedUrl;
     }
 
-
     /**
      * Convert relative links to absolute
      * This function also convert action attribute link in forms
+     *
+     * @return $this
+     * @throws \Exception
      */
     public function convertRelativeLinks() {
       if (empty($this->effectedUrl)) {
         throw new \Exception('Empty effected url');
       }
-      //@todo convert links
-    }
 
+      $linkConverter = new \Xparse\ElementFinder\Helper\LinkConverter($this, $this->effectedUrl);
+      $linkConverter->convert();
+
+      return $this;
+    }
 
     /**
      * @param string $xpath
@@ -90,9 +92,8 @@
       if (empty($actionHref)) {
         throw new \Exception('Empty form action. Possible invalid xpath expression');
       }
-      //@todo
+      //@todo fetch data and submit form
     }
-
 
     /**
      * Fetch url by xpath and get page with this url

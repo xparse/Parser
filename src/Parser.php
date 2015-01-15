@@ -16,7 +16,7 @@
     protected $convertRelativeLinksState = true;
 
     /**
-     * Set true if we need automaticaly convert encoding to utf-8
+     * Set true if we need automatically convert encoding to utf-8
      */
     protected $convertEncodingState = true;
 
@@ -57,8 +57,7 @@
         throw new \InvalidArgumentException("Url must be not empty and string.");
       }
       $response = $this->client->get($url);
-
-      $page = $this->createPage($response->getBody());
+      $page = $this->createPage((string) $response->getBody());
       $page->setEffectedUrl($response->getEffectiveUrl());
 
       $this->setLastPage($page);
@@ -73,16 +72,16 @@
      * @return Page
      */
     public function post($url, $data) {
-      
+
       if (empty($url) or !is_string($url)) {
         throw new \InvalidArgumentException("Url must be not empty and string.");
       }
-      
+
       $response = $this->client->post($url, array(
         'body' => $data
       ));
 
-      $page = $this->createPage($response->getBody());
+      $page = $this->createPage((string) $response->getBody());
       $page->setEffectedUrl($response->getEffectiveUrl());
 
       $this->setLastPage($page);
@@ -123,12 +122,11 @@
     }
 
     /**
-     * @return \Guzzle\Http\Message\Response
+     * @return \GuzzleHttp\Message\ResponseInterface
      */
     public function getLastResponse() {
       return $this->lastResponse;
     }
-
 
     /**
      * @return ClientInterface

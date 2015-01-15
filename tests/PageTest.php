@@ -1,4 +1,4 @@
-<?
+<?php
 
   namespace Xparse\Parser\Test;
 
