@@ -36,6 +36,7 @@
      */
     protected $lastResponse = null;
 
+
     /**
      *
      * @param ClientInterface|null $client
@@ -48,6 +49,7 @@
       $this->client = $client;
     }
 
+
     /**
      * @param string $url
      * @return Page
@@ -57,7 +59,7 @@
         throw new \InvalidArgumentException("Url must be not empty and string.");
       }
       $response = $this->client->get($url);
-      $page = $this->createPage((string) $response->getBody());
+      $page = $this->createPage((string)$response->getBody(), $response);
       $page->setEffectedUrl($response->getEffectiveUrl());
 
       $this->setLastPage($page);
@@ -65,6 +67,7 @@
 
       return $page;
     }
+
 
     /**
      * @param string $url
@@ -81,7 +84,7 @@
         'body' => $data
       ));
 
-      $page = $this->createPage((string) $response->getBody());
+      $page = $this->createPage((string)$response->getBody(), $response);
       $page->setEffectedUrl($response->getEffectiveUrl());
 
       $this->setLastPage($page);
@@ -91,19 +94,25 @@
     }
 
 
-    /**
+    /**             
+     * @todo possible rewrite to createPageFromLastResponse() or move current function to helper 
      * @param string $html
      * @return Page
      */
-    public function createPage($html) {
+    public function createPage($html, \GuzzleHttp\Message\ResponseInterface $response) {
       $page = new Page($html);
       $page->setParser($this);
 
-      //@todo convert links to absolute
+      $page->setEffectedUrl($response->getEffectiveUrl());
+      if ($this->convertRelativeLinksState) {
+        $page->convertRelativeLinks();
+      }
+
       //@todo convert encoding
 
       return $page;
     }
+
 
     /**
      * @return \Xparse\ElementFinder\ElementFinder
@@ -111,6 +120,7 @@
     public function getLastPage() {
       return $this->lastPage;
     }
+
 
     /**
      * @param \Xparse\ElementFinder\ElementFinder $lastPage
@@ -121,12 +131,14 @@
       return $this;
     }
 
+
     /**
      * @return \GuzzleHttp\Message\ResponseInterface
      */
     public function getLastResponse() {
       return $this->lastResponse;
     }
+
 
     /**
      * @return ClientInterface
@@ -135,6 +147,7 @@
       return $this->client;
     }
 
+
     /**
      *
      * @return boolean
@@ -142,6 +155,7 @@
     public function getConvertRelativeLinksState() {
       return $this->convertRelativeLinksState;
     }
+
 
     /**
      * @param boolean $convertRelativeLinksState
@@ -152,12 +166,14 @@
       return $this;
     }
 
+
     /**
      * @return boolean
      */
     public function getConvertEncodingState() {
       return $this->convertEncodingState;
     }
+
 
     /**
      * @param boolean $convertEncodingState

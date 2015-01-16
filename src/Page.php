@@ -29,12 +29,14 @@
       return $this;
     }
 
+
     /**
      * @return \Xparse\ParserInterface\ParserInterface
      */
     public function getParser() {
       return $this->parser;
     }
+
 
     /**
      * @param string $effectedUrl
@@ -50,12 +52,14 @@
       return $this;
     }
 
+
     /**
      * @return string|null
      */
     public function getEffectedUrl() {
       return $this->effectedUrl;
     }
+
 
     /**
      * Convert relative links to absolute
@@ -75,25 +79,41 @@
       return $this;
     }
 
+
     /**
      * @param string $xpath
      * @param array $data
      * @throws \Exception
      */
     public function submitForm($xpath, $data = []) {
+
       if (!is_string($xpath)) {
         throw new \InvalidArgumentException("Expect xpath expression string. " . gettype($xpath) . ' given');
       }
+
       if (!is_array($data)) {
-        throw new \InvalidArgumentException("Expect data is array. " . gettype($data) . ' given');
+        throw new \InvalidArgumentException("Expect data as array. " . gettype($data) . ' given');
       }
 
       $actionHref = $this->attribute($xpath . '/@href')->getFirst();
       if (empty($actionHref)) {
         throw new \Exception('Empty form action. Possible invalid xpath expression');
       }
+
+      $action = $this->attribute($xpath . '/@method')->getFirst();
+      $action = strtolower($action);
+
+      $action = empty($action) ? 'get' : $action;
+
+      if (!in_array($action, ['post', 'get'])) {
+        throw new \Exception('Invalid form method. Expect only get or post. Instead ' . $action . ' given');
+      }
+
+      \Xparse\ElementFinder\Helper::getDefaultFormData($this, $xpath);
+
       //@todo fetch data and submit form
     }
+
 
     /**
      * Fetch url by xpath and get page with this url

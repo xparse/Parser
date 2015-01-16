@@ -1052,12 +1052,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/xparse/ElementFinder.git",
-                "reference": "e6ad7bb324d16b3bff7abd413c604619128c2f30"
+                "reference": "a1d48896ffcf94bb7c9ea3e949786ef4eacda5cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/xparse/ElementFinder/zipball/e6ad7bb324d16b3bff7abd413c604619128c2f30",
-                "reference": "e6ad7bb324d16b3bff7abd413c604619128c2f30",
+                "url": "https://api.github.com/repos/xparse/ElementFinder/zipball/a1d48896ffcf94bb7c9ea3e949786ef4eacda5cd",
+                "reference": "a1d48896ffcf94bb7c9ea3e949786ef4eacda5cd",
                 "shasum": ""
             },
             "require": {
@@ -1091,7 +1091,7 @@
                 "dom",
                 "parser"
             ],
-            "time": "2015-01-13 09:31:15"
+            "time": "2015-01-14 20:36:11"
         },
         {
             "name": "xparse/parser-interface",
