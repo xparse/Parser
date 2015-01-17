@@ -36,7 +36,6 @@
      */
     protected $lastResponse = null;
 
-
     /**
      *
      * @param ClientInterface|null $client
@@ -48,7 +47,6 @@
 
       $this->client = $client;
     }
-
 
     /**
      * @param string $url
@@ -67,7 +65,6 @@
 
       return $page;
     }
-
 
     /**
      * @param string $url
@@ -93,7 +90,6 @@
       return $page;
     }
 
-
     /**
      * @todo possible rewrite to createPageFromLastResponse() or move current function to helper
      * @param string $html
@@ -113,14 +109,12 @@
       return $page;
     }
 
-
     /**
      * @return \Xparse\ElementFinder\ElementFinder
      */
     public function getLastPage() {
       return $this->lastPage;
     }
-
 
     /**
      * @param \Xparse\ElementFinder\ElementFinder $lastPage
@@ -131,14 +125,12 @@
       return $this;
     }
 
-
     /**
      * @return \GuzzleHttp\Message\ResponseInterface
      */
     public function getLastResponse() {
       return $this->lastResponse;
     }
-
 
     /**
      * @return ClientInterface
@@ -147,7 +139,6 @@
       return $this->client;
     }
 
-
     /**
      *
      * @return boolean
@@ -155,7 +146,6 @@
     public function getConvertRelativeLinksState() {
       return $this->convertRelativeLinksState;
     }
-
 
     /**
      * @param boolean $convertRelativeLinksState
@@ -166,14 +156,12 @@
       return $this;
     }
 
-
     /**
      * @return boolean
      */
     public function getConvertEncodingState() {
       return $this->convertEncodingState;
     }
-
 
     /**
      * @param boolean $convertEncodingState

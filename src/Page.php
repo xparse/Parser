@@ -19,7 +19,6 @@
      */
     protected $parser = null;
 
-
     /**
      * @param \Xparse\ParserInterface\ParserInterface $parser
      * @return $this
@@ -29,14 +28,12 @@
       return $this;
     }
 
-
     /**
      * @return \Xparse\ParserInterface\ParserInterface
      */
     public function getParser() {
       return $this->parser;
     }
-
 
     /**
      * @param string $effectedUrl
@@ -52,14 +49,12 @@
       return $this;
     }
 
-
     /**
      * @return string|null
      */
     public function getEffectedUrl() {
       return $this->effectedUrl;
     }
-
 
     /**
      * Convert relative links to absolute
@@ -78,7 +73,6 @@
 
       return $this;
     }
-
 
     /**
      * @param string $xpath
@@ -113,7 +107,6 @@
 
       //@todo fetch data and submit form
     }
-
 
     /**
      * Fetch url by xpath and get page with this url
