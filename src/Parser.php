@@ -94,8 +94,8 @@
     }
 
 
-    /**             
-     * @todo possible rewrite to createPageFromLastResponse() or move current function to helper 
+    /**
+     * @todo possible rewrite to createPageFromLastResponse() or move current function to helper
      * @param string $html
      * @return Page
      */
