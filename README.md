@@ -20,7 +20,10 @@ $ composer require xparse/parser
 ## Usage
 
 ``` php
-
+  $parser = new \Xparse\Parser\Parser();
+  $title = $parser->get('http://funivan.com')->html('//*[@class="entry-title"]/a');
+  print_r($title);
+  
 ```
 
 ## Testing
