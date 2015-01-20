@@ -17,6 +17,7 @@
       $this->assertEquals(new Client(), $parser->getClient());
     }
 
+
     public function testGet() {
 
       $client = $this->getDemoClient();
@@ -26,10 +27,11 @@
 
       $page = $parser->get('http://test.com');
 
-      $this->assertInstanceOf(get_class(new \Xparse\Parser\Page("<html><a href='1'>1</a></html>")), $page);
+      $this->assertInstanceOf(get_class(new \Xparse\Parser\Page("<html><a>1</a></html>")), $page);
       $this->assertEquals($page, $parser->getLastPage());
       $this->assertEquals($parser, $page->getParser());
     }
+
 
     public function testPost() {
 
@@ -56,6 +58,7 @@
       return $html;
     }
 
+
     /**
      * @return Client
      */
@@ -63,12 +66,13 @@
       $mock = new MockHandler(array(
         'status' => 200,
         'headers' => array(),
-        'body' => $this->getHtmlData('/test-get.html')
+        'body' => $this->getHtmlData('/test-get.html'),
       ));
 
       $client = new Client(['handler' => $mock]);
       return $client;
     }
+
 
     public function testEffectedUrl() {
       $parser = new \Xparse\Parser\Parser($this->getDemoClient());
@@ -76,8 +80,8 @@
       $url = 'http://test.com/df';
       $page = $parser->get($url);
       $this->assertEquals($url, $page->getEffectedUrl());
-
     }
+
 
     public function testGetLastResponse() {
       $parser = new \Xparse\Parser\Parser($this->getDemoClient());
@@ -87,6 +91,7 @@
 
     }
 
+
     /**
      * @expectedException \InvalidArgumentException
      */
@@ -94,6 +99,7 @@
       $parser = new \Xparse\Parser\Parser($this->getDemoClient());
       $parser->get(null);
     }
+
 
     /**
      * @expectedException \InvalidArgumentException

@@ -19,7 +19,6 @@
      */
     protected $parser = null;
 
-
     /**
      * @param \Xparse\ParserInterface\ParserInterface $parser
      * @return $this
@@ -81,17 +80,31 @@
      * @throws \Exception
      */
     public function submitForm($xpath, $data = []) {
+
       if (!is_string($xpath)) {
         throw new \InvalidArgumentException("Expect xpath expression string. " . gettype($xpath) . ' given');
       }
+
       if (!is_array($data)) {
-        throw new \InvalidArgumentException("Expect data is array. " . gettype($data) . ' given');
+        throw new \InvalidArgumentException("Expect data as array. " . gettype($data) . ' given');
       }
 
       $actionHref = $this->attribute($xpath . '/@href')->getFirst();
       if (empty($actionHref)) {
         throw new \Exception('Empty form action. Possible invalid xpath expression');
       }
+
+      $action = $this->attribute($xpath . '/@method')->getFirst();
+      $action = strtolower($action);
+
+      $action = empty($action) ? 'get' : $action;
+
+      if (!in_array($action, ['post', 'get'])) {
+        throw new \Exception('Invalid form method. Expect only get or post. Instead ' . $action . ' given');
+      }
+
+      \Xparse\ElementFinder\Helper::getDefaultFormData($this, $xpath);
+
       //@todo fetch data and submit form
     }
 

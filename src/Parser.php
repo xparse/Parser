@@ -57,7 +57,7 @@
         throw new \InvalidArgumentException("Url must be not empty and string.");
       }
       $response = $this->client->get($url);
-      $page = $this->createPage((string) $response->getBody());
+      $page = $this->createPage((string)$response->getBody(), $response);
       $page->setEffectedUrl($response->getEffectiveUrl());
 
       $this->setLastPage($page);
@@ -81,7 +81,7 @@
         'body' => $data
       ));
 
-      $page = $this->createPage((string) $response->getBody());
+      $page = $this->createPage((string)$response->getBody(), $response);
       $page->setEffectedUrl($response->getEffectiveUrl());
 
       $this->setLastPage($page);
@@ -90,16 +90,20 @@
       return $page;
     }
 
-
     /**
+     * @todo possible rewrite to createPageFromLastResponse() or move current function to helper
      * @param string $html
      * @return Page
      */
-    public function createPage($html) {
+    public function createPage($html, \GuzzleHttp\Message\ResponseInterface $response) {
       $page = new Page($html);
       $page->setParser($this);
 
-      //@todo convert links to absolute
+      $page->setEffectedUrl($response->getEffectiveUrl());
+      if ($this->convertRelativeLinksState) {
+        $page->convertRelativeLinks();
+      }
+
       //@todo convert encoding
 
       return $page;
