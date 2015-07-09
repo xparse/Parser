@@ -2,6 +2,9 @@
 
   namespace Xparse\Parser\Test;
 
+  use Xparse\ElementFinder\ElementFinder;
+  use Xparse\Parser\Page;
+
   /**
    * @author Ivan Shcherbak <dev@funivan.com> 1/9/15
    */
@@ -51,6 +54,14 @@
     protected function getPage() {
       $page = new \Xparse\Parser\Page("<html>123</html>");
       return $page;
+    }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testConvertLinksOnEmptyEffectedUrl() {
+      $page = new Page('<div>M</di>');
+      $page->convertRelativeLinks();
     }
 
   }

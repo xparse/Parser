@@ -1,6 +1,11 @@
 <?php
   namespace Xparse\Parser;
 
+  use GuzzleHttp\Psr7\Uri;
+  use Xparse\ElementFinder\Helper;
+  use Xparse\Parser\Helper\LinkConverter;
+  use Xparse\ParserInterface\ParserInterface;
+
   /**
    *
    * @package Xparse\Parser
@@ -15,21 +20,21 @@
     protected $effectedUrl = null;
 
     /**
-     * @var null|\Xparse\ParserInterface\ParserInterface
+     * @var null|ParserInterface
      */
     protected $parser = null;
 
     /**
-     * @param \Xparse\ParserInterface\ParserInterface $parser
+     * @param ParserInterface $parser
      * @return $this
      */
-    public function setParser(\Xparse\ParserInterface\ParserInterface $parser) {
+    public function setParser(ParserInterface $parser) {
       $this->parser = $parser;
       return $this;
     }
 
     /**
-     * @return \Xparse\ParserInterface\ParserInterface
+     * @return ParserInterface
      */
     public function getParser() {
       return $this->parser;
@@ -41,8 +46,8 @@
      */
     public function setEffectedUrl($effectedUrl) {
 
-      if (!is_string($effectedUrl)) {
-        throw new \InvalidArgumentException("Expect string. " . gettype($effectedUrl) . ' given');
+      if (!is_string($effectedUrl) or empty($effectedUrl)) {
+        throw new \InvalidArgumentException("Expect not empty string. " . gettype($effectedUrl) . ' given');
       }
 
       $this->effectedUrl = $effectedUrl;
@@ -64,12 +69,13 @@
      * @throws \Exception
      */
     public function convertRelativeLinks() {
+
       if (empty($this->effectedUrl)) {
         throw new \Exception('Empty effected url');
       }
 
-      $linkConverter = new \Xparse\ElementFinder\Helper\LinkConverter($this, $this->effectedUrl);
-      $linkConverter->convert();
+      LinkConverter::convertUrlsToAbsolute($this, $this->effectedUrl);
+
 
       return $this;
     }
@@ -77,16 +83,19 @@
     /**
      * @param string $xpath
      * @param array $data
+     * @return \Xparse\ElementFinder\ElementFinder
      * @throws \Exception
      */
-    public function submitForm($xpath, $data = []) {
+    public function submitForm($xpath, array $data = array()) {
 
       if (!is_string($xpath)) {
         throw new \InvalidArgumentException("Expect xpath expression string. " . gettype($xpath) . ' given');
       }
 
-      if (!is_array($data)) {
-        throw new \InvalidArgumentException("Expect data as array. " . gettype($data) . ' given');
+      $parser = $this->getParser();
+
+      if (empty($parser)) {
+        throw new \Exception("Empty parser object. Cant fetch page.");
       }
 
       $actionHref = $this->attribute($xpath . '/@href')->getFirst();
@@ -97,15 +106,22 @@
       $action = $this->attribute($xpath . '/@method')->getFirst();
       $action = strtolower($action);
 
-      $action = empty($action) ? 'get' : $action;
+      $action = empty($action) ? 'GET' : strtoupper($action);
 
-      if (!in_array($action, ['post', 'get'])) {
+      if (!in_array($action, array('POST', 'GET'))) {
         throw new \Exception('Invalid form method. Expect only get or post. Instead ' . $action . ' given');
       }
 
-      \Xparse\ElementFinder\Helper::getDefaultFormData($this, $xpath);
+      $data = array_merge(Helper::getDefaultFormData($this, $xpath), $data);
 
-      //@todo fetch data and submit form
+
+      if ($action == 'POST') {
+        return $parser->post($actionHref, $data);
+      }
+
+      $uri = new Uri($actionHref);
+      $uri = $uri->withQuery(implode('&', $data));
+      return $parser->get($uri);
     }
 
     /**
@@ -117,20 +133,24 @@
      */
     public function fetchPageByLink($xpath) {
 
-      if (empty($this->parser)) {
-        throw new \Exception("Empty parser object. Cant fetch page.");
-      }
-
       if (!is_string($xpath)) {
         throw new \InvalidArgumentException("Expect string. " . gettype($xpath) . ' given');
       }
 
+      $parser = $this->getParser();
+
+      if (empty($parser)) {
+        throw new \Exception("Empty parser object. Cant fetch page.");
+      }
+
+
       $href = $this->attribute($xpath)->getFirst();
+
       if (empty($href)) {
         throw new \Exception('Empty href link. Possible invalid xpath expression:' . $xpath);
       }
 
-      return $this->getParser()->get($href);
+      return $parser->get($href);
     }
 
   }

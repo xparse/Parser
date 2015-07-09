@@ -3,7 +3,8 @@
   namespace Xparse\Parser\Test;
 
   use GuzzleHttp\Client;
-  use GuzzleHttp\Ring\Client\MockHandler;
+  use GuzzleHttp\Handler\MockHandler;
+  use GuzzleHttp\Psr7\Response;
 
   /**
    *
@@ -14,7 +15,7 @@
     public function testInit() {
 
       $parser = new \Xparse\Parser\Parser();
-      $this->assertEquals(new Client(), $parser->getClient());
+      $this->assertEquals(get_class(new Client()), get_class($parser->getClient()));
     }
 
 
@@ -63,11 +64,15 @@
      * @return Client
      */
     protected function getDemoClient() {
-      $mock = new MockHandler(array(
-        'status' => 200,
-        'headers' => array(),
-        'body' => $this->getHtmlData('/test-get.html'),
-      ));
+      $mock = new MockHandler(
+        array(
+          new Response(
+            200,
+            array(),
+            $this->getHtmlData('/test-get.html')
+          )
+        )
+      );
 
       $client = new Client(['handler' => $mock]);
       return $client;
@@ -83,11 +88,11 @@
     }
 
 
-    public function testGetLastResponse() {
+    public function testGetResponseReasonPhrase() {
       $parser = new \Xparse\Parser\Parser($this->getDemoClient());
       $url = 'http://test.com/url/';
       $parser->get($url);
-      $this->assertEquals($url, $parser->getLastResponse()->getEffectiveUrl());
+      $this->assertEquals('OK', $parser->getLastResponse()->getReasonPhrase());
 
     }
 

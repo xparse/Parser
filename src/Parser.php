@@ -3,6 +3,11 @@
   namespace Xparse\Parser;
 
   use GuzzleHttp\ClientInterface;
+  use GuzzleHttp\HandlerStack;
+  use GuzzleHttp\Psr7\Request;
+  use Psr\Http\Message\RequestInterface;
+  use Psr\Http\Message\ResponseInterface;
+  use Xparse\ElementFinder\Helper;
 
   /**
    *
@@ -32,7 +37,7 @@
     protected $client = null;
 
     /**
-     * @var \GuzzleHttp\Message\ResponseInterface
+     * @var null|ResponseInterface
      */
     protected $lastResponse = null;
 
@@ -42,7 +47,10 @@
      */
     public function __construct(ClientInterface $client = null) {
       if (empty($client)) {
-        $client = new \GuzzleHttp\Client();
+        $client = new \GuzzleHttp\Client(array(
+          \GuzzleHttp\RequestOptions::ALLOW_REDIRECTS => true
+        ));
+
       }
 
       $this->client = $client;
@@ -56,14 +64,9 @@
       if (empty($url) or !is_string($url)) {
         throw new \InvalidArgumentException("Url must be not empty and string.");
       }
-      $response = $this->client->get($url);
-      $page = $this->createPage((string)$response->getBody(), $response);
-      $page->setEffectedUrl($response->getEffectiveUrl());
 
-      $this->setLastPage($page);
-      $this->lastResponse = $response;
-
-      return $page;
+      $request = new \GuzzleHttp\Psr7\Request('GET', $url);
+      return $this->send($request);
     }
 
     /**
@@ -77,36 +80,11 @@
         throw new \InvalidArgumentException("Url must be not empty and string.");
       }
 
-      $response = $this->client->post($url, array(
+      $request = new Request('POST', $url, array(
         'body' => $data
       ));
 
-      $page = $this->createPage((string)$response->getBody(), $response);
-      $page->setEffectedUrl($response->getEffectiveUrl());
-
-      $this->setLastPage($page);
-      $this->lastResponse = $response;
-
-      return $page;
-    }
-
-    /**
-     * @todo possible rewrite to createPageFromLastResponse() or move current function to helper
-     * @param string $html
-     * @return Page
-     */
-    public function createPage($html, \GuzzleHttp\Message\ResponseInterface $response) {
-      $page = new Page($html);
-      $page->setParser($this);
-
-      $page->setEffectedUrl($response->getEffectiveUrl());
-      if ($this->convertRelativeLinksState) {
-        $page->convertRelativeLinks();
-      }
-
-      //@todo convert encoding
-
-      return $page;
+      return $this->send($request);
     }
 
     /**
@@ -126,7 +104,7 @@
     }
 
     /**
-     * @return \GuzzleHttp\Message\ResponseInterface
+     * @return null|ResponseInterface
      */
     public function getLastResponse() {
       return $this->lastResponse;
@@ -170,6 +148,54 @@
     public function setConvertEncodingState($convertEncodingState) {
       $this->convertEncodingState = $convertEncodingState;
       return $this;
+    }
+
+    /**
+     * @param $request
+     * @param array $options
+     * @return Page
+     * @throws \Exception
+     */
+    public function send(RequestInterface $request, $options = array()) {
+      /** @var RequestInterface $lastRequest */
+      $lastRequest = null;
+
+
+      /** @var HandlerStack $handler */
+      $stack = $this->client->getConfig('handler');
+
+      if (!empty($stack) and $stack instanceof HandlerStack) {
+        $stack->remove('last_request');
+        $stack->push(\GuzzleHttp\Middleware::mapRequest(function (RequestInterface $request) use (&$lastRequest) {
+          $lastRequest = $request;
+          return $request;
+        }), 'last_request');
+
+      }
+      $response = $this->client->send($request, $options);
+
+
+      $htmlCode = Helper::safeEncodeStr((string) $response->getBody());
+      $htmlCode = mb_convert_encoding($htmlCode, 'HTML-ENTITIES', "UTF-8");
+
+      //@todo convert encoding
+
+      $page = new Page((string) $htmlCode);
+      $page->setParser($this);
+      if (!empty($lastRequest)) {
+        $page->setEffectedUrl($lastRequest->getUri()->__toString());
+      } else {
+        $page->setEffectedUrl($request->getUri()->__toString());
+      }
+
+      if ($this->convertRelativeLinksState) {
+        $page->convertRelativeLinks();
+      }
+
+
+      $this->setLastPage($page);
+      $this->lastResponse = $response;
+      return $page;
     }
 
   }
