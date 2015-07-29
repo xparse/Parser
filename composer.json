@@ -18,7 +18,7 @@
   "require": {
     "php": ">=5.5.0",
     "xparse/parser-interface": "0.0.3",
-    "xparse/element-finder": "dev-master",
+    "xparse/element-finder": "0.0.2",
     "guzzlehttp/guzzle": "6.0.*"
   },
   "require-dev": {
