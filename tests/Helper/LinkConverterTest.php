@@ -15,43 +15,57 @@
      * @return array
      */
     public function getConvertRelativeUrlToAbsolute() {
-      return array(
-        array(
+      return [
+        [
           'html' => '<a href="/tt">a</a>',
           'expect' => '<a href="http://funivan.com/tt">a</a>',
           'url' => 'http://funivan.com/userName',
-        ),
-        array(
+        ],
+        [
           'html' => '<a href="javascript:custom()">a</a>',
           'expect' => '<a href="javascript:custom()">a</a>',
           'url' => 'http://funivan.com/userName',
-        ),
-
-        array(
+        ],
+        [
+          'html' => '<a href="http:///example.com">a</a>',
+          'expect' => '<a href="http:///example.com">a</a>',
+          'url' => 'http://funivan.com/userName',
+        ],
+        [
           'html' => '<img src="/hello.jpg"/>',
           'expect' => '<img src="http://funivan.com/hello.jpg"/>',
           'url' => 'http://funivan.com/userName',
-        ),
-
-        array(
+        ],
+        [
           'html' => '<img src="hello.jpg"/>',
           'expect' => '<img src="http://funivan.com/userName/hello.jpg"/>',
           'url' => 'http://funivan.com/userName/',
-        ),
-        array(
+        ],
+        [
           'html' => '<form action="contacts.html"><a>1</a></form>',
           'expect' => '<form action="http://funivan.com/contacts.html"><a>1</a></form>',
           'url' => 'http://funivan.com/index.html',
-        ),
-        array(
+        ],
+        [
           'html' => '<form action="contacts.html"><a>1</a1></form>',
           'expect' => '<form action="http://funivan.com/contacts.html"><a>1</a></form>',
           'url' => 'http://funivan.com/index.html?user=123',
-        ),
+        ],
+        [
+          'html' => '<div><a href="../../contacts.html">1</a></div>',
+          'expect' => '<div><a href="http://funivan.com/contacts.html">1</a></div>',
+          'url' => 'http://funivan.com/user/dashboard',
+        ],
+        [
+          'html' => '<div><a href="../../contact me">1</a></div>',
+          'expect' => '<div><a href="http://funivan.com/contact%20me">1</a></div>',
+          'url' => 'http://funivan.com/user/dashboard',
+        ],
 
-      );
+      ];
 
     }
+
 
     /**
      * @dataProvider getConvertRelativeUrlToAbsolute
@@ -67,6 +81,62 @@
 
       $body = $page->html('//body')->getFirst();
       $this->assertEquals($expect, $body);
+    }
+
+
+    public function testLinkWithParams() {
+      $html = '<a href="search/?user=john&age=30">1</a>';
+      $expect = 'http://funivan.com/search/?user=john&age=30';
+      $url = 'http://funivan.com/';
+
+      $page = new ElementFinder($html);
+      LinkConverter::convertUrlsToAbsolute($page, $url);
+      $body = $page->attribute('//a/@href')->getFirst();
+      $this->assertEquals($expect, $body);
+    }
+
+
+    public function testBaseUrlLinkConvertSuccess() {
+      $html = '
+      <html>
+        <head>
+          <base href="http://www.example.com/images/" target="_blank">
+        </head>
+        <body>
+          <img src="stickman.gif" width="24" height="39" alt="Stickman">
+        </body>
+      </html>
+      ';
+      $expect = 'http://www.example.com/images/stickman.gif';
+      $url = 'http://www.example.com/images/';
+
+      $page = new ElementFinder($html);
+      LinkConverter::convertUrlsToAbsolute($page, $url);
+      $img = $page->attribute('//img/@src')->getFirst();
+      $this->assertEquals($expect, $img);
+
+    }
+
+
+    public function testBaseUrlLinkConverterIgnore() {
+      $html = '
+      <html>
+        <head>
+          <base href="http://www.example.com/images/" target="_blank">
+        </head>
+        <body>
+           <a href="http://www.w3schools.com">W3Schools</a>
+        </body>
+      </html>
+      ';
+      $expect = 'http://www.w3schools.com';
+      $url = 'http://www.example.com/';
+
+      $page = new ElementFinder($html);
+      LinkConverter::convertUrlsToAbsolute($page, $url);
+      $href = $page->attribute('//a/@href')->getFirst();
+      $this->assertEquals($expect, $href);
+
     }
 
   }

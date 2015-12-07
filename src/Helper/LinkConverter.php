@@ -15,8 +15,6 @@
      *
      * Convert relative links to absolute
      *
-     * @todo check baseUrl //base/@href
-     *
      * @param ElementFinder $page
      * @param string $affectedUrl
      */
@@ -38,6 +36,15 @@
         # don`t change javascript in href
         if (preg_match('!^\s*javascript\s*:\s*!', $relative)) {
           continue;
+        }
+
+        if (parse_url($relative) === false) {
+          continue;
+        }
+
+        $baseUrl = $page->attribute('//base/@href')->getFirst();
+        if (!empty($baseUrl) and !preg_match("!^(//|http)!i", $relative)) {
+          $relative = $baseUrl . $relative;
         }
 
         $url = Uri::resolve($affected, $relative);
