@@ -43,11 +43,11 @@
         }
 
         $baseUrl = $page->attribute('//base/@href')->getFirst();
-        if (!empty($baseUrl) and !preg_match("!^(//|http)!i", $relative)) {
-          $relative = $baseUrl . $relative;
+        if (!empty($baseUrl) and !preg_match("!^(/|http)!i", $relative)) {
+          $relative = Uri::resolve(new Uri($baseUrl), $relative);
         }
 
-        $url = Uri::resolve($affected, $relative);
+        $url = Uri::resolve($affected, (string) $relative);
         $element->setAttribute($attrName, (string) $url);
       }
 

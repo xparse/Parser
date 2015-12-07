@@ -61,7 +61,34 @@
           'expect' => '<div><a href="http://funivan.com/contact%20me">1</a></div>',
           'url' => 'http://funivan.com/user/dashboard',
         ],
-
+        [
+          'html' => '<a href="search/?user=john&age=30">1</a>',
+          'expect' => '<a href="http://funivan.com/search/?user=john&amp;age=30">1</a>',
+          'url' => 'http://funivan.com/',
+        ],
+        [
+          'html' => '<a href="search/?user=john&age=30">1</a>',
+          'expect' => '<a href="http://funivan.com/search/?user=john&amp;age=30">1</a>',
+          'url' => 'http://funivan.com/',
+        ],
+        [
+          'html' => '<head><base href="http://www.example.com/images/" target="_blank"></head>
+                     <body><img src="stickman.gif" width="24" height="39" alt="Stickman"/></body>',
+          'expect' => '<img src="http://www.example.com/images/stickman.gif" width="24" height="39" alt="Stickman"/>',
+          'url' => 'http://www.example.com/',
+        ],
+        [
+          'html' => '<head><base href="http://www.example.com/data/images/" target="_blank"></head>
+                     <body><img src="../stickman.gif" width="24" height="39" alt="Stickman"/></body>',
+          'expect' => '<img src="http://www.example.com/data/stickman.gif" width="24" height="39" alt="Stickman"/>',
+          'url' => 'http://www.example.com/',
+        ],
+        [
+          'html' => '<head><base href="http://www.example.com/images/" target="_blank"></head>
+                     <body><a href="http://www.w3schools.com">W3Schools</a></body>',
+          'expect' => '<a href="http://www.w3schools.com">W3Schools</a>',
+          'url' => 'http://www.example.com/',
+        ],
       ];
 
     }
@@ -81,62 +108,6 @@
 
       $body = $page->html('//body')->getFirst();
       $this->assertEquals($expect, $body);
-    }
-
-
-    public function testLinkWithParams() {
-      $html = '<a href="search/?user=john&age=30">1</a>';
-      $expect = 'http://funivan.com/search/?user=john&age=30';
-      $url = 'http://funivan.com/';
-
-      $page = new ElementFinder($html);
-      LinkConverter::convertUrlsToAbsolute($page, $url);
-      $body = $page->attribute('//a/@href')->getFirst();
-      $this->assertEquals($expect, $body);
-    }
-
-
-    public function testBaseUrlLinkConvertSuccess() {
-      $html = '
-      <html>
-        <head>
-          <base href="http://www.example.com/images/" target="_blank">
-        </head>
-        <body>
-          <img src="stickman.gif" width="24" height="39" alt="Stickman">
-        </body>
-      </html>
-      ';
-      $expect = 'http://www.example.com/images/stickman.gif';
-      $url = 'http://www.example.com/images/';
-
-      $page = new ElementFinder($html);
-      LinkConverter::convertUrlsToAbsolute($page, $url);
-      $img = $page->attribute('//img/@src')->getFirst();
-      $this->assertEquals($expect, $img);
-
-    }
-
-
-    public function testBaseUrlLinkConverterIgnore() {
-      $html = '
-      <html>
-        <head>
-          <base href="http://www.example.com/images/" target="_blank">
-        </head>
-        <body>
-           <a href="http://www.w3schools.com">W3Schools</a>
-        </body>
-      </html>
-      ';
-      $expect = 'http://www.w3schools.com';
-      $url = 'http://www.example.com/';
-
-      $page = new ElementFinder($html);
-      LinkConverter::convertUrlsToAbsolute($page, $url);
-      $href = $page->attribute('//a/@href')->getFirst();
-      $this->assertEquals($expect, $href);
-
     }
 
   }
