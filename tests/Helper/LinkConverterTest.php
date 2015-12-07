@@ -67,11 +67,6 @@
           'url' => 'http://funivan.com/',
         ],
         [
-          'html' => '<a href="search/?user=john&age=30">1</a>',
-          'expect' => '<a href="http://funivan.com/search/?user=john&amp;age=30">1</a>',
-          'url' => 'http://funivan.com/',
-        ],
-        [
           'html' => '<head><base href="http://www.example.com/images/" target="_blank"></head>
                      <body><img src="stickman.gif" width="24" height="39" alt="Stickman"/></body>',
           'expect' => '<img src="http://www.example.com/images/stickman.gif" width="24" height="39" alt="Stickman"/>',
