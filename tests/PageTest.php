@@ -1,6 +1,6 @@
 <?php
 
-  namespace Xparse\Parser\Test;
+  namespace Test\Xparse\Parser;
 
   use Xparse\ElementFinder\ElementFinder;
   use Xparse\Parser\Page;

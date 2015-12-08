@@ -1,6 +1,6 @@
 <?php
 
-  namespace Xparse\Parser\Test;
+  namespace Test\Xparse\Parser;
 
   use GuzzleHttp\Client;
   use GuzzleHttp\Handler\MockHandler;

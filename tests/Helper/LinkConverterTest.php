@@ -1,6 +1,6 @@
 <?php
 
-  namespace Tests\Xparse\Helper;
+  namespace Test\Xparse\Parser\Helper;
 
   use Xparse\ElementFinder\ElementFinder;
   use Xparse\Parser\Helper\LinkConverter;
