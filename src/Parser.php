@@ -7,7 +7,9 @@
   use GuzzleHttp\Psr7\Request;
   use Psr\Http\Message\RequestInterface;
   use Psr\Http\Message\ResponseInterface;
+  use Xparse\ElementFinder\ElementFinder;
   use Xparse\ElementFinder\Helper;
+  use Xparse\Parser\Helper\LinkConverter;
 
   /**
    *
@@ -16,7 +18,7 @@
   class Parser implements \Xparse\ParserInterface\ParserInterface {
 
     /**
-     * Set true if we need to automaticaly convert reletive links to absolute
+     * Set true if we need to automatically convert relative links to absolute
      */
     protected $convertRelativeLinksState = true;
 
@@ -41,24 +43,26 @@
      */
     protected $lastResponse = null;
 
+
     /**
      *
      * @param ClientInterface|null $client
      */
     public function __construct(ClientInterface $client = null) {
       if (empty($client)) {
-        $client = new \GuzzleHttp\Client(array(
-          \GuzzleHttp\RequestOptions::ALLOW_REDIRECTS => true
-        ));
+        $client = new \GuzzleHttp\Client([
+          \GuzzleHttp\RequestOptions::ALLOW_REDIRECTS => true,
+        ]);
 
       }
 
       $this->client = $client;
     }
 
+
     /**
      * @param string $url
-     * @return Page
+     * @return \Xparse\ElementFinder\ElementFinder
      */
     public function get($url) {
       if (empty($url) or !is_string($url)) {
@@ -69,10 +73,11 @@
       return $this->send($request);
     }
 
+
     /**
      * @param string $url
      * @param array $data
-     * @return Page
+     * @return \Xparse\ElementFinder\ElementFinder
      */
     public function post($url, $data) {
 
@@ -80,12 +85,13 @@
         throw new \InvalidArgumentException("Url must be not empty and string.");
       }
 
-      $request = new Request('POST', $url, array(
-        'body' => $data
-      ));
+      $request = new Request('POST', $url, [
+        'body' => $data,
+      ]);
 
       return $this->send($request);
     }
+
 
     /**
      * @return \Xparse\ElementFinder\ElementFinder
@@ -93,6 +99,7 @@
     public function getLastPage() {
       return $this->lastPage;
     }
+
 
     /**
      * @param \Xparse\ElementFinder\ElementFinder $lastPage
@@ -103,12 +110,14 @@
       return $this;
     }
 
+
     /**
      * @return null|ResponseInterface
      */
     public function getLastResponse() {
       return $this->lastResponse;
     }
+
 
     /**
      * @return ClientInterface
@@ -117,6 +126,7 @@
       return $this->client;
     }
 
+
     /**
      *
      * @return boolean
@@ -124,6 +134,7 @@
     public function getConvertRelativeLinksState() {
       return $this->convertRelativeLinksState;
     }
+
 
     /**
      * @param boolean $convertRelativeLinksState
@@ -134,12 +145,14 @@
       return $this;
     }
 
+
     /**
      * @return boolean
      */
     public function getConvertEncodingState() {
       return $this->convertEncodingState;
     }
+
 
     /**
      * @param boolean $convertEncodingState
@@ -150,13 +163,14 @@
       return $this;
     }
 
+
     /**
      * @param $request
      * @param array $options
-     * @return Page
+     * @return \Xparse\ElementFinder\ElementFinder
      * @throws \Exception
      */
-    public function send(RequestInterface $request, $options = array()) {
+    public function send(RequestInterface $request, $options = []) {
       /** @var RequestInterface $lastRequest */
       $lastRequest = null;
 
@@ -180,16 +194,11 @@
 
       //@todo convert encoding
 
-      $page = new Page((string) $htmlCode);
-      $page->setParser($this);
-      if (!empty($lastRequest)) {
-        $page->setEffectedUrl($lastRequest->getUri()->__toString());
-      } else {
-        $page->setEffectedUrl($request->getUri()->__toString());
-      }
+      $page = new ElementFinder((string) $htmlCode);
 
       if ($this->convertRelativeLinksState) {
-        $page->convertRelativeLinks();
+        $url = (!empty($lastRequest)) ? $lastRequest->getUri()->__toString() : $request->getUri()->__toString();
+        LinkConverter::convertUrlsToAbsolute($page, $url);
       }
 
 

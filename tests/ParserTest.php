@@ -28,9 +28,8 @@
 
       $page = $parser->get('http://test.com');
 
-      $this->assertInstanceOf(get_class(new \Xparse\Parser\Page("<html><a>1</a></html>")), $page);
+      $this->assertInstanceOf(get_class(new \Xparse\ElementFinder\ElementFinder("<html><a>1</a></html>")), $page);
       $this->assertEquals($page, $parser->getLastPage());
-      $this->assertEquals($parser, $page->getParser());
     }
 
 
@@ -41,12 +40,10 @@
 
       $this->assertEquals($client, $parser->getClient());
 
-      $page = $parser->post('http://test.com/info', array('data' => '123'));
+      $page = $parser->post('http://test.com/info', ['data' => '123']);
 
-      $this->assertInstanceOf(get_class(new \Xparse\Parser\Page("<html></html>")), $page);
+      $this->assertInstanceOf(get_class(new \Xparse\ElementFinder\ElementFinder("<html></html>")), $page);
       $this->assertEquals($page, $parser->getLastPage());
-      $this->assertEquals($parser, $page->getParser());
-
     }
 
 
@@ -65,26 +62,17 @@
      */
     protected function getDemoClient() {
       $mock = new MockHandler(
-        array(
+        [
           new Response(
             200,
-            array(),
+            [],
             $this->getHtmlData('/test-get.html')
-          )
-        )
+          ),
+        ]
       );
 
       $client = new Client(['handler' => $mock]);
       return $client;
-    }
-
-
-    public function testEffectedUrl() {
-      $parser = new \Xparse\Parser\Parser($this->getDemoClient());
-
-      $url = 'http://test.com/df';
-      $page = $parser->get($url);
-      $this->assertEquals($url, $page->getEffectedUrl());
     }
 
 
