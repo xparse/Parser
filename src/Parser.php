@@ -188,7 +188,7 @@
       }
       $response = $this->client->send($request, $options);
       
-      $url = (!empty($lastRequest)) ? $lastRequest->getUri()->__toString() : $request->getUri()->__toString();
+      $url = (!empty($lastRequest)) ? $lastRequest->getUri()->__toString() : '';
       $page = ElementFinderFactory::create($response, $url);
 
       $this->setLastPage($page);
