@@ -11,9 +11,7 @@
   class LinkConverter {
 
     /**
-     * Modify elements in page
-     *
-     * Convert relative links to absolute
+     * Convert relative links, images scr and form actions to absolute
      *
      * @param ElementFinder $page
      * @param string $affectedUrl
@@ -23,16 +21,19 @@
       $affected = new Uri($affectedUrl);
 
       $srcElements = $page->elements('//*[@src] | //*[@href] | //form[@action]');
+      $baseUrl = $page->attribute('//base/@href')->getFirst();
+
       foreach ($srcElements as $element) {
-        if ($element->hasAttribute('action') == true and $element->tagName == 'form') {
-          $attrName = 'action';
-        } else if ($element->hasAttribute('src') == true) {
-          $attrName = 'src';
-        } else {
-          $attrName = 'href';
+        $attributeName = 'href';
+
+        if ($element->hasAttribute('action') === true and $element->tagName === 'form') {
+          $attributeName = 'action';
+        } else if ($element->hasAttribute('src') === true) {
+          $attributeName = 'src';
         }
 
-        $relative = $element->getAttribute($attrName);
+        $relative = $element->getAttribute($attributeName);
+
         # don`t change javascript in href
         if (preg_match('!^\s*javascript\s*:\s*!', $relative)) {
           continue;
@@ -42,13 +43,12 @@
           continue;
         }
 
-        $baseUrl = $page->attribute('//base/@href')->getFirst();
-        if (!empty($baseUrl) and !preg_match("!^(/|http)!i", $relative)) {
+        if (!empty($baseUrl) and !preg_match('!^(/|http)!i', $relative)) {
           $relative = Uri::resolve(new Uri($baseUrl), $relative);
         }
 
         $url = Uri::resolve($affected, (string) $relative);
-        $element->setAttribute($attrName, (string) $url);
+        $element->setAttribute($attributeName, (string) $url);
       }
 
     }

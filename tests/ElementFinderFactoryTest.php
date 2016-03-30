@@ -1,10 +1,10 @@
 <?php
 
-  namespace Test\Xparse\Parser\Helper;
+  namespace Test\Xparse\Parser;
 
   use GuzzleHttp\Psr7\Response;
   use Xparse\ElementFinder\ElementFinder;
-  use Xparse\Parser\Helper\ElementFinderFactory;
+  use Xparse\Parser\ElementFinderFactory;
 
   /**
    *

@@ -1,10 +1,12 @@
 <?php
 
-  namespace Xparse\Parser\Helper;
+  namespace Xparse\Parser;
 
   use GuzzleHttp\Psr7\Response;
   use Xparse\ElementFinder\ElementFinder;
   use Xparse\ElementFinder\Helper;
+  use Xparse\Parser\Helper\HtmlEncodingConverter;
+  use Xparse\Parser\Helper\LinkConverter;
 
   /**
    * Create ElementFinder.

@@ -5,6 +5,7 @@
   use GuzzleHttp\Client;
   use GuzzleHttp\Handler\MockHandler;
   use GuzzleHttp\Psr7\Response;
+  use Xparse\ElementFinder\ElementFinder;
 
   /**
    *
@@ -66,7 +67,18 @@
           new Response(
             200,
             [],
-            $this->getHtmlData('/test-get.html')
+            '<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+  </head>
+  <body>
+    <a href="index.html">link</a>
+    <div>Text text; Текст кирилица</div>
+  </body>
+</html>
+'
           ),
         ]
       );
@@ -81,7 +93,16 @@
       $url = 'http://test.com/url/';
       $parser->get($url);
       $this->assertEquals('OK', $parser->getLastResponse()->getReasonPhrase());
+    }
 
+
+    public function __testConvertElementFinderUrls() {
+      $parser = new \Xparse\Parser\Parser($this->getDemoClient());
+      $url = 'http://test.com/url/';
+      $page = $parser->get($url);
+      $this->assertInstanceOf(ElementFinder::class, $page);
+      $firstUrl = $page->attribute('//a/@href')->getFirst();
+      $this->assertEquals($url . 'index.html', $firstUrl);
     }
 
 
