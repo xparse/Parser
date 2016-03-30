@@ -63,6 +63,7 @@
     /**
      * @param string $url
      * @return \Xparse\ElementFinder\ElementFinder
+     * @throws \InvalidArgumentException
      */
     public function get($url) {
       if (empty($url) or !is_string($url)) {
@@ -78,6 +79,7 @@
      * @param string $url
      * @param array $data
      * @return \Xparse\ElementFinder\ElementFinder
+     * @throws \InvalidArgumentException
      */
     public function post($url, $data) {
 
@@ -187,7 +189,7 @@
 
       }
       $response = $this->client->send($request, $options);
-      
+
       $url = (!empty($lastRequest)) ? $lastRequest->getUri()->__toString() : '';
       $page = ElementFinderFactory::create($response, $url);
 
