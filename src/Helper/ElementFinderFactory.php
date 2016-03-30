@@ -32,14 +32,16 @@
 
       $contentType = $response->getHeaderLine('content-type');
 
-      if ($contentType) {
+      if (!empty($contentType)) {
         preg_match("!^.*charset=([A-Za-z0-9-]{4,})$!", $contentType, $contentTypeData);
-        $encoding = strtoupper(trim($contentTypeData[1]));
-      } else {
-        preg_match("!.*<meta.*charset=\"?([A-Za-z0-9-]{4,})\"!mi", $html, $metaContentType);
-        $encoding = !empty($metaContentType[1]) ? strtoupper(trim($metaContentType[1])) : '';
+        $encoding = !empty($contentTypeData[1]) ? strtoupper(trim($contentTypeData[1])) : '';
       }
 
+      if (empty($encoding)){
+        preg_match("!.*<meta.*charset=[\"']?[ \t]*([A-Za-z0-9-]{4,})[ \t]*[\"']!mi", $html, $metaContentType);
+        $encoding = !empty($metaContentType[1]) ? strtoupper(trim($metaContentType[1])) : '';
+      }
+      
       if (in_array($encoding, $supportedEncodings)) {
         $html = mb_convert_encoding($html, 'UTF-8', $encoding);
       }
