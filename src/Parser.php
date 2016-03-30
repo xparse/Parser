@@ -39,16 +39,21 @@
     protected $client = null;
 
     /**
+     * @var ElementFinderFactory
+     */
+    protected $elementFinderFactory = null;
+
+    /**
      * @var null|ResponseInterface
      */
     protected $lastResponse = null;
 
 
     /**
-     *
      * @param ClientInterface|null $client
+     * @param ElementFinderFactory|null $elementFinderFactory
      */
-    public function __construct(ClientInterface $client = null) {
+    public function __construct(ClientInterface $client = null, ElementFinderFactory $elementFinderFactory = null) {
       if (empty($client)) {
         $client = new \GuzzleHttp\Client([
           \GuzzleHttp\RequestOptions::ALLOW_REDIRECTS => true,
@@ -56,6 +61,11 @@
 
       }
 
+      if (empty($elementFinderFactory)) {
+        $elementFinderFactory = new ElementFinderFactory();
+      }
+
+      $this->elementFinderFactory = $elementFinderFactory;
       $this->client = $client;
     }
 
@@ -191,7 +201,8 @@
       $response = $this->client->send($request, $options);
 
       $url = (!empty($lastRequest)) ? $lastRequest->getUri()->__toString() : '';
-      $page = ElementFinderFactory::create($response, $url);
+
+      $page = $this->elementFinderFactory->create($response, $url);
 
       $this->setLastPage($page);
       $this->lastResponse = $response;
