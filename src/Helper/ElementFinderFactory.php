@@ -22,7 +22,8 @@
     public function create(Response $response, $affectedUrl = '') {
       $html = $response->getBody();
       $html = Helper::safeEncodeStr((string) $html);
-      $html = EncodingConverter::convertTo($response, $html, 'UTF-8');
+      $contentType = $response->getHeaderLine('content-type');
+      $html = HtmlEncodingConverter::convertToUtf($html, $contentType);
       $page = new ElementFinder((string) $html);
 
       if ($affectedUrl) {

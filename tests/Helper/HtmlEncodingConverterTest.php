@@ -4,12 +4,13 @@
 
   use GuzzleHttp\Psr7\Response;
   use Xparse\ElementFinder\ElementFinder;
-  use Xparse\Parser\Helper\ElementFinderFactory;
+  use Xparse\Parser\Helper\HtmlEncodingConverter;
 
   /**
-   *
+   * Class EncodingConverterTest
+   * @package Test\Xparse\Parser\Helper
    */
-  class ElementFinderFactoryTest extends \PHPUnit_Framework_TestCase {
+  class HtmlEncodingConverterTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @return array
@@ -22,11 +23,22 @@
           ['content-type' => 'df'],
         ],
         [
+          iconv('UTF-8', 'WINDOWS-1251', '<meta charset=\' windows-1251 \'><body>Текст текст text</body>'),
+          'Текст текст text',
+          ['content-type' => 'df'],
+        ],
+        [
+          iconv('UTF-8', 'WINDOWS-1251', '<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" /><body>Текст текст text</body>'
+          ),
+          'Текст текст text',
+          ['content-type' => 'text/html; charset=windows-1251'],
+        ],
+        [
           iconv('UTF-8', 'WINDOWS-1251', '<meta http-equiv="Content-Type" content=\'text/html; charset=windows-1251\' /><body>Текст текст text</body>'),
           'Текст текст text',
         ],
         [
-          iconv('UTF-8', 'WINDOWS-1251', '<meta charset=\' windows-1251 \'><body>Текст текст text</body>'),
+          iconv('UTF-8', 'WINDOWS-1251', '<meta charset=\' windows-1251    \'><body>Текст текст text</body>'),
           'Текст текст text',
         ],
         [
@@ -38,10 +50,6 @@
           'Текст текст text',
         ],
         [
-          iconv('UTF-8', 'WINDOWS-1251', '<meta charset="windows-1251"><body>Текст текст text</body>'),
-          'Текст текст text',
-        ],
-        [
           '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><body>Текст текст text</body>',
           'Текст текст text',
         ],
@@ -50,15 +58,13 @@
           'Текст текст text',
         ],
         [
-          '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-5" /><body>Текст текст text</body>',
+          iconv('UTF-8', 'WINDOWS-1251', '<meta charset="windows-1251"><body>Текст текст text</body>'),
           'Текст текст text',
-          ['content-type' => 'text/html; charset=utf-8'],
         ],
         [
-          iconv('UTF-8', 'WINDOWS-1251', '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><body>Текст текст text</body>'
-          ),
-          'Текст текст text',
-          ['content-type' => 'text/html; charset=windows-1251'],
+
+          '<body></body>',
+          '',
         ],
       ];
     }
@@ -72,7 +78,9 @@
      */
     public function testDifferentCharsetStyles($html, $bodyText, array $headers = []) {
       $response = new Response(200, $headers, $html);
-      $page = (new ElementFinderFactory())->create($response);
+      $contentType = $response->getHeaderLine('content-type');
+      $html = HtmlEncodingConverter::convertToUtf($html, $contentType);
+      $page = new ElementFinder((string) $html);
       $pageBodyText = $page->html('//body')->getFirst();
       $this->assertInstanceOf(ElementFinder::class, $page);
       $this->assertEquals($bodyText, $pageBodyText);

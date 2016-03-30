@@ -13,7 +13,7 @@ interface ElementFinderFactoryInterface
   /**
    * @param Response $response
    * @param string $affectedUrl
-   * @return mixed
+   * @return ElementFinder
    */
   public function create(Response $response, $affectedUrl = '');
 }

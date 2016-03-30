@@ -2,13 +2,11 @@
 
 namespace Xparse\Parser\Helper;
 
-use GuzzleHttp\Psr7\Response;
-
 /**
  * Class EncodingConverter
  * @package Xparse\Parser\Helper
  */
-class EncodingConverter
+class HtmlEncodingConverter
 {
 
   /**
@@ -17,14 +15,11 @@ class EncodingConverter
   private static $supportedEncodings = null;
 
   /**
-   * @param Response $response
    * @param $html
-   * @param $convertToEncoding
-   * @return mixed
+   * @param bool $contentType
+   * @return string
    */
-  public static function convertTo(Response $response, $html, $convertToEncoding) {
-    $contentType = $response->getHeaderLine('content-type');
-
+  public static function convertToUtf($html, $contentType = false) {
     if (!empty($contentType)) {
       preg_match("!^.*charset=([A-Za-z0-9-]{4,})$!", $contentType, $contentTypeData);
       $encoding = !empty($contentTypeData[1]) ? strtoupper(trim($contentTypeData[1])) : '';
@@ -37,7 +32,7 @@ class EncodingConverter
 
     $supportedEncodings = self::getSupportedEncodings();
     if (in_array($encoding, $supportedEncodings)) {
-      $html = mb_convert_encoding($html, $convertToEncoding, $encoding);
+      $html = mb_convert_encoding($html, 'UTF-8', $encoding);
     }
 
     return $html;
