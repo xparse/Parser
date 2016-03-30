@@ -30,39 +30,23 @@
           'Текст текст text',
         ],
         [
-          iconv('UTF-8', 'WINDOWS-1251', '
-          <meta http-equiv="Content-Type" content="text/html; charset=test-as225" />
-            <body>Текст текст text</body>
-          '
-          ),
+          iconv('UTF-8', 'WINDOWS-1251', '<meta http-equiv="Content-Type" content="text/html; charset=test-as225" /><body>Текст текст text</body>'),
           '  text',
         ],
         [
-          iconv('UTF-8', 'WINDOWS-1251', '
-              <meta http-equiv="Content-Type" content="text/html; charset=windows-1251" />
-              <body>Текст текст text</body>
-            '),
+          iconv('UTF-8', 'WINDOWS-1251', '<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" /><body>Текст текст text</body>'),
           'Текст текст text',
         ],
         [
-          iconv('UTF-8', 'iso-8859-5', '
-              <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-5" />
-              <body>Текст текст text</body>
-            '),
+          iconv('UTF-8', 'iso-8859-5', '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-5" /><body>Текст текст text</body>'),
           'Текст текст text',
         ],
         [
-          '
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-            <body>Текст текст text</body>
-          ',
+          '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><body>Текст текст text</body>',
           'Текст текст text',
         ],
         [
-          '
-            <meta http-equiv="Content-Type" content="text/html; charset=utf8" />
-            <body>Текст текст text</body>
-          ',
+          '<meta http-equiv="Content-Type" content="text/html; charset=utf8" /><body>Текст текст text</body>',
           'Текст текст text',
         ],
         [
@@ -80,10 +64,7 @@
           'Текст текст text',
         ],
         [
-          '
-            <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-5" />
-            <body>Текст текст text</body>
-          ',
+          '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-5" /><body>Текст текст text</body>',
           'Текст текст text',
           ['content-type' => 'text/html; charset=utf-8'],
         ],
