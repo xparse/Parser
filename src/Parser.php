@@ -9,7 +9,7 @@
   use Psr\Http\Message\ResponseInterface;
   use Xparse\ElementFinder\ElementFinder;
   use Xparse\ElementFinder\Helper;
-  use Xparse\Parser\Helper\LinkConverter;
+  use Xparse\Parser\Helper\ElementFinderFactory;
 
   /**
    *
@@ -187,20 +187,9 @@
 
       }
       $response = $this->client->send($request, $options);
-
-
-      $htmlCode = Helper::safeEncodeStr((string) $response->getBody());
-      $htmlCode = mb_convert_encoding($htmlCode, 'HTML-ENTITIES', "UTF-8");
-
-      //@todo convert encoding
-
-      $page = new ElementFinder((string) $htmlCode);
-
-      if ($this->convertRelativeLinksState) {
-        $url = (!empty($lastRequest)) ? $lastRequest->getUri()->__toString() : $request->getUri()->__toString();
-        LinkConverter::convertUrlsToAbsolute($page, $url);
-      }
-
+      
+      $url = (!empty($lastRequest)) ? $lastRequest->getUri()->__toString() : '';
+      $page = ElementFinderFactory::create($response, $url);
 
       $this->setLastPage($page);
       $this->lastResponse = $response;
