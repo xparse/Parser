@@ -3,9 +3,8 @@
   namespace Xparse\Parser;
 
   use GuzzleHttp\ClientInterface;
-  use GuzzleHttp\Handler\MockHandler;
-  use GuzzleHttp\HandlerStack;
   use GuzzleHttp\Psr7\Request;
+  use GuzzleHttp\TransferStats;
   use Psr\Http\Message\RequestInterface;
   use Psr\Http\Message\ResponseInterface;
   use Xparse\ElementFinder\ElementFinder;
@@ -137,26 +136,20 @@
      * @throws \Exception
      */
     public function send(RequestInterface $request, array $options = []) {
-      /** @var RequestInterface $lastRequest */
-      $lastRequest = null;
 
+      $prevCallback = !empty($options['on_stats']) ? $options['on_stats'] : null;
 
-      /** @var HandlerStack $handler */
-      $stack = $this->client->getConfig('handler');
+      $effectiveUri = null;
+      $options['on_stats'] = function (TransferStats $stats) use (&$effectiveUri, $prevCallback) {
+        $effectiveUri = $stats->getEffectiveUri();
+        if ($prevCallback !== null) {
+          /** @var callable $prevCallback */
+          $prevCallback($stats);
+        }
+      };
 
-      if (!empty($stack) and ($stack instanceof HandlerStack)) {
-        $stack->remove('last_request');
-        $stack->push(\GuzzleHttp\Middleware::mapRequest(function (RequestInterface $request) use (&$lastRequest) {
-          $lastRequest = $request;
-          return $request;
-        }), 'last_request');
-
-      }
       $response = $this->client->send($request, $options);
-
-      $url = (!empty($lastRequest)) ? $lastRequest->getUri()->__toString() : '';
-
-      $page = $this->elementFinderFactory->create($response, $url);
+      $page = $this->elementFinderFactory->create($response, $effectiveUri);
 
       $this->setLastPage($page);
       $this->lastResponse = $response;

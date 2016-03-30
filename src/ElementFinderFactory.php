@@ -17,18 +17,16 @@
   class ElementFinderFactory implements ElementFinderFactoryInterface {
 
     /**
-     * @param Response $response
-     * @param string $affectedUrl
-     * @return ElementFinder
+     * @inheritdoc
      */
-    public function create(Response $response, $affectedUrl = '') {
+    public function create(Response $response, $affectedUrl = null) {
       $html = $response->getBody();
       $html = Helper::safeEncodeStr((string) $html);
       $contentType = $response->getHeaderLine('content-type');
       $html = HtmlEncodingConverter::convertToUtf($html, $contentType);
       $page = new ElementFinder((string) $html);
 
-      if ($affectedUrl) {
+      if ($affectedUrl !== null) {
         LinkConverter::convertUrlsToAbsolute($page, $affectedUrl);
       }
 

@@ -49,16 +49,6 @@
 
 
     /**
-     * @param $url
-     * @return string
-     */
-    protected function getHtmlData($url) {
-      $html = file_get_contents(__DIR__ . '/data' . $url);
-      return $html;
-    }
-
-
-    /**
      * @return Client
      */
     protected function getDemoClient() {
@@ -82,9 +72,7 @@
           ),
         ]
       );
-
-      $client = new Client(['handler' => $mock]);
-      return $client;
+      return new Client(['handler' => $mock]);
     }
 
 
@@ -96,7 +84,7 @@
     }
 
 
-    public function __testConvertElementFinderUrls() {
+    public function testConvertElementFinderUrls() {
       $parser = new \Xparse\Parser\Parser($this->getDemoClient());
       $url = 'http://test.com/url/';
       $page = $parser->get($url);

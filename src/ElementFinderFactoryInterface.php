@@ -12,9 +12,9 @@
 
     /**
      * @param Response $response
-     * @param string $affectedUrl
+     * @param string|null $affectedUrl
      * @return ElementFinder
      */
-    public function create(Response $response, $affectedUrl = '');
+    public function create(Response $response, $affectedUrl = null);
 
   }
