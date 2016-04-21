@@ -4,7 +4,7 @@
 
   use GuzzleHttp\Psr7\Response;
   use Xparse\ElementFinder\ElementFinder;
-  use Xparse\ElementFinder\Helper;
+  use Xparse\ElementFinder\Helper\StringHelper;
   use Xparse\Parser\Helper\HtmlEncodingConverter;
   use Xparse\Parser\Helper\LinkConverter;
 
@@ -21,7 +21,7 @@
      */
     public function create(Response $response, $affectedUrl = null) {
       $html = $response->getBody();
-      $html = Helper::safeEncodeStr((string) $html);
+      $html = StringHelper::safeEncodeStr((string) $html);
       $contentType = $response->getHeaderLine('content-type');
       $html = HtmlEncodingConverter::convertToUtf($html, $contentType);
       $page = new ElementFinder((string) $html);
