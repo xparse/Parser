@@ -2,7 +2,7 @@
 
   namespace Xparse\Parser;
 
-  use GuzzleHttp\Psr7\Response;
+  use Psr\Http\Message\ResponseInterface;
   use Xparse\ElementFinder\ElementFinder;
   use Xparse\ElementFinder\Helper\StringHelper;
   use Xparse\Parser\Helper\HtmlEncodingConverter;
@@ -19,7 +19,7 @@
     /**
      * @inheritdoc
      */
-    public function create(Response $response, $affectedUrl = null) {
+    public function create(ResponseInterface $response, $affectedUrl = null) {
       $html = $response->getBody();
       $html = StringHelper::safeEncodeStr((string) $html);
       $contentType = $response->getHeaderLine('content-type');

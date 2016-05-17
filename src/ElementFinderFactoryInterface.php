@@ -2,7 +2,7 @@
 
   namespace Xparse\Parser;
 
-  use GuzzleHttp\Psr7\Response;
+  use Psr\Http\Message\ResponseInterface;
   use Xparse\ElementFinder\ElementFinder;
 
   /**
@@ -11,10 +11,10 @@
   interface ElementFinderFactoryInterface {
 
     /**
-     * @param Response $response
+     * @param ResponseInterface $response
      * @param string|null $affectedUrl
      * @return ElementFinder
      */
-    public function create(Response $response, $affectedUrl = null);
+    public function create(ResponseInterface $response, $affectedUrl = null);
 
   }
