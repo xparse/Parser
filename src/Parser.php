@@ -62,26 +62,26 @@
 
     /**
      * @param string $url
-     * @return \Xparse\ElementFinder\ElementFinder
-     * @throws \InvalidArgumentException
+     * @param array $options
+     * @return ElementFinder
      */
-    public function get($url) {
+    public function get($url, array $options = []) {
       if (empty($url) or !is_string($url)) {
         throw new \InvalidArgumentException('Url must be not empty and string.');
       }
 
       $request = new \GuzzleHttp\Psr7\Request('GET', $url);
-      return $this->send($request);
+      return $this->send($request, $options);
     }
 
 
     /**
      * @param string $url
      * @param array $data
-     * @return \Xparse\ElementFinder\ElementFinder
-     * @throws \InvalidArgumentException
+     * @param array $options
+     * @return ElementFinder
      */
-    public function post($url, $data) {
+    public function post($url, $data, array $options = []) {
 
       if (empty($url) or !is_string($url)) {
         throw new \InvalidArgumentException('Url must be not empty and string.');
@@ -91,7 +91,7 @@
         'body' => $data,
       ]);
 
-      return $this->send($request);
+      return $this->send($request, $options);
     }
 
 
