@@ -2,19 +2,22 @@
 
   namespace Xparse\Parser;
 
+  use GuzzleHttp\Client;
   use GuzzleHttp\ClientInterface;
   use GuzzleHttp\Psr7\Request;
+  use GuzzleHttp\RequestOptions;
   use GuzzleHttp\TransferStats;
   use Psr\Http\Message\RequestInterface;
   use Psr\Http\Message\ResponseInterface;
   use Xparse\ElementFinder\ElementFinder;
   use Xparse\ElementFinder\Helper;
+  use Xparse\ParserInterface\ParserInterface;
 
   /**
    *
    * @package Xparse\Parser
    */
-  class Parser implements \Xparse\ParserInterface\ParserInterface {
+  class Parser implements ParserInterface {
 
     /**
      *
@@ -28,7 +31,7 @@
     protected $client = null;
 
     /**
-     * @var ElementFinderFactory
+     * @var ElementFinderFactoryInterface
      */
     protected $elementFinderFactory = null;
 
@@ -43,18 +46,18 @@
      * @param ElementFinderFactoryInterface|null $elementFinderFactory
      */
     public function __construct(ClientInterface $client = null, ElementFinderFactoryInterface $elementFinderFactory = null) {
-      if (empty($client)) {
-        $client = new \GuzzleHttp\Client([
-          \GuzzleHttp\RequestOptions::ALLOW_REDIRECTS => true,
+      if ($client === null) {
+        $client = new Client([
+          RequestOptions::ALLOW_REDIRECTS => true,
         ]);
 
       }
 
       if ($elementFinderFactory === null) {
-        $this->elementFinderFactory = new ElementFinderFactory();
-      } else {
-        $this->elementFinderFactory = $elementFinderFactory;
+        $elementFinderFactory = new ElementFinderFactory();
       }
+
+      $this->elementFinderFactory = $elementFinderFactory;
 
       $this->client = $client;
     }
@@ -64,13 +67,15 @@
      * @param string $url
      * @param array $options
      * @return ElementFinder
+     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     public function get($url, array $options = []) {
       if (empty($url) or !is_string($url)) {
         throw new \InvalidArgumentException('Url must be not empty and string.');
       }
 
-      $request = new \GuzzleHttp\Psr7\Request('GET', $url);
+      $request = new Request('GET', $url);
       return $this->send($request, $options);
     }
 
@@ -80,6 +85,8 @@
      * @param array $data
      * @param array $options
      * @return ElementFinder
+     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     public function post($url, $data, array $options = []) {
 

@@ -18,6 +18,7 @@
 
     /**
      * @inheritdoc
+     * @throws \InvalidArgumentException
      */
     public function create(ResponseInterface $response, $affectedUrl = null) {
       $html = $response->getBody();
