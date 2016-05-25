@@ -15,6 +15,7 @@
      * @return array
      */
     public function getConvertRelativeUrlToAbsolute() {
+      /** @noinspection HtmlUnknownTarget */
       return [
         [
           'html' => '<a href="/tt">a</a>',
@@ -101,8 +102,8 @@
 
       LinkConverter::convertUrlsToAbsolute($page, $url);
 
-      $body = $page->html('//body')->getFirst();
-      $this->assertEquals($expect, $body);
+      $body = $page->content('//body')->getFirst();
+      static::assertEquals($expect, $body);
     }
 
   }

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bc77894f07a1587efc811848d0638f42",
-    "content-hash": "d665fbf65c7e7d34b31baaafca069578",
+    "hash": "09f3a8f9ed7ad925739141f9d74d4c8a",
+    "content-hash": "d707226506b7770cd1e7dd5b81a29dab",
     "packages": [
         {
             "name": "fiv/collection",
@@ -116,16 +116,16 @@
         },
         {
             "name": "guzzlehttp/promises",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/promises.git",
-                "reference": "bb9024c526b22f3fe6ae55a561fd70653d470aa8"
+                "reference": "c10d860e2a9595f8883527fa0021c7da9e65f579"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/promises/zipball/bb9024c526b22f3fe6ae55a561fd70653d470aa8",
-                "reference": "bb9024c526b22f3fe6ae55a561fd70653d470aa8",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/c10d860e2a9595f8883527fa0021c7da9e65f579",
+                "reference": "c10d860e2a9595f8883527fa0021c7da9e65f579",
                 "shasum": ""
             },
             "require": {
@@ -163,7 +163,7 @@
             "keywords": [
                 "promise"
             ],
-            "time": "2016-03-08 01:15:46"
+            "time": "2016-05-18 16:56:05"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -274,21 +274,21 @@
         },
         {
             "name": "xparse/element-finder",
-            "version": "0.0.4",
+            "version": "0.1.0-alpha.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/xparse/ElementFinder.git",
-                "reference": "ff6f50c7ce93acc7e4e03dfbf237f078d03c149d"
+                "reference": "68f6db06d6b1bfd7ba14bb8ce542fcff081db541"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/xparse/ElementFinder/zipball/ff6f50c7ce93acc7e4e03dfbf237f078d03c149d",
-                "reference": "ff6f50c7ce93acc7e4e03dfbf237f078d03c149d",
+                "url": "https://api.github.com/repos/xparse/ElementFinder/zipball/68f6db06d6b1bfd7ba14bb8ce542fcff081db541",
+                "reference": "68f6db06d6b1bfd7ba14bb8ce542fcff081db541",
                 "shasum": ""
             },
             "require": {
                 "fiv/collection": "0.0.1.*",
-                "php": ">=5.5.0",
+                "php": ">=5.6",
                 "xparse/expression-translator": "0.0.3"
             },
             "require-dev": {
@@ -318,7 +318,7 @@
                 "dom",
                 "parser"
             ],
-            "time": "2016-01-21 14:29:46"
+            "time": "2016-05-25 08:40:11"
         },
         {
             "name": "xparse/expression-translator",
@@ -1361,7 +1361,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "xparse/element-finder": 15
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

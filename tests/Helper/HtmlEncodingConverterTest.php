@@ -81,9 +81,9 @@
       $contentType = $response->getHeaderLine('content-type');
       $html = HtmlEncodingConverter::convertToUtf($html, $contentType);
       $page = new ElementFinder((string) $html);
-      $pageBodyText = $page->html('//body')->getFirst();
-      $this->assertInstanceOf(ElementFinder::class, $page);
-      $this->assertEquals($bodyText, $pageBodyText);
+      $pageBodyText = $page->content('//body')->getFirst();
+      self::assertInstanceOf(ElementFinder::class, $page);
+      self::assertEquals($bodyText, $pageBodyText);
     }
 
   }

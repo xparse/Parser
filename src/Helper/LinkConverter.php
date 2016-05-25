@@ -20,8 +20,8 @@
 
       $affected = new Uri($affectedUrl);
 
-      $srcElements = $page->elements('//*[@src] | //*[@href] | //form[@action]');
-      $baseUrl = $page->attribute('//base/@href')->getFirst();
+      $srcElements = $page->element('//*[@src] | //*[@href] | //form[@action]');
+      $baseUrl = $page->value('//base/@href')->getFirst();
 
       foreach ($srcElements as $element) {
         $attributeName = 'href';

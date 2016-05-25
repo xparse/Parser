@@ -16,7 +16,7 @@
     public function testInit() {
 
       $parser = new \Xparse\Parser\Parser();
-      $this->assertEquals(get_class(new Client()), get_class($parser->getClient()));
+      self::assertEquals(get_class(new Client()), get_class($parser->getClient()));
     }
 
 
@@ -25,12 +25,12 @@
       $client = $this->getDemoClient();
       $parser = new \Xparse\Parser\Parser($client);
 
-      $this->assertEquals($client, $parser->getClient());
+      self::assertEquals($client, $parser->getClient());
 
       $page = $parser->get('http://test.com');
 
-      $this->assertInstanceOf(get_class(new \Xparse\ElementFinder\ElementFinder("<html><a>1</a></html>")), $page);
-      $this->assertEquals($page, $parser->getLastPage());
+      self::assertInstanceOf(get_class(new \Xparse\ElementFinder\ElementFinder("<html><a>1</a></html>")), $page);
+      self::assertEquals($page, $parser->getLastPage());
     }
 
 
@@ -39,12 +39,12 @@
       $client = $this->getDemoClient();
       $parser = new \Xparse\Parser\Parser($client);
 
-      $this->assertEquals($client, $parser->getClient());
+      self::assertEquals($client, $parser->getClient());
 
       $page = $parser->post('http://test.com/info', ['data' => '123']);
 
-      $this->assertInstanceOf(get_class(new \Xparse\ElementFinder\ElementFinder("<html></html>")), $page);
-      $this->assertEquals($page, $parser->getLastPage());
+      self::assertInstanceOf(get_class(new \Xparse\ElementFinder\ElementFinder("<html></html>")), $page);
+      self::assertEquals($page, $parser->getLastPage());
     }
 
 
@@ -52,6 +52,7 @@
      * @return Client
      */
     protected function getDemoClient() {
+      /** @noinspection HtmlUnknownTarget */
       $mock = new MockHandler(
         [
           new Response(
@@ -80,7 +81,7 @@
       $parser = new \Xparse\Parser\Parser($this->getDemoClient());
       $url = 'http://test.com/url/';
       $parser->get($url);
-      $this->assertEquals('OK', $parser->getLastResponse()->getReasonPhrase());
+      self::assertEquals('OK', $parser->getLastResponse()->getReasonPhrase());
     }
 
 
@@ -88,9 +89,9 @@
       $parser = new \Xparse\Parser\Parser($this->getDemoClient());
       $url = 'http://test.com/url/';
       $page = $parser->get($url);
-      $this->assertInstanceOf(ElementFinder::class, $page);
-      $firstUrl = $page->attribute('//a/@href')->getFirst();
-      $this->assertEquals($url . 'index.html', $firstUrl);
+      self::assertInstanceOf(ElementFinder::class, $page);
+      $firstUrl = $page->value('//a/@href')->getFirst();
+      self::assertEquals($url . 'index.html', $firstUrl);
     }
 
 
