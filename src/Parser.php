@@ -40,9 +40,9 @@
 
     /**
      * @param ClientInterface|null $client
-     * @param ElementFinderFactory|null $elementFinderFactory
+     * @param ElementFinderFactoryInterface|null $elementFinderFactory
      */
-    public function __construct(ClientInterface $client = null, ElementFinderFactory $elementFinderFactory = null) {
+    public function __construct(ClientInterface $client = null, ElementFinderFactoryInterface $elementFinderFactory = null) {
       if (empty($client)) {
         $client = new \GuzzleHttp\Client([
           \GuzzleHttp\RequestOptions::ALLOW_REDIRECTS => true,
