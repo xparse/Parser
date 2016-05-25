@@ -21,7 +21,7 @@ $ composer require xparse/parser
 
 ``` php
   $parser = new \Xparse\Parser\Parser();
-  $title = $parser->get('http://funivan.com')->html('//*[@class="entry-title"]/a');
+  $title = $parser->get('http://funivan.com')->content('//*[@class="entry-title"]/a');
   print_r($title);
   
 ```
