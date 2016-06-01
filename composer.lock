@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "09f3a8f9ed7ad925739141f9d74d4c8a",
-    "content-hash": "d707226506b7770cd1e7dd5b81a29dab",
+    "hash": "40668c129aca92fadc171327d585f1e8",
+    "content-hash": "ad2a3115262db52af613cfd63b1044ac",
     "packages": [
         {
             "name": "fiv/collection",
@@ -1360,10 +1360,8 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": {
-        "xparse/element-finder": 15
-    },
+    "minimum-stability": "alpha",
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
