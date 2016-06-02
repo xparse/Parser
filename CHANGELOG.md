@@ -1,5 +1,9 @@
 #Changelog
 All Notable changes to `Parser` will be documented in this file
+## Unreleased - 0.1.0-alpha.3
+
+### Added
+- #21 Enable `cookies` by default
 
 ## 0.1.0-alpha.2 [2016-05-25]
 
