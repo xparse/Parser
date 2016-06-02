@@ -6,6 +6,9 @@ All Notable changes to `Parser` will be documented in this file
 - #21 Enable `cookies` by default
 - #20 Retrieve element finder factory from parser. Use `Parser::getElementFinderFactory`
 
+### Fixed
+- #19 Second parameter of the post method is `body`. Expect `string`, `resource` or `Psr\Http\Message\StreamInterface`
+
 ## 0.1.0-alpha.2 [2016-05-25]
 
 ### Added

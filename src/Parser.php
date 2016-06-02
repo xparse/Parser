@@ -82,21 +82,19 @@
 
     /**
      * @param string $url
-     * @param array $data
+     * @param string|resource|\Psr\Http\Message\StreamInterface $body Message body.
      * @param array $options
      * @return ElementFinder
      * @throws \Exception
      * @throws \InvalidArgumentException
      */
-    public function post($url, $data, array $options = []) {
+    public function post($url, $body = null, array $options = []) {
 
       if (empty($url) or !is_string($url)) {
         throw new \InvalidArgumentException('Url must be not empty and string.');
       }
 
-      $request = new Request('POST', $url, [
-        'body' => $data,
-      ]);
+      $request = new Request('POST', $url, [], $body);
 
       return $this->send($request, $options);
     }

@@ -43,7 +43,7 @@
 
       self::assertEquals($client, $parser->getClient());
 
-      $page = $parser->post('http://test.com/info', ['data' => '123']);
+      $page = $parser->post('http://test.com/info', '123');
 
       self::assertInstanceOf(get_class(new \Xparse\ElementFinder\ElementFinder("<html></html>")), $page);
       self::assertEquals($page, $parser->getLastPage());
@@ -116,6 +116,7 @@
      */
     public function testGetInvalidUrl() {
       $parser = new Parser($this->getDemoClient());
+      static::assertNotEmpty($parser);
       $parser->get(null);
     }
 
@@ -125,6 +126,7 @@
      */
     public function testPostWithInvalidParams() {
       $parser = new Parser($this->getDemoClient());
+      static::assertNotEmpty($parser);
       $parser->post(new \stdClass(), null);
     }
 
