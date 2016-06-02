@@ -3,9 +3,11 @@
   namespace Test\Xparse\Parser;
 
   use GuzzleHttp\Client;
+  use GuzzleHttp\Cookie\CookieJarInterface;
   use GuzzleHttp\Handler\MockHandler;
   use GuzzleHttp\Psr7\Response;
   use Xparse\ElementFinder\ElementFinder;
+  use Xparse\Parser\Parser;
 
   /**
    *
@@ -15,7 +17,7 @@
 
     public function testInit() {
 
-      $parser = new \Xparse\Parser\Parser();
+      $parser = new Parser();
       self::assertEquals(get_class(new Client()), get_class($parser->getClient()));
     }
 
@@ -23,7 +25,7 @@
     public function testGet() {
 
       $client = $this->getDemoClient();
-      $parser = new \Xparse\Parser\Parser($client);
+      $parser = new Parser($client);
 
       self::assertEquals($client, $parser->getClient());
 
@@ -37,7 +39,7 @@
     public function testPost() {
 
       $client = $this->getDemoClient();
-      $parser = new \Xparse\Parser\Parser($client);
+      $parser = new Parser($client);
 
       self::assertEquals($client, $parser->getClient());
 
@@ -78,7 +80,7 @@
 
 
     public function testGetResponseReasonPhrase() {
-      $parser = new \Xparse\Parser\Parser($this->getDemoClient());
+      $parser = new Parser($this->getDemoClient());
       $url = 'http://test.com/url/';
       $parser->get($url);
       self::assertEquals('OK', $parser->getLastResponse()->getReasonPhrase());
@@ -86,7 +88,7 @@
 
 
     public function testConvertElementFinderUrls() {
-      $parser = new \Xparse\Parser\Parser($this->getDemoClient());
+      $parser = new Parser($this->getDemoClient());
       $url = 'http://test.com/url/';
       $page = $parser->get($url);
       self::assertInstanceOf(ElementFinder::class, $page);
@@ -95,11 +97,19 @@
     }
 
 
+    public function testDefaultClientConfiguration() {
+      $parser = new Parser();
+      $option = $parser->getClient()->getConfig('cookies');
+      self::assertInstanceOf(CookieJarInterface::class, $option);
+
+    }
+
+
     /**
      * @expectedException \InvalidArgumentException
      */
     public function testGetInvalidUrl() {
-      $parser = new \Xparse\Parser\Parser($this->getDemoClient());
+      $parser = new Parser($this->getDemoClient());
       $parser->get(null);
     }
 
@@ -108,7 +118,7 @@
      * @expectedException \InvalidArgumentException
      */
     public function testPostWithInvalidParams() {
-      $parser = new \Xparse\Parser\Parser($this->getDemoClient());
+      $parser = new Parser($this->getDemoClient());
       $parser->post(new \stdClass(), null);
     }
 

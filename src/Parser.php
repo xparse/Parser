@@ -49,8 +49,8 @@
       if ($client === null) {
         $client = new Client([
           RequestOptions::ALLOW_REDIRECTS => true,
+          RequestOptions::COOKIES => new \GuzzleHttp\Cookie\CookieJar(),
         ]);
-
       }
 
       if ($elementFinderFactory === null) {
