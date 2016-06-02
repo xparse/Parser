@@ -49,14 +49,17 @@
         return self::$supportedEncodings;
       }
 
+      $hasAliasesFunction = function_exists('mb_encoding_aliases');
       self::$supportedEncodings = [];
       foreach (mb_list_encodings() as $encoding) {
-        if ($encoding == 'UTF-8' or $encoding == 'UTF8') {
+        if ($encoding === 'UTF-8' or $encoding === 'UTF8') {
           continue;
         }
 
         self::$supportedEncodings[] = $encoding;
-        self::$supportedEncodings = array_merge(self::$supportedEncodings, mb_encoding_aliases($encoding));
+        if ($hasAliasesFunction) {
+          self::$supportedEncodings = array_merge(self::$supportedEncodings, mb_encoding_aliases($encoding));
+        }
       }
 
       return self::$supportedEncodings;
