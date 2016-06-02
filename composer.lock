@@ -274,16 +274,16 @@
         },
         {
             "name": "xparse/element-finder",
-            "version": "0.1.0-alpha.2",
+            "version": "0.1.0-alpha.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/xparse/ElementFinder.git",
-                "reference": "68f6db06d6b1bfd7ba14bb8ce542fcff081db541"
+                "reference": "ff9b4f5fff12821f181f38f850ced946476709c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/xparse/ElementFinder/zipball/68f6db06d6b1bfd7ba14bb8ce542fcff081db541",
-                "reference": "68f6db06d6b1bfd7ba14bb8ce542fcff081db541",
+                "url": "https://api.github.com/repos/xparse/ElementFinder/zipball/ff9b4f5fff12821f181f38f850ced946476709c6",
+                "reference": "ff9b4f5fff12821f181f38f850ced946476709c6",
                 "shasum": ""
             },
             "require": {
@@ -318,7 +318,7 @@
                 "dom",
                 "parser"
             ],
-            "time": "2016-05-25 08:40:11"
+            "time": "2016-06-02 07:25:59"
         },
         {
             "name": "xparse/expression-translator",
