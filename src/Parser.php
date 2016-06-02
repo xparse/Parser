@@ -163,4 +163,12 @@
       return $page;
     }
 
+
+    /**
+     * @return ElementFinderFactoryInterface
+     */
+    public function getElementFinderFactory() {
+      return $this->elementFinderFactory;
+    }
+
   }

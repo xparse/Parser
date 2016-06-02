@@ -4,6 +4,7 @@ All Notable changes to `Parser` will be documented in this file
 
 ### Added
 - #21 Enable `cookies` by default
+- #20 Retrieve element finder factory from parser. Use `Parser::getElementFinderFactory`
 
 ## 0.1.0-alpha.2 [2016-05-25]
 

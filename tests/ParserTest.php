@@ -105,6 +105,12 @@
     }
 
 
+    public function testRetrieveElementFinderFactory() {
+      $parser = new Parser();
+      static::assertNotNull($parser->getElementFinderFactory());
+    }
+
+
     /**
      * @expectedException \InvalidArgumentException
      */
