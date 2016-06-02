@@ -22,19 +22,24 @@
      * @return string
      */
     public static function convertToUtf($html, $contentType = false) {
+      $encoding = null;
       if (!empty($contentType)) {
         preg_match("!^.*charset=([A-Za-z0-9-]{4,})$!", $contentType, $contentTypeData);
-        $encoding = !empty($contentTypeData[1]) ? strtoupper(trim($contentTypeData[1])) : '';
+        $encoding = !empty($contentTypeData[1]) ? trim($contentTypeData[1]) : null;
       }
 
-      if (empty($encoding)) {
+      if ($encoding === null) {
         preg_match("!.*<meta.*charset=[\"']?[ \t]*([A-Za-z0-9-]{4,})[ \t]*[\"']!mi", $html, $metaContentType);
-        $encoding = !empty($metaContentType[1]) ? strtoupper(trim($metaContentType[1])) : '';
+        $encoding = !empty($metaContentType[1]) ? trim($metaContentType[1]) : null;
       }
 
-      $supportedEncodings = self::getSupportedEncodings();
-      if (in_array($encoding, $supportedEncodings)) {
-        $html = mb_convert_encoding($html, 'UTF-8', $encoding);
+      if ($encoding === null) {
+        return $html;
+      }
+
+      $encoding = strtolower($encoding);
+      if (in_array($encoding, self::getSupportedEncodings())) {
+        $html = mb_convert_encoding($html, 'utf-8', $encoding);
       }
 
       return $html;
@@ -52,13 +57,17 @@
       $hasAliasesFunction = function_exists('mb_encoding_aliases');
       self::$supportedEncodings = [];
       foreach (mb_list_encodings() as $encoding) {
-        if ($encoding === 'UTF-8' or $encoding === 'UTF8') {
+        $encoding = strtolower($encoding);
+        if ($encoding === 'utf-8' or $encoding === 'utf8') {
           continue;
         }
 
         self::$supportedEncodings[] = $encoding;
         if ($hasAliasesFunction) {
-          self::$supportedEncodings = array_merge(self::$supportedEncodings, mb_encoding_aliases($encoding));
+          foreach (mb_encoding_aliases($encoding) as $encodingAlias) {
+            $encodingAlias = strtolower($encodingAlias);
+            self::$supportedEncodings[] = $encodingAlias;
+          }
         }
       }
 
