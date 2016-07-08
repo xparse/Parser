@@ -154,9 +154,9 @@
 
       $response = $this->client->send($request, $options);
 
-      $guzzleEffectiveUrl = $response->getHeader('X-GUZZLE-EFFECTIVE-URL');
-      if (!empty($guzzleEffectiveUrl[0])) {
-        $effectiveUri = $guzzleEffectiveUrl[0];
+      $guzzleEffectiveUrl = $response->getHeaderLine('X-GUZZLE-EFFECTIVE-URL');
+      if (!empty($guzzleEffectiveUrl)) {
+        $effectiveUri = $guzzleEffectiveUrl;
       }
 
       $page = $this->elementFinderFactory->create($response, $effectiveUri);
