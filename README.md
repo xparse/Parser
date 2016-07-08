@@ -23,7 +23,30 @@ $ composer require xparse/parser
   $parser = new \Xparse\Parser\Parser();
   $title = $parser->get('http://funivan.com')->content('//*[@class="entry-title"]/a');
   print_r($title);
-  
+```
+## Using with CacheMiddleware
+When using Guzzle Middleware (e.g. CacheMiddleware) information about last session is absent. So the effective url is empty.
+
+How do we get it? We can pass effective url to response `X-GUZZLE-EFFECTIVE-URL` header.
+ 
+Here is an example of `__invoke()` method in your custom Middleware
+
+``` php
+  public function __invoke(callable $handler) : \Closure {
+    return function (RequestInterface $request, array $options) use ($handler) {
+
+      # some code
+
+      return $handler($request, $options)->then(function (ResponseInterface $response) use ($request) {
+
+        $response = $response->withHeader('X-GUZZLE-EFFECTIVE-URL', $request->getUri());
+        
+        # some code
+
+        return $response;
+      });
+    };
+  }
 ```
 
 ## Testing
