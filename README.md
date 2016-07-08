@@ -23,7 +23,28 @@ $ composer require xparse/parser
   $parser = new \Xparse\Parser\Parser();
   $title = $parser->get('http://funivan.com')->content('//*[@class="entry-title"]/a');
   print_r($title);
-  
+```
+## Using with custom Middleware
+If you are using custom Guzzle Middleware and it doesn't send real requests, in order to get last effective url you need to set it to response `X-GUZZLE-EFFECTIVE-URL` header manually.
+ 
+Here is an example of `__invoke()` method in your custom Middleware
+
+``` php
+  public function __invoke(callable $handler) : \Closure {
+    return function (RequestInterface $request, array $options) use ($handler) {
+
+      # some code
+
+      return $handler($request, $options)->then(function (ResponseInterface $response) use ($request) {
+
+        $response = $response->withHeader('X-GUZZLE-EFFECTIVE-URL', $request->getUri());
+        
+        # some code
+
+        return $response;
+      });
+    };
+  }
 ```
 
 ## Testing

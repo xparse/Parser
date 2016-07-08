@@ -1,5 +1,10 @@
 #Changelog
 All Notable changes to `Parser` will be documented in this file
+## [Unreleased]
+
+### Added
+- #22 Use response `X-GUZZLE-EFFECTIVE-URL` header to retrieve last url.    
+
 ## 0.1.0-alpha.3 [2016-06-02]
 
 ### Added

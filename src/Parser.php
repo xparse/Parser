@@ -10,7 +10,6 @@
   use Psr\Http\Message\RequestInterface;
   use Psr\Http\Message\ResponseInterface;
   use Xparse\ElementFinder\ElementFinder;
-  use Xparse\ElementFinder\Helper;
   use Xparse\ParserInterface\ParserInterface;
 
   /**
@@ -154,6 +153,12 @@
       };
 
       $response = $this->client->send($request, $options);
+
+      $guzzleEffectiveUrl = $response->getHeaderLine('X-GUZZLE-EFFECTIVE-URL');
+      if (!empty($guzzleEffectiveUrl)) {
+        $effectiveUri = $guzzleEffectiveUrl;
+      }
+
       $page = $this->elementFinderFactory->create($response, $effectiveUri);
 
       $this->setLastPage($page);
