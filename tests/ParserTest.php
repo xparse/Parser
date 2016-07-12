@@ -59,19 +59,18 @@
         [
           new Response(
             200,
-            ['X-GUZZLE-EFFECTIVE-URL' => 'http://test.com/url/'],
+            [],
             '<!DOCTYPE html>
-<html>
-  <head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-  </head>
-  <body>
-    <a href="index.html">link</a>
-    <div>Text text; Текст кирилица</div>
-  </body>
-</html>
-'
+              <html>
+                <head lang="en">
+                  <meta charset="UTF-8">
+                  <title></title>
+                </head>
+                <body>
+                  <a href="index.html">link</a>
+                  <div>Text text; Текст кирилица</div>
+                </body>
+              </html>'
           ),
         ]
       );
@@ -88,10 +87,28 @@
 
 
     public function testGetEffectiveUrlFromHeaders() {
-      $parser = new Parser($this->getDemoClient());
-      $url = 'http://test.com/some-url/';
+      $mock = new MockHandler(
+        [
+          new Response(
+            200,
+            ['X-GUZZLE-EFFECTIVE-URL' => 'http://test.com/effective-url/'],
+            '<!DOCTYPE html>
+              <html>
+                <head lang="en">
+                  <meta charset="UTF-8">
+                </head>
+                <body></body>
+              </html>
+            '
+          ),
+        ]
+      );
+      $parser = new Parser(new Client(['handler' => $mock]));
+      $url = 'http://test.com/url/';
       $parser->get($url);
-      self::assertEquals('http://test.com/url/', $parser->getLastResponse()->getHeaderLine('X-GUZZLE-EFFECTIVE-URL'));
+      $effectiveUrl = $parser->getLastResponse()->getHeaderLine('X-GUZZLE-EFFECTIVE-URL');
+      self::assertNotEquals($url, $effectiveUrl);
+      self::assertEquals('http://test.com/effective-url/', $effectiveUrl);
     }
 
 
