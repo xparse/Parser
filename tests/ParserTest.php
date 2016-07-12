@@ -31,7 +31,7 @@
 
       $page = $parser->get('http://test.com');
 
-      self::assertInstanceOf(get_class(new \Xparse\ElementFinder\ElementFinder("<html><a>1</a></html>")), $page);
+      self::assertInstanceOf(get_class(new \Xparse\ElementFinder\ElementFinder('<html><a>1</a></html>')), $page);
       self::assertEquals($page, $parser->getLastPage());
     }
 
@@ -45,7 +45,7 @@
 
       $page = $parser->post('http://test.com/info', '123');
 
-      self::assertInstanceOf(get_class(new \Xparse\ElementFinder\ElementFinder("<html></html>")), $page);
+      self::assertInstanceOf(get_class(new \Xparse\ElementFinder\ElementFinder('<html></html>')), $page);
       self::assertEquals($page, $parser->getLastPage());
     }
 
@@ -61,17 +61,16 @@
             200,
             [],
             '<!DOCTYPE html>
-<html>
-  <head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-  </head>
-  <body>
-    <a href="index.html">link</a>
-    <div>Text text; Текст кирилица</div>
-  </body>
-</html>
-'
+              <html>
+                <head lang="en">
+                  <meta charset="UTF-8">
+                  <title></title>
+                </head>
+                <body>
+                  <a href="index.html">link</a>
+                  <div>Text text; Текст кирилица</div>
+                </body>
+              </html>'
           ),
         ]
       );
@@ -84,6 +83,32 @@
       $url = 'http://test.com/url/';
       $parser->get($url);
       self::assertEquals('OK', $parser->getLastResponse()->getReasonPhrase());
+    }
+
+
+    public function testGetEffectiveUrlFromHeaders() {
+      $mock = new MockHandler(
+        [
+          new Response(
+            200,
+            ['X-GUZZLE-EFFECTIVE-URL' => 'http://test.com/effective-url/'],
+            '<!DOCTYPE html>
+              <html>
+                <head lang="en">
+                  <meta charset="UTF-8">
+                </head>
+                <body></body>
+              </html>
+            '
+          ),
+        ]
+      );
+      $parser = new Parser(new Client(['handler' => $mock]));
+      $url = 'http://test.com/url/';
+      $parser->get($url);
+      $effectiveUrl = $parser->getLastResponse()->getHeaderLine('X-GUZZLE-EFFECTIVE-URL');
+      self::assertNotEquals($url, $effectiveUrl);
+      self::assertEquals('http://test.com/effective-url/', $effectiveUrl);
     }
 
 
