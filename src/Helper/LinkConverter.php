@@ -16,7 +16,7 @@
     /**
      * @inheritdoc
      */
-    public function relativeToAbsolute(ElementFinder $finder, string $affectedUrl = '') : void {
+    public function relativeToAbsolute(ElementFinder $finder, string $affectedUrl = '') {
 
       $affected = new Uri($affectedUrl);
 

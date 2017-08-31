@@ -17,6 +17,6 @@
      * @param ElementFinder $finder
      * @param string $affectedUrl
      */
-    public function relativeToAbsolute(ElementFinder $finder, string $affectedUrl = '') : void;
+    public function relativeToAbsolute(ElementFinder $finder, string $affectedUrl = '');
 
   }
