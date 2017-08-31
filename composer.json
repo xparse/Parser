@@ -17,9 +17,8 @@
   ],
   "require": {
     "php": "^7.0",
-    "guzzlehttp/guzzle": "6.1.*",
-    "xparse/element-finder": "0.1.*",
-    "xparse/parser-interface": "0.0.3"
+    "guzzlehttp/guzzle": "^6.3",
+    "xparse/element-finder": "^0.1.0@alpha"
   },
   "minimum-stability": "alpha",
   "require-dev": {
