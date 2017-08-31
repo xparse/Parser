@@ -17,9 +17,9 @@
   ],
   "require": {
     "php": "^7.0",
-    "xparse/parser-interface": "0.0.3",
+    "guzzlehttp/guzzle": "6.1.*",
     "xparse/element-finder": "0.1.*",
-    "guzzlehttp/guzzle": "6.1.*"
+    "xparse/parser-interface": "0.0.3"
   },
   "minimum-stability": "alpha",
   "require-dev": {
@@ -34,5 +34,12 @@
     "psr-4": {
       "Test\\Xparse\\Parser\\": "tests"
     }
+  },
+  "config": {
+    "platform": {
+      "php": "7.0.0"
+    },
+    "optimize-autoloader": true,
+    "sort-packages": true
   }
 }
