@@ -116,7 +116,7 @@
     /**
      * @return null|ResponseInterface
      */
-    public function getLastResponse() :? ResponseInterface {
+    public function getLastResponse() {
       return $this->lastResponse;
     }
 
