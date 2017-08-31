@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d06361806f81e924e206aac1b295fe11",
+    "content-hash": "5487c857cb27964830407367919f14e7",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -1820,44 +1820,6 @@
                 "validate"
             ],
             "time": "2016-11-23T20:04:58+00:00"
-        },
-        {
-            "name": "xparse/parser-interface",
-            "version": "0.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/xparse/ParserInterface.git",
-                "reference": "6582a7afeeaefdbf622c8064622a70273a0fd2c0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/xparse/ParserInterface/zipball/6582a7afeeaefdbf622c8064622a70273a0fd2c0",
-                "reference": "6582a7afeeaefdbf622c8064622a70273a0fd2c0",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Xparse\\ParserInterface\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ivan Scherbak",
-                    "email": "dev@funivan.com",
-                    "homepage": "http://funivan.com/",
-                    "role": "Developer"
-                }
-            ],
-            "homepage": "https://github.com/xparse/ParserInterface",
-            "time": "2015-07-09T10:43:29+00:00"
         }
     ],
     "aliases": [],
