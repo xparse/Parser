@@ -1,20 +1,20 @@
 <?php
 
+  declare(strict_types=1);
+
   namespace Test\Xparse\Parser;
 
   use GuzzleHttp\Psr7\Response;
+  use PHPUnit\Framework\TestCase;
   use Xparse\ElementFinder\ElementFinder;
   use Xparse\Parser\ElementFinderFactory;
 
-  /**
-   *
-   */
-  class ElementFinderFactoryTest extends \PHPUnit_Framework_TestCase {
+  class ElementFinderFactoryTest extends TestCase {
 
     /**
      * @return array
      */
-    public function getDifferentCharsetStylesDataProvider() {
+    public function getDifferentCharsetStylesDataProvider() : array {
       return [
         [
           '<body></body>',

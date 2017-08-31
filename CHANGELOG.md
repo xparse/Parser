@@ -1,5 +1,20 @@
 #Changelog
 All Notable changes to `Parser` will be documented in this file
+## 0.1.0-alpha.5 [Unreleased]
+
+### Changed
+- `Parser::post` signature was changed, `$body` parameter was dropped
+- `Parser::setLastPage` method access level changed to private  
+- `HtmlEncodingConverter::convertToUtf` method becomes non-static  
+- Upgraded to phpunit 6.3  
+
+### Added
+- strict type declaration and support 
+- EncodingConverterInterface, LinkConverterInterface
+- `LinkConverter::relativeToAbsolute`
+
+### Removed
+- `LinkConverter::convertUrlsToAbsolute`
 
 ## 0.1.0-alpha.4 [2016-07-12]
 

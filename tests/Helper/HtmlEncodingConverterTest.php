@@ -1,21 +1,20 @@
 <?php
 
+  declare(strict_types=1);
+
   namespace Test\Xparse\Parser\Helper;
 
   use GuzzleHttp\Psr7\Response;
+  use PHPUnit\Framework\TestCase;
   use Xparse\ElementFinder\ElementFinder;
   use Xparse\Parser\Helper\HtmlEncodingConverter;
 
-  /**
-   * Class EncodingConverterTest
-   * @package Test\Xparse\Parser\Helper
-   */
-  class HtmlEncodingConverterTest extends \PHPUnit_Framework_TestCase {
+  class HtmlEncodingConverterTest extends TestCase {
 
     /**
      * @return array
      */
-    public function getDifferentCharsetStylesDataProvider() {
+    public function getDifferentCharsetStylesDataProvider() : array {
       return [
         [
           '<body></body>',
@@ -72,16 +71,17 @@
 
     /**
      * @dataProvider getDifferentCharsetStylesDataProvider
-     * @param array $headers
      * @param string $html
      * @param string $bodyText
+     * @param array $headers
      */
-    public function testDifferentCharsetStyles($html, $bodyText, array $headers = []) {
-      $response = new Response(200, $headers, $html);
-      $contentType = $response->getHeaderLine('content-type');
-      $html = HtmlEncodingConverter::convertToUtf($html, $contentType);
-      $page = new ElementFinder((string) $html);
+    public function testDifferentCharsetStyles(string $html, string $bodyText, array $headers = []) {
+      $contentType = (new Response(200, $headers, $html))->getHeaderLine('content-type');
+      $html = (new HtmlEncodingConverter())->convertToUtf($html, $contentType);
+
+      $page = new ElementFinder($html);
       $pageBodyText = $page->content('//body')->getFirst();
+
       self::assertInstanceOf(ElementFinder::class, $page);
       self::assertEquals($bodyText, $pageBodyText);
     }
