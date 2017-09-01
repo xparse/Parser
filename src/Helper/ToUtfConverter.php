@@ -20,9 +20,9 @@
      */
     public function convert(string $html, string $contentType = '') : string {
       $encoding = null;
-      if (preg_match('!^.*charset=([A-Za-z0-9-]{4,})$!iu', $contentType, $contentTypeData) === 1) {
+      if (preg_match('!^.*charset=([A-Za-z0-9-]{4,})$!', $contentType, $contentTypeData) === 1) {
         $encoding = $contentTypeData[1];
-      } elseif (preg_match("!.*<meta.*charset=[\"']?[ \t]*([A-Za-z0-9-]{4,})[ \t]*[\"']!miu", $html, $metaContentType) === 1) {
+      } elseif (preg_match("!.*<meta.*charset=[\"']?[ \t]*([A-Za-z0-9-]{4,})[ \t]*[\"']!mi", $html, $metaContentType) === 1) {
         $encoding = $metaContentType[1];
       }
 
