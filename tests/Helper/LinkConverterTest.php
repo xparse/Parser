@@ -1,21 +1,19 @@
 <?php
 
+  declare(strict_types=1);
+
   namespace Test\Xparse\Parser\Helper;
 
+  use PHPUnit\Framework\TestCase;
   use Xparse\ElementFinder\ElementFinder;
-  use Xparse\Parser\Helper\LinkConverter;
+  use Xparse\Parser\Helper\RelativeToAbsoluteLinkConverter;
 
-  /**
-   *
-   * @package Tests\Xparse\Helper
-   */
-  class LinkConverterTest extends \PHPUnit_Framework_TestCase {
+  class LinkConverterTest extends TestCase {
 
     /**
      * @return array
      */
-    public function getConvertRelativeUrlToAbsolute() {
-      /** @noinspection HtmlUnknownTarget */
+    public function getConvertRelativeUrlToAbsolute() : array {
       return [
         [
           'html' => '<a href="/tt">a</a>',
@@ -96,11 +94,11 @@
      * @param string $url
      * @param string $expect
      */
-    public function testConvertRelativeUrlToAbsolute($html, $expect, $url) {
+    public function testConvertRelativeUrlToAbsolute(string $html, string $expect, string $url) {
 
       $page = new ElementFinder($html);
 
-      LinkConverter::convertUrlsToAbsolute($page, $url);
+      (new RelativeToAbsoluteLinkConverter())->convert($page, $url);
 
       $body = $page->content('//body')->getFirst();
       static::assertEquals($expect, $body);

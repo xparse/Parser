@@ -1,36 +1,29 @@
 <?php
 
+  declare(strict_types=1);
+
   namespace Xparse\Parser\Helper;
 
   /**
-   * Class EncodingConverter
-   * @package Xparse\Parser\Helper
+   * Try to convert input encoding
    */
-  class HtmlEncodingConverter {
+  class ToUtfConverter implements EncodingConverterInterface {
 
     /**
      * @var array|null
      */
-    private static $supportedEncodings = null;
+    private static $supportedEncodings;
 
 
     /**
-     * Try to detect input encoding from contentType or from html <meta> tag
-     *
-     * @param string $html
-     * @param bool $contentType
-     * @return string
+     * @inheritdoc
      */
-    public static function convertToUtf($html, $contentType = false) {
+    public function convert(string $html, string $contentType = '') : string {
       $encoding = null;
-      if (!empty($contentType)) {
-        preg_match("!^.*charset=([A-Za-z0-9-]{4,})$!", $contentType, $contentTypeData);
-        $encoding = !empty($contentTypeData[1]) ? trim($contentTypeData[1]) : null;
-      }
-
-      if ($encoding === null) {
-        preg_match("!.*<meta.*charset=[\"']?[ \t]*([A-Za-z0-9-]{4,})[ \t]*[\"']!mi", $html, $metaContentType);
-        $encoding = !empty($metaContentType[1]) ? trim($metaContentType[1]) : null;
+      if (preg_match('!^.*charset=([A-Za-z0-9-]{4,})$!', $contentType, $contentTypeData) === 1) {
+        $encoding = $contentTypeData[1];
+      } elseif (preg_match("!.*<meta.*charset=[\"']?[ \t]*([A-Za-z0-9-]{4,})[ \t]*[\"']!mi", $html, $metaContentType) === 1) {
+        $encoding = $metaContentType[1];
       }
 
       if ($encoding === null) {
@@ -38,7 +31,7 @@
       }
 
       $encoding = strtolower($encoding);
-      if (in_array($encoding, self::getSupportedEncodings())) {
+      if (in_array($encoding, self::getSupportedEncodings(), true)) {
         $html = mb_convert_encoding($html, 'utf-8', $encoding);
       }
 
@@ -49,7 +42,8 @@
     /**
      * @return array
      */
-    private static function getSupportedEncodings() {
+    private static function getSupportedEncodings() : array {
+
       if (self::$supportedEncodings !== null) {
         return self::$supportedEncodings;
       }

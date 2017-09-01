@@ -1,19 +1,19 @@
 <?php
 
+  declare(strict_types=1);
+
   namespace Test\Xparse\Parser;
 
   use GuzzleHttp\Client;
   use GuzzleHttp\Cookie\CookieJarInterface;
   use GuzzleHttp\Handler\MockHandler;
   use GuzzleHttp\Psr7\Response;
+  use GuzzleHttp\RequestOptions;
+  use PHPUnit\Framework\TestCase;
   use Xparse\ElementFinder\ElementFinder;
   use Xparse\Parser\Parser;
 
-  /**
-   *
-   * @package Xparse\Parser\Test
-   */
-  class ParserTest extends \PHPUnit_Framework_TestCase {
+  class ParserTest extends TestCase {
 
     public function testInit() {
 
@@ -43,7 +43,7 @@
 
       self::assertEquals($client, $parser->getClient());
 
-      $page = $parser->post('http://test.com/info', '123');
+      $page = $parser->post('http://test.com/info', [RequestOptions::FORM_PARAMS => ['123']]);
 
       self::assertInstanceOf(get_class(new \Xparse\ElementFinder\ElementFinder('<html></html>')), $page);
       self::assertEquals($page, $parser->getLastPage());
@@ -53,8 +53,7 @@
     /**
      * @return Client
      */
-    protected function getDemoClient() {
-      /** @noinspection HtmlUnknownTarget */
+    protected function getDemoClient() : Client {
       $mock = new MockHandler(
         [
           new Response(
@@ -74,6 +73,7 @@
           ),
         ]
       );
+
       return new Client(['handler' => $mock]);
     }
 
@@ -82,7 +82,9 @@
       $parser = new Parser($this->getDemoClient());
       $url = 'http://test.com/url/';
       $parser->get($url);
-      self::assertEquals('OK', $parser->getLastResponse()->getReasonPhrase());
+      $response = $parser->getLastResponse();
+
+      self::assertEquals('OK', $response->getReasonPhrase());
     }
 
 
@@ -106,7 +108,8 @@
       $parser = new Parser(new Client(['handler' => $mock]));
       $url = 'http://test.com/url/';
       $parser->get($url);
-      $effectiveUrl = $parser->getLastResponse()->getHeaderLine('X-GUZZLE-EFFECTIVE-URL');
+      $response = $parser->getLastResponse();
+      $effectiveUrl = $response->getHeaderLine('X-GUZZLE-EFFECTIVE-URL');
       self::assertNotEquals($url, $effectiveUrl);
       self::assertEquals('http://test.com/effective-url/', $effectiveUrl);
     }
@@ -142,7 +145,7 @@
     public function testGetInvalidUrl() {
       $parser = new Parser($this->getDemoClient());
       static::assertNotEmpty($parser);
-      $parser->get(null);
+      $parser->get('');
     }
 
 
@@ -152,7 +155,7 @@
     public function testPostWithInvalidParams() {
       $parser = new Parser($this->getDemoClient());
       static::assertNotEmpty($parser);
-      $parser->post(new \stdClass(), null);
+      $parser->post('', ['someData']);
     }
 
   }

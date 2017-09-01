@@ -1,20 +1,19 @@
 <?php
 
+  declare(strict_types=1);
+
   namespace Xparse\Parser;
 
   use Psr\Http\Message\ResponseInterface;
   use Xparse\ElementFinder\ElementFinder;
 
-  /**
-   * @package Xparse\Parser
-   */
   interface ElementFinderFactoryInterface {
 
     /**
      * @param ResponseInterface $response
-     * @param string|null $affectedUrl
+     * @param string $affectedUrl
      * @return ElementFinder
      */
-    public function create(ResponseInterface $response, $affectedUrl = null);
+    public function create(ResponseInterface $response, string $affectedUrl = '') : ElementFinder;
 
   }

@@ -1,5 +1,7 @@
 <?php
 
+  declare(strict_types=1);
+
   namespace Xparse\Parser;
 
   use GuzzleHttp\Client;
@@ -10,34 +12,29 @@
   use Psr\Http\Message\RequestInterface;
   use Psr\Http\Message\ResponseInterface;
   use Xparse\ElementFinder\ElementFinder;
-  use Xparse\ParserInterface\ParserInterface;
 
-  /**
-   *
-   * @package Xparse\Parser
-   */
   class Parser implements ParserInterface {
 
     /**
      *
-     * @var null|\Xparse\ElementFinder\ElementFinder
+     * @var null|ElementFinder
      */
-    protected $lastPage = null;
+    protected $lastPage;
 
     /**
      * @var ClientInterface
      */
-    protected $client = null;
+    protected $client;
 
     /**
      * @var ElementFinderFactoryInterface
      */
-    protected $elementFinderFactory = null;
+    protected $elementFinderFactory;
 
     /**
      * @var null|ResponseInterface
      */
-    protected $lastResponse = null;
+    protected $lastResponse;
 
 
     /**
@@ -52,13 +49,13 @@
         ]);
       }
 
+      $this->client = $client;
+
       if ($elementFinderFactory === null) {
         $elementFinderFactory = new ElementFinderFactory();
       }
 
       $this->elementFinderFactory = $elementFinderFactory;
-
-      $this->client = $client;
     }
 
 
@@ -66,53 +63,50 @@
      * @param string $url
      * @param array $options
      * @return ElementFinder
-     * @throws \Exception
      * @throws \InvalidArgumentException
      */
-    public function get($url, array $options = []) {
-      if (empty($url) or !is_string($url)) {
-        throw new \InvalidArgumentException('Url must be not empty and string.');
+    public function get(string $url, array $options = []) : ElementFinder {
+      if ($url === '') {
+        throw new \InvalidArgumentException('Url can\'t be empty');
       }
 
       $request = new Request('GET', $url);
+
       return $this->send($request, $options);
     }
 
 
     /**
      * @param string $url
-     * @param string|resource|\Psr\Http\Message\StreamInterface $body Message body.
      * @param array $options
      * @return ElementFinder
-     * @throws \Exception
      * @throws \InvalidArgumentException
      */
-    public function post($url, $body = null, array $options = []) {
+    public function post(string $url, array $options = []) : ElementFinder {
 
-      if (empty($url) or !is_string($url)) {
-        throw new \InvalidArgumentException('Url must be not empty and string.');
+      if ($url === '') {
+        throw new \InvalidArgumentException('Url can\'t be empty');
       }
 
-      $request = new Request('POST', $url, [], $body);
-
-      return $this->send($request, $options);
+      return $this->send(new Request('POST', $url), $options);
     }
 
 
     /**
-     * @return \Xparse\ElementFinder\ElementFinder
+     * @return ElementFinder
      */
-    public function getLastPage() {
+    public function getLastPage() : ElementFinder {
       return $this->lastPage;
     }
 
 
     /**
-     * @param \Xparse\ElementFinder\ElementFinder $lastPage
+     * @param ElementFinder $lastPage
      * @return $this
      */
-    public function setLastPage($lastPage) {
+    private function setLastPage(ElementFinder $lastPage) : self {
       $this->lastPage = $lastPage;
+
       return $this;
     }
 
@@ -128,24 +122,23 @@
     /**
      * @return ClientInterface
      */
-    public function getClient() {
+    public function getClient() : ClientInterface {
       return $this->client;
     }
 
 
     /**
-     * @param $request
+     * @param RequestInterface $request
      * @param array $options
-     * @return \Xparse\ElementFinder\ElementFinder
-     * @throws \Exception
+     * @return ElementFinder
      */
-    public function send(RequestInterface $request, array $options = []) {
+    public function send(RequestInterface $request, array $options = []) : ElementFinder {
 
       $prevCallback = !empty($options['on_stats']) ? $options['on_stats'] : null;
 
-      $effectiveUri = null;
-      $options['on_stats'] = function (TransferStats $stats) use (&$effectiveUri, $prevCallback) {
-        $effectiveUri = $stats->getEffectiveUri();
+      $effectiveUrl = '';
+      $options['on_stats'] = function (TransferStats $stats) use (&$effectiveUrl, $prevCallback) {
+        $effectiveUrl = $stats->getEffectiveUri()->__toString();
         if ($prevCallback !== null) {
           /** @var callable $prevCallback */
           $prevCallback($stats);
@@ -155,22 +148,23 @@
       $response = $this->client->send($request, $options);
 
       $guzzleEffectiveUrl = $response->getHeaderLine('X-GUZZLE-EFFECTIVE-URL');
-      if (!empty($guzzleEffectiveUrl)) {
-        $effectiveUri = $guzzleEffectiveUrl;
+      if ($guzzleEffectiveUrl !== '') {
+        $effectiveUrl = $guzzleEffectiveUrl;
       }
 
-      $page = $this->elementFinderFactory->create($response, $effectiveUri);
+      $elementFinder = $this->elementFinderFactory->create($response, $effectiveUrl);
 
-      $this->setLastPage($page);
+      $this->setLastPage($elementFinder);
       $this->lastResponse = $response;
-      return $page;
+
+      return $elementFinder;
     }
 
 
     /**
      * @return ElementFinderFactoryInterface
      */
-    public function getElementFinderFactory() {
+    public function getElementFinderFactory() : ElementFinderFactoryInterface {
       return $this->elementFinderFactory;
     }
 

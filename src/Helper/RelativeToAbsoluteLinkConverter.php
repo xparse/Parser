@@ -1,27 +1,27 @@
 <?php
 
+  declare(strict_types=1);
+
   namespace Xparse\Parser\Helper;
 
   use GuzzleHttp\Psr7\Uri;
+  use GuzzleHttp\Psr7\UriResolver;
   use Xparse\ElementFinder\ElementFinder;
 
   /**
    * @author Ivan Shcherbak <dev@funivan.com> 12/28/14
    */
-  class LinkConverter {
+  class RelativeToAbsoluteLinkConverter implements LinkConverterInterface {
 
     /**
-     * Convert relative links, images scr and form actions to absolute
-     *
-     * @param ElementFinder $page
-     * @param string $affectedUrl
+     * @inheritdoc
      */
-    public static function convertUrlsToAbsolute(ElementFinder $page, $affectedUrl) {
+    public function convert(ElementFinder $finder, string $affectedUrl = '') {
 
       $affected = new Uri($affectedUrl);
 
-      $srcElements = $page->element('//*[@src] | //*[@href] | //form[@action]');
-      $baseUrl = $page->value('//base/@href')->getFirst();
+      $srcElements = $finder->element('//*[@src] | //*[@href] | //form[@action]');
+      $baseUrl = $finder->value('//base/@href')->getFirst();
 
       foreach ($srcElements as $element) {
         $attributeName = 'href';
@@ -43,11 +43,11 @@
           continue;
         }
 
-        if (!empty($baseUrl) and !preg_match('!^(/|http)!i', $relative)) {
-          $relative = Uri::resolve(new Uri($baseUrl), $relative);
+        if ($baseUrl !== null and !preg_match('!^(/|http)!i', $relative)) {
+          $relative = UriResolver::resolve(new Uri($baseUrl), new Uri($relative));
         }
 
-        $url = Uri::resolve($affected, (string) $relative);
+        $url = UriResolver::resolve($affected, new Uri($relative));
         $element->setAttribute($attributeName, (string) $url);
       }
 
