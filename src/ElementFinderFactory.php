@@ -14,6 +14,9 @@
   use Xparse\Parser\Helper\RelativeToAbsoluteLinkConverter;
   use Xparse\Parser\Helper\ToUtfConverter;
 
+  /**
+   *
+   */
   class ElementFinderFactory implements ElementFinderFactoryInterface {
 
     /**
@@ -52,14 +55,15 @@
       }
     }
 
+
     /**
      * @inheritdoc
+     * @throws \Exception
      */
     public function create(ResponseInterface $response, string $affectedUrl = '') : ElementFinder {
       $html = StringHelper::safeEncodeStr($response->getBody()->getContents());
       $html = $this->encodingConverter->convert($html, $response->getHeaderLine('content-type'));
       $elementFinder = new ElementFinder($html, null, $this->expressionTranslator);
-
       if ($affectedUrl !== null) {
         $this->linkConverter->convert($elementFinder, $affectedUrl);
       }

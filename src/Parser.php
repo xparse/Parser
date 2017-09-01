@@ -13,11 +13,14 @@
   use Psr\Http\Message\ResponseInterface;
   use Xparse\ElementFinder\ElementFinder;
 
+  /**
+   *
+   */
   class Parser implements ParserInterface {
 
     /**
      *
-     * @var null|ElementFinder
+     * @var ElementFinder|null
      */
     protected $lastPage;
 
@@ -65,14 +68,14 @@
      * @return ElementFinder
      * @throws \InvalidArgumentException
      */
-    public function get(string $url, array $options = []) : ElementFinder {
+    public function get(string $url, array $options = []): ElementFinder {
       if ($url === '') {
         throw new \InvalidArgumentException('Url can\'t be empty');
       }
-
-      $request = new Request('GET', $url);
-
-      return $this->send($request, $options);
+      return $this->send(
+        new Request('GET', $url),
+        $options
+      );
     }
 
 
@@ -82,33 +85,24 @@
      * @return ElementFinder
      * @throws \InvalidArgumentException
      */
-    public function post(string $url, array $options = []) : ElementFinder {
-
+    public function post(string $url, array $options = []): ElementFinder {
       if ($url === '') {
         throw new \InvalidArgumentException('Url can\'t be empty');
       }
-
-      return $this->send(new Request('POST', $url), $options);
+      return $this->send(
+        new Request('POST', $url),
+        $options
+      );
     }
 
 
     /**
-     * @return ElementFinder
+     * @return ElementFinder|null
      */
-    public function getLastPage() : ElementFinder {
+    public function getLastPage() {
       return $this->lastPage;
     }
 
-
-    /**
-     * @param ElementFinder $lastPage
-     * @return $this
-     */
-    private function setLastPage(ElementFinder $lastPage) : self {
-      $this->lastPage = $lastPage;
-
-      return $this;
-    }
 
 
     /**
@@ -122,7 +116,7 @@
     /**
      * @return ClientInterface
      */
-    public function getClient() : ClientInterface {
+    public function getClient(): ClientInterface {
       return $this->client;
     }
 
@@ -132,7 +126,7 @@
      * @param array $options
      * @return ElementFinder
      */
-    public function send(RequestInterface $request, array $options = []) : ElementFinder {
+    public function send(RequestInterface $request, array $options = []): ElementFinder {
 
       $prevCallback = !empty($options['on_stats']) ? $options['on_stats'] : null;
 
@@ -153,8 +147,7 @@
       }
 
       $elementFinder = $this->elementFinderFactory->create($response, $effectiveUrl);
-
-      $this->setLastPage($elementFinder);
+      $this->lastPage = $elementFinder;
       $this->lastResponse = $response;
 
       return $elementFinder;
@@ -164,7 +157,7 @@
     /**
      * @return ElementFinderFactoryInterface
      */
-    public function getElementFinderFactory() : ElementFinderFactoryInterface {
+    public function getElementFinderFactory(): ElementFinderFactoryInterface {
       return $this->elementFinderFactory;
     }
 

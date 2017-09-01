@@ -10,15 +10,15 @@
   class ToUtfConverter implements EncodingConverterInterface {
 
     /**
-     * @var array|null
+     * @var null|string[]
      */
-    private static $supportedEncodings;
+    private $supportedEncodings;
 
 
     /**
      * @inheritdoc
      */
-    public function convert(string $html, string $contentType = '') : string {
+    public function convert(string $html, string $contentType = ''): string {
       $encoding = null;
       if (preg_match('!^.*charset=([A-Za-z0-9-]{4,})$!', $contentType, $contentTypeData) === 1) {
         $encoding = $contentTypeData[1];
@@ -31,7 +31,7 @@
       }
 
       $encoding = strtolower($encoding);
-      if (in_array($encoding, self::getSupportedEncodings(), true)) {
+      if (in_array($encoding, $this->getSupportedEncodings(), true)) {
         $html = mb_convert_encoding($html, 'utf-8', $encoding);
       }
 
@@ -42,30 +42,24 @@
     /**
      * @return array
      */
-    private static function getSupportedEncodings() : array {
-
-      if (self::$supportedEncodings !== null) {
-        return self::$supportedEncodings;
-      }
-
-      $hasAliasesFunction = function_exists('mb_encoding_aliases');
-      self::$supportedEncodings = [];
-      foreach (mb_list_encodings() as $encoding) {
-        $encoding = strtolower($encoding);
-        if ($encoding === 'utf-8' or $encoding === 'utf8') {
-          continue;
-        }
-
-        self::$supportedEncodings[] = $encoding;
-        if ($hasAliasesFunction) {
-          foreach (mb_encoding_aliases($encoding) as $encodingAlias) {
-            $encodingAlias = strtolower($encodingAlias);
-            self::$supportedEncodings[] = $encodingAlias;
+    private function getSupportedEncodings(): array {
+      if ($this->supportedEncodings === null) {
+        $this->supportedEncodings = [];
+        $findAliases = function_exists('mb_encoding_aliases');
+        foreach (mb_list_encodings() as $encoding) {
+          $encoding = strtolower($encoding);
+          if ($encoding !== 'utf-8' and $encoding !== 'utf8') {
+            $this->supportedEncodings[] = $encoding;
+            if ($findAliases) {
+              foreach (mb_encoding_aliases($encoding) as $encodingAlias) {
+                $encodingAlias = strtolower($encodingAlias);
+                $this->supportedEncodings[] = $encodingAlias;
+              }
+            }
           }
         }
       }
-
-      return self::$supportedEncodings;
+      return $this->supportedEncodings;
     }
 
   }

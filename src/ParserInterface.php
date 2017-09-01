@@ -6,6 +6,9 @@
 
   use Xparse\ElementFinder\ElementFinder;
 
+  /**
+   *
+   */
   interface ParserInterface {
 
     /**
@@ -22,8 +25,8 @@
     public function post(string $url, array $options) : ElementFinder;
 
     /**
-     * @return ElementFinder
+     * @return ElementFinder|null
      */
-    public function getLastPage() : ElementFinder;
+    public function getLastPage();
 
   }
