@@ -7,7 +7,7 @@
   use GuzzleHttp\Psr7\Response;
   use PHPUnit\Framework\TestCase;
   use Xparse\ElementFinder\ElementFinder;
-  use Xparse\Parser\Helper\HtmlEncodingConverter;
+  use Xparse\Parser\Helper\ToUtfConverter;
 
   class HtmlEncodingConverterTest extends TestCase {
 
@@ -77,7 +77,7 @@
      */
     public function testDifferentCharsetStyles(string $html, string $bodyText, array $headers = []) {
       $contentType = (new Response(200, $headers, $html))->getHeaderLine('content-type');
-      $html = (new HtmlEncodingConverter())->convertToUtf($html, $contentType);
+      $html = (new ToUtfConverter())->convert($html, $contentType);
 
       $page = new ElementFinder($html);
       $pageBodyText = $page->content('//body')->getFirst();

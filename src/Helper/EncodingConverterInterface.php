@@ -13,6 +13,6 @@
      * @param string $contentType
      * @return string
      */
-    public function convertToUtf(string $html, string $contentType) : string;
+    public function convert(string $html, string $contentType) : string;
 
   }

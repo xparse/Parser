@@ -7,22 +7,18 @@
   /**
    * Try to convert input encoding
    */
-  class HtmlEncodingConverter implements EncodingConverterInterface {
+  class ToUtfConverter implements EncodingConverterInterface {
 
     /**
-     * @var array
+     * @var array|null
      */
-    private $supportedEncodings;
+    private static $supportedEncodings;
 
-
-    public function __construct() {
-      $this->supportedEncodings = $this->getSupportedEncodings();
-    }
 
     /**
      * @inheritdoc
      */
-    public function convertToUtf(string $html, string $contentType = '') : string {
+    public function convert(string $html, string $contentType = '') : string {
       $encoding = null;
       if ($contentType !== '') {
         preg_match('!^.*charset=([A-Za-z0-9-]{4,})$!', $contentType, $contentTypeData);
@@ -39,7 +35,7 @@
       }
 
       $encoding = strtolower($encoding);
-      if (in_array($encoding, $this->supportedEncodings, true)) {
+      if (in_array($encoding, self::getSupportedEncodings(), true)) {
         $html = mb_convert_encoding($html, 'utf-8', $encoding);
       }
 
@@ -50,26 +46,30 @@
     /**
      * @return array
      */
-    private function getSupportedEncodings() : array {
+    private static function getSupportedEncodings() : array {
+
+      if (self::$supportedEncodings !== null) {
+        return self::$supportedEncodings;
+      }
 
       $hasAliasesFunction = function_exists('mb_encoding_aliases');
-      $supportedEncodings = [];
+      self::$supportedEncodings = [];
       foreach (mb_list_encodings() as $encoding) {
         $encoding = strtolower($encoding);
         if ($encoding === 'utf-8' or $encoding === 'utf8') {
           continue;
         }
 
-        $supportedEncodings[] = $encoding;
+        self::$supportedEncodings[] = $encoding;
         if ($hasAliasesFunction) {
           foreach (mb_encoding_aliases($encoding) as $encodingAlias) {
             $encodingAlias = strtolower($encodingAlias);
-            $supportedEncodings[] = $encodingAlias;
+            self::$supportedEncodings[] = $encodingAlias;
           }
         }
       }
 
-      return $supportedEncodings;
+      return self::$supportedEncodings;
     }
 
   }

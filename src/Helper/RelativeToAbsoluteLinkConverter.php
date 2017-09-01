@@ -11,12 +11,12 @@
   /**
    * @author Ivan Shcherbak <dev@funivan.com> 12/28/14
    */
-  class LinkConverter implements LinkConverterInterface {
+  class RelativeToAbsoluteLinkConverter implements LinkConverterInterface {
 
     /**
      * @inheritdoc
      */
-    public function relativeToAbsolute(ElementFinder $finder, string $affectedUrl = '') {
+    public function convert(ElementFinder $finder, string $affectedUrl = '') {
 
       $affected = new Uri($affectedUrl);
 

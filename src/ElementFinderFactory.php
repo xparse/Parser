@@ -10,9 +10,9 @@
   use Xparse\ExpressionTranslator\ExpressionTranslatorInterface;
   use Xparse\ExpressionTranslator\XpathExpression;
   use Xparse\Parser\Helper\EncodingConverterInterface;
-  use Xparse\Parser\Helper\HtmlEncodingConverter;
-  use Xparse\Parser\Helper\LinkConverter;
   use Xparse\Parser\Helper\LinkConverterInterface;
+  use Xparse\Parser\Helper\RelativeToAbsoluteLinkConverter;
+  use Xparse\Parser\Helper\ToUtfConverter;
 
   class ElementFinderFactory implements ElementFinderFactoryInterface {
 
@@ -32,22 +32,24 @@
     private $expressionTranslator;
 
     /**
+     * @param ExpressionTranslatorInterface|null $expressionTranslator
      * @param LinkConverterInterface|null $linkConverter
      * @param EncodingConverterInterface|null $encodingConverter
-     * @param ExpressionTranslatorInterface|null $expressionTranslator
      */
     public function __construct(
+      ExpressionTranslatorInterface $expressionTranslator = null,
       LinkConverterInterface $linkConverter = null,
-      EncodingConverterInterface $encodingConverter = null,
-      ExpressionTranslatorInterface $expressionTranslator = null
+      EncodingConverterInterface $encodingConverter = null
     ) {
+      if ($expressionTranslator === null) {
+        $this->expressionTranslator = new XpathExpression();
+      }
       if ($linkConverter === null) {
-        $this->linkConverter = new LinkConverter();
+        $this->linkConverter = new RelativeToAbsoluteLinkConverter();
       }
       if ($encodingConverter === null) {
-        $this->encodingConverter = new HtmlEncodingConverter();
+        $this->encodingConverter = new ToUtfConverter();
       }
-      $this->expressionTranslator = new XpathExpression();
     }
 
     /**
@@ -55,11 +57,11 @@
      */
     public function create(ResponseInterface $response, string $affectedUrl = '') : ElementFinder {
       $html = StringHelper::safeEncodeStr($response->getBody()->getContents());
-      $html = $this->encodingConverter->convertToUtf($html, $response->getHeaderLine('content-type'));
+      $html = $this->encodingConverter->convert($html, $response->getHeaderLine('content-type'));
       $elementFinder = new ElementFinder($html, null, $this->expressionTranslator);
 
       if ($affectedUrl !== null) {
-        $this->linkConverter->relativeToAbsolute($elementFinder, $affectedUrl);
+        $this->linkConverter->convert($elementFinder, $affectedUrl);
       }
 
       return $elementFinder;

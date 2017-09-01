@@ -17,6 +17,6 @@
      * @param ElementFinder $finder
      * @param string $affectedUrl
      */
-    public function relativeToAbsolute(ElementFinder $finder, string $affectedUrl = '');
+    public function convert(ElementFinder $finder, string $affectedUrl = '');
 
   }

@@ -6,7 +6,7 @@
 
   use PHPUnit\Framework\TestCase;
   use Xparse\ElementFinder\ElementFinder;
-  use Xparse\Parser\Helper\LinkConverter;
+  use Xparse\Parser\Helper\RelativeToAbsoluteLinkConverter;
 
   class LinkConverterTest extends TestCase {
 
@@ -98,7 +98,7 @@
 
       $page = new ElementFinder($html);
 
-      (new LinkConverter())->relativeToAbsolute($page, $url);
+      (new RelativeToAbsoluteLinkConverter())->convert($page, $url);
 
       $body = $page->content('//body')->getFirst();
       static::assertEquals($expect, $body);

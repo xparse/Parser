@@ -88,9 +88,7 @@
         throw new \InvalidArgumentException('Url can\'t be empty');
       }
 
-      $request = new Request('POST', $url);
-
-      return $this->send($request, $options);
+      return $this->send(new Request('POST', $url), $options);
     }
 
 
