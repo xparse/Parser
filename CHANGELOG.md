@@ -7,7 +7,7 @@ All Notable changes to `Parser` will be documented in this file
 - `Parser::setLastPage` method access level changed to private
 - Upgraded to phpunit 6.3
 - Parameters sequence was changed in `ElementFinderFactory::__construct`
-- #30 Upgrade guzzlehttp/guzzle to 6.2
+- #30 Upgrade guzzlehttp/guzzle to 6.3
 
 ### Added
 - strict type declaration
