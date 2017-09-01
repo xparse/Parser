@@ -20,14 +20,10 @@
      */
     public function convert(string $html, string $contentType = '') : string {
       $encoding = null;
-      if ($contentType !== '') {
-        preg_match('!^.*charset=([A-Za-z0-9-]{4,})$!', $contentType, $contentTypeData);
-        $encoding = !empty($contentTypeData[1]) ? trim($contentTypeData[1]) : null;
-      }
-
-      if ($encoding === null) {
-        preg_match("!.*<meta.*charset=[\"']?[ \t]*([A-Za-z0-9-]{4,})[ \t]*[\"']!mi", $html, $metaContentType);
-        $encoding = !empty($metaContentType[1]) ? trim($metaContentType[1]) : null;
+      if (preg_match('!^.*charset=([A-Za-z0-9-]{4,})$!iu', $contentType, $contentTypeData) === 1) {
+        $encoding = $contentTypeData[1];
+      } elseif (preg_match("!.*<meta.*charset=[\"']?[ \t]*([A-Za-z0-9-]{4,})[ \t]*[\"']!miu", $html, $metaContentType) === 1) {
+        $encoding = $metaContentType[1];
       }
 
       if ($encoding === null) {

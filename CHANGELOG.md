@@ -3,19 +3,21 @@ All Notable changes to `Parser` will be documented in this file
 ## 0.2.0 [Unreleased]
 
 ### Changed
-- `Parser::post` signature was changed, `$body` parameter was dropped
-- `Parser::setLastPage` method access level changed to private  
-- `HtmlEncodingConverter::convertToUtf` method becomes non-static  
-- Upgraded to phpunit 6.3  
+- Breaking change - `Parser::post` signature was changed, `$body` parameter was dropped
+- `Parser::setLastPage` method access level changed to private
+- Upgraded to phpunit 6.3
 - Parameters sequence was changed in `ElementFinderFactory::__construct`
+- #30 Upgrade guzzlehttp/guzzle to 6.2
 
 ### Added
-- strict type declaration and support 
-- EncodingConverterInterface, LinkConverterInterface
-- `LinkConverter::relativeToAbsolute`
+- strict type declaration
+- `EncodingConverterInterface`, `ToUtfConverter` 
+- `LinkConverterInterface`, `RelativeToAbsoluteLinkConverter`, 
 
 ### Removed
-- `LinkConverter::convertUrlsToAbsolute`
+- Breaking change - removed `LinkConverter::convertUrlsToAbsolute`
+- Breaking change - removed `HtmlEncodingConverter::convertToUtf`
+- Breaking change - #28 removed usage of xparse/parser-interface package
 
 ## 0.1.0-alpha.4 [2016-07-12]
 
