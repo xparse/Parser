@@ -104,9 +104,8 @@
     }
 
 
-
     /**
-     * @return null|ResponseInterface
+     * @return ResponseInterface|null
      */
     public function getLastResponse() {
       return $this->lastResponse;
