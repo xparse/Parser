@@ -19,19 +19,14 @@
      * @inheritdoc
      */
     public function convert(string $html, string $contentType = ''): string {
-      $encoding = null;
+      $encoding = '';
       if (preg_match('!^.*charset=([A-Za-z0-9-]{4,})$!', $contentType, $contentTypeData) === 1) {
         $encoding = $contentTypeData[1];
       } elseif (preg_match("!.*<meta.*charset=[\"']?[ \t]*([A-Za-z0-9-]{4,})[ \t]*[\"']!mi", $html, $metaContentType) === 1) {
         $encoding = $metaContentType[1];
       }
-
-      if ($encoding === null) {
-        return $html;
-      }
-
       $encoding = strtolower($encoding);
-      if (in_array($encoding, $this->getSupportedEncodings(), true)) {
+      if ($encoding !== '' and in_array($encoding, $this->getSupportedEncodings(), true)) {
         $html = mb_convert_encoding($html, 'utf-8', $encoding);
       }
 
