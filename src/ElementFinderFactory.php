@@ -45,14 +45,17 @@
       EncodingConverterInterface $encodingConverter = null
     ) {
       if ($expressionTranslator === null) {
-        $this->expressionTranslator = new XpathExpression();
+        $expressionTranslator = new XpathExpression();
       }
       if ($linkConverter === null) {
-        $this->linkConverter = new RelativeToAbsoluteLinkConverter();
+        $linkConverter = new RelativeToAbsoluteLinkConverter();
       }
       if ($encodingConverter === null) {
-        $this->encodingConverter = new ToUtfConverter();
+        $encodingConverter = new ToUtfConverter();
       }
+      $this->expressionTranslator = $expressionTranslator;
+      $this->linkConverter = $linkConverter;
+      $this->encodingConverter = $encodingConverter;
     }
 
 
