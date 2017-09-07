@@ -1,9 +1,11 @@
 #Changelog
 All Notable changes to `Parser` will be documented in this file
-## 0.2.2 [Unreleased]
+##  [Unreleased]
+
+## 0.2.2 [2017-09-07]
 
 ### Fixed
-- fix bug with getContents() from Response body while creating ElementFinder. Using type cast instead
+- Read content from the start while creating ElementFinder
 
 ## 0.2.1 [2017-09-06]
 
