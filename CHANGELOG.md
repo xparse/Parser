@@ -1,6 +1,9 @@
 #Changelog
 All Notable changes to `Parser` will be documented in this file
-##  [Unreleased]
+## 0.2.3 [Unreleased]
+
+### Changed
+- Upgrade `xparse/element-finder` library 
 
 ## 0.2.2 [2017-09-07]
 
