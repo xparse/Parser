@@ -73,7 +73,7 @@
     public function testDifferentCharsetStyles($html, $bodyText, array $headers = []) {
       $response = new Response(200, $headers, $html);
       $page = (new ElementFinderFactory())->create($response);
-      $pageBodyText = $page->content('//body')->getFirst();
+      $pageBodyText = $page->content('//body')->first();
       self::assertInstanceOf(ElementFinder::class, $page);
       self::assertEquals($bodyText, $pageBodyText);
     }
