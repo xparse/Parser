@@ -120,7 +120,7 @@
       $url = 'http://test.com/url/';
       $page = $parser->get($url);
       self::assertInstanceOf(ElementFinder::class, $page);
-      $firstUrl = $page->value('//a/@href')->getFirst();
+      $firstUrl = $page->value('//a/@href')->first();
       self::assertEquals($url . 'index.html', $firstUrl);
     }
 

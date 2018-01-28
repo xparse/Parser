@@ -80,7 +80,7 @@
       $html = (new ToUtfConverter())->convert($html, $contentType);
 
       $page = new ElementFinder($html);
-      $pageBodyText = $page->content('//body')->getFirst();
+      $pageBodyText = $page->content('//body')->first();
 
       self::assertInstanceOf(ElementFinder::class, $page);
       self::assertEquals($bodyText, $pageBodyText);

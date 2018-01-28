@@ -21,7 +21,7 @@
       $affected = new Uri($affectedUrl);
 
       $srcElements = $finder->element('//*[@src] | //*[@href] | //form[@action]');
-      $baseUrl = $finder->value('//base/@href')->getFirst();
+      $baseUrl = $finder->value('//base/@href')->first();
 
       foreach ($srcElements as $element) {
         $attributeName = 'href';
