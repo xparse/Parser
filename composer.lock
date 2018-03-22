@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a1317e489052903118b1c6893f66a84e",
+    "content-hash": "9872e967d82d88727751ff6264defc17",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -239,16 +239,16 @@
         },
         {
             "name": "xparse/element-finder",
-            "version": "0.2.1",
+            "version": "0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/xparse/ElementFinder.git",
-                "reference": "bcbc9032746bba2fd1c050bc632aab3daac73a77"
+                "reference": "1d045b9fc09e09c44c43e413ada20d4d08eb51c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/xparse/ElementFinder/zipball/bcbc9032746bba2fd1c050bc632aab3daac73a77",
-                "reference": "bcbc9032746bba2fd1c050bc632aab3daac73a77",
+                "url": "https://api.github.com/repos/xparse/ElementFinder/zipball/1d045b9fc09e09c44c43e413ada20d4d08eb51c8",
+                "reference": "1d045b9fc09e09c44c43e413ada20d4d08eb51c8",
                 "shasum": ""
             },
             "require": {
@@ -283,7 +283,7 @@
                 "dom",
                 "parser"
             ],
-            "time": "2017-12-27T06:30:17+00:00"
+            "time": "2018-03-22T07:05:53+00:00"
         },
         {
             "name": "xparse/expression-translator",

@@ -1,6 +1,10 @@
 #Changelog
 All Notable changes to `Parser` will be documented in this file
 ## [Unreleased]
+### Changed
+- BC. `LinkConverterInterface` return new `ElementFinder` Instance 
+- Upgrade `xparse/element-finder` library 
+
 ## 0.2.4 [2018-01-28]
 
 ### Changed
