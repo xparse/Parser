@@ -5,6 +5,7 @@
   namespace Xparse\Parser\Helper;
 
   use Xparse\ElementFinder\ElementFinder;
+  use Xparse\ElementFinder\ElementFinderInterface;
 
   /**
    * Convert relative paths to absolute
@@ -16,7 +17,9 @@
      *
      * @param ElementFinder $finder
      * @param string $affectedUrl
+     * @return ElementFinderInterface
+     * @throws \Exception
      */
-    public function convert(ElementFinder $finder, string $affectedUrl = '');
+    public function convert(ElementFinder $finder, string $affectedUrl = ''): ElementFinderInterface;
 
   }

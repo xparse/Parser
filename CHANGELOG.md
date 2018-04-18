@@ -1,6 +1,10 @@
 #Changelog
 All Notable changes to `Parser` will be documented in this file
-## [Unreleased]
+
+## 0.3.0 [Unreleased]
+### Changed
+- Make `LinkConverter` immutable
+
 ## 0.2.4 [2018-01-28]
 
 ### Changed

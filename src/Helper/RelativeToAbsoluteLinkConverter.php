@@ -4,9 +4,8 @@
 
   namespace Xparse\Parser\Helper;
 
-  use GuzzleHttp\Psr7\Uri;
-  use GuzzleHttp\Psr7\UriResolver;
   use Xparse\ElementFinder\ElementFinder;
+  use Xparse\ElementFinder\ElementFinderInterface;
 
   /**
    * @author Ivan Shcherbak <dev@funivan.com> 12/28/14
@@ -16,41 +15,12 @@
     /**
      * @inheritdoc
      */
-    public function convert(ElementFinder $finder, string $affectedUrl = '') {
-
-      $affected = new Uri($affectedUrl);
-
-      $srcElements = $finder->element('//*[@src] | //*[@href] | //form[@action]');
-      $baseUrl = $finder->value('//base/@href')->first();
-
-      foreach ($srcElements as $element) {
-        $attributeName = 'href';
-
-        if ($element->hasAttribute('action') === true and $element->tagName === 'form') {
-          $attributeName = 'action';
-        } else if ($element->hasAttribute('src') === true) {
-          $attributeName = 'src';
-        }
-
-        $relative = $element->getAttribute($attributeName);
-
-        # don`t change javascript in href
-        if (preg_match('!^\s*javascript\s*:\s*!', $relative)) {
-          continue;
-        }
-
-        if (parse_url($relative) === false) {
-          continue;
-        }
-
-        if ($baseUrl !== null and !preg_match('!^(/|http)!i', $relative)) {
-          $relative = UriResolver::resolve(new Uri($baseUrl), new Uri($relative));
-        }
-
-        $url = UriResolver::resolve($affected, new Uri($relative));
-        $element->setAttribute($attributeName, (string) $url);
-      }
-
+    public function convert(ElementFinder $finder, string $affectedUrl = ''): ElementFinderInterface {
+      $modifier = new ConvertUrlElementFinderModifier(
+        $affectedUrl,
+        $finder->value('//base/@href')->first() ?? ''
+      );
+      return $finder->modify('//*[@src] | //*[@href] | //form[@action]', $modifier);
     }
 
   }

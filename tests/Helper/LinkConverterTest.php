@@ -98,7 +98,7 @@
 
       $page = new ElementFinder($html);
 
-      (new RelativeToAbsoluteLinkConverter())->convert($page, $url);
+      $page = (new RelativeToAbsoluteLinkConverter())->convert($page, $url);
 
       $body = $page->content('//body')->first();
       static::assertEquals($expect, $body);

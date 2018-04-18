@@ -34,6 +34,7 @@
      */
     private $expressionTranslator;
 
+
     /**
      * @param ExpressionTranslatorInterface|null $expressionTranslator
      * @param LinkConverterInterface|null $linkConverter
@@ -63,12 +64,12 @@
      * @inheritdoc
      * @throws \Exception
      */
-    public function create(ResponseInterface $response, string $affectedUrl = '') : ElementFinder {
+    public function create(ResponseInterface $response, string $affectedUrl = ''): ElementFinder {
       $html = StringHelper::safeEncodeStr((string) $response->getBody());
       $html = $this->encodingConverter->convert($html, $response->getHeaderLine('content-type'));
       $elementFinder = new ElementFinder($html, null, $this->expressionTranslator);
       if ($affectedUrl !== null) {
-        $this->linkConverter->convert($elementFinder, $affectedUrl);
+        $elementFinder = $this->linkConverter->convert($elementFinder, $affectedUrl);
       }
 
       return $elementFinder;
