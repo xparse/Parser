@@ -13,7 +13,7 @@
     /**
      * @return array
      */
-    public function getConvertRelativeUrlToAbsolute() : array {
+    public function getConvertRelativeUrlToAbsolute(): array {
       return [
         [
           'html' => '<a href="/tt">a</a>',
@@ -93,6 +93,7 @@
      * @param string $html
      * @param string $url
      * @param string $expect
+     * @throws \Exception
      */
     public function testConvertRelativeUrlToAbsolute(string $html, string $expect, string $url) {
 
