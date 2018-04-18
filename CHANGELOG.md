@@ -1,10 +1,9 @@
 #Changelog
 All Notable changes to `Parser` will be documented in this file
 
-## 0.3.0 [Unreleased]
+## 0.3.0 [2018-04-18]
 ### Changed
-- Make `LinkConverter` immutable
-- BC. `LinkConverterInterface` return new `ElementFinder` Instance 
+- BC. Make `LinkConverter` immutable. Now `LinkConverterInterface` return new `ElementFinder` Instance 
 - Upgrade `xparse/element-finder` library 
 
 ## 0.2.4 [2018-01-28]
