@@ -13,9 +13,6 @@ use Xparse\ElementFinder\ElementFinderInterface;
 class RelativeToAbsoluteLinkConverter implements LinkConverterInterface
 {
 
-    /**
-     * @inheritdoc
-     */
     public function convert(ElementFinder $finder, string $affectedUrl = ''): ElementFinderInterface
     {
         $modifier = new ConvertUrlElementFinderModifier(

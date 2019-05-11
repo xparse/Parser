@@ -18,9 +18,6 @@ class ToUtfConverter implements EncodingConverterInterface
     private $supportedEncodings;
 
 
-    /**
-     * @inheritdoc
-     */
     public function convert(string $html, string $contentType = ''): string
     {
         $encoding = '';

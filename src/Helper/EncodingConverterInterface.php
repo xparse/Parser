@@ -11,7 +11,6 @@ interface EncodingConverterInterface
 
     /**
      * Try to detect input encoding from contentType or from html <meta> tag
-     *
      */
     public function convert(string $html, string $contentType): string;
 
