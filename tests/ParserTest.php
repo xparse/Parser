@@ -20,7 +20,7 @@ use Xparse\Parser\Parser;
 class ParserTest extends TestCase
 {
 
-    public function testInit()
+    public function testInit(): void
     {
 
         $parser = new Parser();
@@ -28,7 +28,7 @@ class ParserTest extends TestCase
     }
 
 
-    public function testGet()
+    public function testGet(): void
     {
 
         $client = $this->getDemoClient();
@@ -69,7 +69,7 @@ class ParserTest extends TestCase
         return new Client(['handler' => $mock]);
     }
 
-    public function testPost()
+    public function testPost(): void
     {
 
         $client = $this->getDemoClient();
@@ -83,7 +83,7 @@ class ParserTest extends TestCase
         self::assertEquals($page, $parser->getLastPage());
     }
 
-    public function testGetResponseReasonPhrase()
+    public function testGetResponseReasonPhrase(): void
     {
         $parser = new Parser($this->getDemoClient());
         $url = 'http://test.com/url/';
@@ -94,7 +94,7 @@ class ParserTest extends TestCase
     }
 
 
-    public function testGetEffectiveUrlFromHeaders()
+    public function testGetEffectiveUrlFromHeaders(): void
     {
         $mock = new MockHandler(
             [
@@ -115,14 +115,13 @@ class ParserTest extends TestCase
         $parser = new Parser(new Client(['handler' => $mock]));
         $url = 'http://test.com/url/';
         $parser->get($url);
-        $response = $parser->getLastResponse();
-        $effectiveUrl = $response->getHeaderLine('X-GUZZLE-EFFECTIVE-URL');
+        $effectiveUrl = $parser->getLastResponse()->getHeaderLine('X-GUZZLE-EFFECTIVE-URL');
         self::assertNotEquals($url, $effectiveUrl);
         self::assertEquals('http://test.com/effective-url/', $effectiveUrl);
     }
 
 
-    public function testConvertElementFinderUrls()
+    public function testConvertElementFinderUrls(): void
     {
         $parser = new Parser($this->getDemoClient());
         $url = 'http://test.com/url/';
@@ -133,16 +132,17 @@ class ParserTest extends TestCase
     }
 
 
-    public function testDefaultClientConfiguration()
+    public function testDefaultClientConfiguration(): void
     {
-        $parser = new Parser();
-        $option = $parser->getClient()->getConfig('cookies');
-        self::assertInstanceOf(CookieJarInterface::class, $option);
+        self::assertInstanceOf(
+            CookieJarInterface::class,
+            (new Parser())->getClient()->getConfig('cookies')
+        );
 
     }
 
 
-    public function testRetrieveElementFinderFactory()
+    public function testRetrieveElementFinderFactory(): void
     {
         $parser = new Parser();
         static::assertNotNull($parser->getElementFinderFactory());
@@ -152,7 +152,7 @@ class ParserTest extends TestCase
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testGetInvalidUrl()
+    public function testGetInvalidUrl(): void
     {
         $parser = new Parser($this->getDemoClient());
         static::assertNotEmpty($parser);
@@ -163,7 +163,7 @@ class ParserTest extends TestCase
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testPostWithInvalidParams()
+    public function testPostWithInvalidParams(): void
     {
         $parser = new Parser($this->getDemoClient());
         static::assertNotEmpty($parser);

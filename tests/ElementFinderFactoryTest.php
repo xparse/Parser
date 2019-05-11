@@ -8,6 +8,7 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Xparse\ElementFinder\ElementFinder;
 use Xparse\Parser\ElementFinderFactory;
+
 /**
  * @author Ivan Shcherbak <alotofall@gmail.com>
  */
@@ -72,7 +73,7 @@ class ElementFinderFactoryTest extends TestCase
      * @param string $html
      * @param string $bodyText
      */
-    public function testDifferentCharsetStyles($html, $bodyText, array $headers = [])
+    public function testDifferentCharsetStyles(string $html, string $bodyText, array $headers = []): void
     {
         $response = new Response(200, $headers, $html);
         $page = (new ElementFinderFactory())->create($response);

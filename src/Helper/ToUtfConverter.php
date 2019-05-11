@@ -27,7 +27,7 @@ class ToUtfConverter implements EncodingConverterInterface
             $encoding = $metaContentType[1];
         }
         $encoding = strtolower($encoding);
-        if ($encoding !== '' and in_array($encoding, $this->getSupportedEncodings(), true)) {
+        if ($encoding !== '' && in_array($encoding, $this->getSupportedEncodings(), true)) {
             $html = mb_convert_encoding($html, 'utf-8', $encoding);
         }
 
@@ -44,7 +44,7 @@ class ToUtfConverter implements EncodingConverterInterface
             $findAliases = function_exists('mb_encoding_aliases');
             foreach (mb_list_encodings() as $encoding) {
                 $encoding = strtolower($encoding);
-                if ($encoding !== 'utf-8' and $encoding !== 'utf8') {
+                if ($encoding !== 'utf-8' && $encoding !== 'utf8') {
                     $this->supportedEncodings[] = $encoding;
                     if ($findAliases) {
                         foreach (mb_encoding_aliases($encoding) as $encodingAlias) {

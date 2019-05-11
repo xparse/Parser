@@ -72,7 +72,7 @@ class ElementFinderFactory implements ElementFinderFactoryInterface
         $html = StringHelper::safeEncodeStr((string)$response->getBody());
         $html = $this->encodingConverter->convert($html, $response->getHeaderLine('content-type'));
         $elementFinder = new ElementFinder($html, null, $this->expressionTranslator);
-        if ($affectedUrl !== null) {
+        if ($affectedUrl !== '') {
             $elementFinder = $this->linkConverter->convert($elementFinder, $affectedUrl);
         }
 
