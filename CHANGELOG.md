@@ -1,7 +1,12 @@
 # Changelog
 All Notable changes to `Parser` will be documented in this file
 
-## [Unreleased]
+## 0.4.0 [2019-05-11]
+### Changed
+- BC. Upgrade to php 7.1
+- BC. `ParserInterface` now returns `ElementFinderInterface`
+- BC. `ElementFinderFactoryInterface` now returns `ElementFinderInterface`
+- Upgrade `xparse/element-finder` library 
 
 ## 0.3.0 [2018-04-18]
 ### Changed

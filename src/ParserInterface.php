@@ -1,32 +1,21 @@
 <?php
 
-  declare(strict_types=1);
+declare(strict_types=1);
 
-  namespace Xparse\Parser;
+namespace Xparse\Parser;
 
-  use Xparse\ElementFinder\ElementFinder;
+use Xparse\ElementFinder\ElementFinderInterface;
 
-  /**
-   *
-   */
-  interface ParserInterface {
+/**
+ * @author Ivan Shcherbak <alotofall@gmail.com>
+ */
+interface ParserInterface
+{
 
-    /**
-     * @param string $url
-     * @return ElementFinder
-     */
-    public function get(string $url) : ElementFinder;
+    public function get(string $url): ElementFinderInterface;
 
-    /**
-     * @param string $url
-     * @param array $options
-     * @return ElementFinder
-     */
-    public function post(string $url, array $options) : ElementFinder;
+    public function post(string $url, array $options): ElementFinderInterface;
 
-    /**
-     * @return ElementFinder|null
-     */
-    public function getLastPage();
+    public function getLastPage(): ?ElementFinderInterface;
 
-  }
+}
