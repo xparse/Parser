@@ -7,6 +7,7 @@ namespace Xparse\Parser;
 use Exception;
 use Psr\Http\Message\ResponseInterface;
 use Xparse\ElementFinder\ElementFinder;
+use Xparse\ElementFinder\ElementFinderInterface;
 use Xparse\ElementFinder\Helper\StringHelper;
 use Xparse\ExpressionTranslator\ExpressionTranslatorInterface;
 use Xparse\ExpressionTranslator\XpathExpression;
@@ -66,7 +67,7 @@ class ElementFinderFactory implements ElementFinderFactoryInterface
     /**
      * @throws Exception
      */
-    public function create(ResponseInterface $response, string $affectedUrl = ''): ElementFinder
+    public function create(ResponseInterface $response, string $affectedUrl = ''): ElementFinderInterface
     {
         $html = StringHelper::safeEncodeStr((string)$response->getBody());
         $html = $this->encodingConverter->convert($html, $response->getHeaderLine('content-type'));

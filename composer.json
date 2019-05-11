@@ -17,9 +17,10 @@
   ],
   "require": {
     "php": "^7.1",
+    "ext-dom": "*",
     "guzzlehttp/guzzle": "^6.3",
     "xparse/element-finder": "^0.3.1",
-    "ext-dom": "*"
+    "xparse/expression-translator": "^0.0.3"
   },
   "minimum-stability": "alpha",
   "require-dev": {

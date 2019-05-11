@@ -14,6 +14,7 @@ use InvalidArgumentException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Xparse\ElementFinder\ElementFinder;
+use Xparse\ElementFinder\ElementFinderInterface;
 
 /**
  * @author Ivan Shcherbak <alotofall@gmail.com>
@@ -43,10 +44,6 @@ class Parser implements ParserInterface
     protected $lastResponse;
 
 
-    /**
-     * @param ClientInterface|null $client
-     * @param ElementFinderFactoryInterface|null $elementFinderFactory
-     */
     public function __construct(ClientInterface $client = null, ElementFinderFactoryInterface $elementFinderFactory = null)
     {
         if ($client === null) {
@@ -55,21 +52,15 @@ class Parser implements ParserInterface
                 RequestOptions::COOKIES => new CookieJar(),
             ]);
         }
-
         $this->client = $client;
-
-        if ($elementFinderFactory === null) {
-            $elementFinderFactory = new ElementFinderFactory();
-        }
-
-        $this->elementFinderFactory = $elementFinderFactory;
+        $this->elementFinderFactory = $elementFinderFactory ?? new ElementFinderFactory();
     }
 
 
     /**
      * @throws InvalidArgumentException
      */
-    public function get(string $url, array $options = []): ElementFinder
+    public function get(string $url, array $options = []): ElementFinderInterface
     {
         if ($url === '') {
             throw new InvalidArgumentException('Url can\'t be empty');
@@ -80,9 +71,7 @@ class Parser implements ParserInterface
         );
     }
 
-    /**
-     */
-    public function send(RequestInterface $request, array $options = []): ElementFinder
+    public function send(RequestInterface $request, array $options = []): ElementFinderInterface
     {
 
         $prevCallback = !empty($options['on_stats']) ? $options['on_stats'] : null;
@@ -113,7 +102,7 @@ class Parser implements ParserInterface
     /**
      * @throws InvalidArgumentException
      */
-    public function post(string $url, array $options = []): ElementFinder
+    public function post(string $url, array $options = []): ElementFinderInterface
     {
         if ($url === '') {
             throw new InvalidArgumentException('Url can\'t be empty');
@@ -124,31 +113,21 @@ class Parser implements ParserInterface
         );
     }
 
-    /**
-     * @return ElementFinder|null
-     */
-    public function getLastPage()
+    public function getLastPage(): ?ElementFinderInterface
     {
         return $this->lastPage;
     }
 
-    /**
-     * @return ResponseInterface|null
-     */
-    public function getLastResponse()
+    public function getLastResponse(): ?ResponseInterface
     {
         return $this->lastResponse;
     }
 
-    /**
-     */
     public function getClient(): ClientInterface
     {
         return $this->client;
     }
 
-    /**
-     */
     public function getElementFinderFactory(): ElementFinderFactoryInterface
     {
         return $this->elementFinderFactory;

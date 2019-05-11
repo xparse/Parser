@@ -6,6 +6,7 @@ namespace Xparse\Parser;
 
 use Psr\Http\Message\ResponseInterface;
 use Xparse\ElementFinder\ElementFinder;
+use Xparse\ElementFinder\ElementFinderInterface;
 
 /**
  * @author Ivan Shcherbak <alotofall@gmail.com>
@@ -13,6 +14,6 @@ use Xparse\ElementFinder\ElementFinder;
 interface ElementFinderFactoryInterface
 {
 
-    public function create(ResponseInterface $response, string $affectedUrl = ''): ElementFinder;
+    public function create(ResponseInterface $response, string $affectedUrl = ''): ElementFinderInterface;
 
 }

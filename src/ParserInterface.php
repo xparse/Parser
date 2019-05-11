@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Xparse\Parser;
 
-use Xparse\ElementFinder\ElementFinder;
+use Xparse\ElementFinder\ElementFinderInterface;
 
 /**
  * @author Ivan Shcherbak <alotofall@gmail.com>
@@ -12,17 +12,10 @@ use Xparse\ElementFinder\ElementFinder;
 interface ParserInterface
 {
 
-    /**
-     */
-    public function get(string $url): ElementFinder;
+    public function get(string $url): ElementFinderInterface;
 
-    /**
-     */
-    public function post(string $url, array $options): ElementFinder;
+    public function post(string $url, array $options): ElementFinderInterface;
 
-    /**
-     * @return ElementFinder|null
-     */
-    public function getLastPage();
+    public function getLastPage(): ?ElementFinderInterface;
 
 }

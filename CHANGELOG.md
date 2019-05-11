@@ -3,7 +3,9 @@ All Notable changes to `Parser` will be documented in this file
 
 ## [Unreleased]
 ### Changed
-- Upgrade to php 7.1
+- BC. Upgrade to php 7.1
+- BC. `ParserInterface` now returns `ElementFinderInterface`
+- BC. `ElementFinderFactoryInterface` now returns `ElementFinderInterface`
 
 ## 0.3.0 [2018-04-18]
 ### Changed
