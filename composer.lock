@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a30d2811ea121465656423c4945e7552",
+    "content-hash": "236618a323aaa0199dfc3609fef01169",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -281,21 +281,23 @@
         },
         {
             "name": "xparse/element-finder",
-            "version": "0.3.1",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/xparse/ElementFinder.git",
-                "reference": "40763e1fcd0cf19c0eff1235b3ad40b8c8ab5274"
+                "reference": "90d6e6e39437a44b8d1bef740799f7a5aca4df22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/xparse/ElementFinder/zipball/40763e1fcd0cf19c0eff1235b3ad40b8c8ab5274",
-                "reference": "40763e1fcd0cf19c0eff1235b3ad40b8c8ab5274",
+                "url": "https://api.github.com/repos/xparse/ElementFinder/zipball/90d6e6e39437a44b8d1bef740799f7a5aca4df22",
+                "reference": "90d6e6e39437a44b8d1bef740799f7a5aca4df22",
                 "shasum": ""
             },
             "require": {
+                "ext-dom": "*",
+                "ext-libxml": "*",
                 "php": "^7.0",
-                "xparse/expression-translator": "0.0.3"
+                "xparse/expression-translator": "0.0.*"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.7",
@@ -313,7 +315,7 @@
             ],
             "authors": [
                 {
-                    "name": "Ivan Scherbak",
+                    "name": "Ivan Shcherbak",
                     "email": "dev@funivan.com",
                     "homepage": "http://funivan.com/",
                     "role": "Developer"
@@ -325,7 +327,7 @@
                 "dom",
                 "parser"
             ],
-            "time": "2018-04-18T07:44:53+00:00"
+            "time": "2019-05-11T07:23:10+00:00"
         },
         {
             "name": "xparse/expression-translator",

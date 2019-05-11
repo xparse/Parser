@@ -7,13 +7,13 @@ namespace Xparse\Parser\Helper;
 use DOMNodeList;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
-use Xparse\ElementFinder\ElementFinder\ElementFinderModifierInterface;
+use Xparse\ElementFinder\DomNodeListAction\DomNodeListActionInterface;
 
 /**
  * @internal
  * @author Ivan Shcherbak <alotofall@gmail.com>
  */
-class ConvertUrlElementFinderModifier implements ElementFinderModifierInterface
+class ConvertUrlElementFinderModifier implements DomNodeListActionInterface
 {
 
     /**
@@ -34,10 +34,7 @@ class ConvertUrlElementFinderModifier implements ElementFinderModifierInterface
     }
 
 
-    /**
-     * @return void
-     */
-    public function modify(DOMNodeList $nodeList)
+    final public function execute(DOMNodeList $nodeList): void
     {
         $affected = new Uri($this->affectedUrl);
         foreach ($nodeList as $element) {
@@ -54,6 +51,7 @@ class ConvertUrlElementFinderModifier implements ElementFinderModifierInterface
                     $relative = UriResolver::resolve(new Uri($this->baseUrl), new Uri($relative));
                 }
                 $url = UriResolver::resolve($affected, new Uri($relative));
+                /** @noinspection UnusedFunctionResultInspection */
                 $element->setAttribute($attribute, (string)$url);
             }
         }
