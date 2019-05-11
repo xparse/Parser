@@ -1,19 +1,18 @@
 <?php
 
-  declare(strict_types=1);
+declare(strict_types=1);
 
-  namespace Xparse\Parser;
+namespace Xparse\Parser;
 
-  use Psr\Http\Message\ResponseInterface;
-  use Xparse\ElementFinder\ElementFinder;
+use Psr\Http\Message\ResponseInterface;
+use Xparse\ElementFinder\ElementFinder;
 
-  interface ElementFinderFactoryInterface {
+/**
+ * @author Ivan Shcherbak <alotofall@gmail.com>
+ */
+interface ElementFinderFactoryInterface
+{
 
-    /**
-     * @param ResponseInterface $response
-     * @param string $affectedUrl
-     * @return ElementFinder
-     */
-    public function create(ResponseInterface $response, string $affectedUrl = '') : ElementFinder;
+    public function create(ResponseInterface $response, string $affectedUrl = ''): ElementFinder;
 
-  }
+}
