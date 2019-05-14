@@ -3,6 +3,7 @@ All Notable changes to `Parser` will be documented in this file
 
 ## 0.4.1 [UNRELEASED]
 - #41 accept LinkConverter now accept ElementFinderInterface
+- Update xparse/element-finder library
 
 ## 0.4.0 [2019-05-11]
 ### Changed
