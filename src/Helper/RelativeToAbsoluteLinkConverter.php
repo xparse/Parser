@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Xparse\Parser\Helper;
 
-use Xparse\ElementFinder\ElementFinder;
 use Xparse\ElementFinder\ElementFinderInterface;
 
 /**
@@ -13,7 +12,7 @@ use Xparse\ElementFinder\ElementFinderInterface;
 class RelativeToAbsoluteLinkConverter implements LinkConverterInterface
 {
 
-    public function convert(ElementFinder $finder, string $affectedUrl = ''): ElementFinderInterface
+    public function convert(ElementFinderInterface $finder, string $affectedUrl = ''): ElementFinderInterface
     {
         $modifier = new ConvertUrlElementFinderModifier(
             $affectedUrl,
