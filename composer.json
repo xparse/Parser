@@ -42,9 +42,6 @@
     }
   },
   "config": {
-    "platform": {
-      "php": "7.2"
-    },
     "optimize-autoloader": true,
     "sort-packages": true
   }
