@@ -16,7 +16,7 @@
     }
   ],
   "require": {
-    "php": "^7.2",
+    "php": ">=7.2",
     "ext-dom": "*",
     "ext-mbstring": "*",
     "guzzlehttp/guzzle": "^6.3",
@@ -42,9 +42,6 @@
     }
   },
   "config": {
-    "platform": {
-      "php": "7.2"
-    },
     "optimize-autoloader": true,
     "sort-packages": true
   }
