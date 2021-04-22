@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Xparse\Parser\Helper;
 
+use DOMElement;
 use DOMNodeList;
 use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\UriResolver;
@@ -38,7 +39,7 @@ class ConvertUrlElementFinderModifier implements DomNodeListActionInterface
     {
         $affected = new Uri($this->affectedUrl);
         foreach ($nodeList as $element) {
-            /** @var \DOMElement $element */
+            assert($element instanceof DOMElement);
             $attribute = $this->attributeName($element);
             $relative = $element->getAttribute($attribute);
             $isValid = parse_url($relative) !== false;
@@ -51,14 +52,13 @@ class ConvertUrlElementFinderModifier implements DomNodeListActionInterface
                     $relative = UriResolver::resolve(new Uri($this->baseUrl), new Uri($relative));
                 }
                 $url = UriResolver::resolve($affected, new Uri($relative));
-                /** @noinspection UnusedFunctionResultInspection */
                 $element->setAttribute($attribute, (string)$url);
             }
         }
     }
 
 
-    private function attributeName(\DOMElement $element): string
+    private function attributeName(DOMElement $element): string
     {
         $name = 'href';
         if ($element->tagName === 'form' && $element->hasAttribute('action') === true) {
