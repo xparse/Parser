@@ -28,7 +28,7 @@
   "minimum-stability": "alpha",
   "require-dev": {
     "phpunit/phpunit": "^8.5",
-    "roave/security-advisories": "dev-master",
+    "roave/security-advisories": "dev-latest",
     "ext-iconv": "*"
   },
   "autoload": {
