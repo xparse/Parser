@@ -22,8 +22,8 @@
     "guzzlehttp/guzzle": "^6.3",
     "guzzlehttp/psr7": "^1.5",
     "psr/http-message": "^1.0",
-    "xparse/element-finder": "^0.4 || ^0.5",
-    "xparse/expression-translator": "0.0.*"
+    "xparse/element-finder": "^0.5.1-alpha",
+    "xparse/expression-translator": "^0.0.5-alpha"
   },
   "minimum-stability": "alpha",
   "require-dev": {
