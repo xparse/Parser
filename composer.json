@@ -16,7 +16,7 @@
     }
   ],
   "require": {
-    "php": ">=7.2",
+    "php": ">=7.3",
     "ext-dom": "*",
     "ext-mbstring": "*",
     "guzzlehttp/guzzle": "^6.3",
