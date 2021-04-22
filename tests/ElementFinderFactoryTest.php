@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Test\Xparse\Parser;
 
+use Exception;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Xparse\ElementFinder\ElementFinder;
@@ -70,8 +71,7 @@ class ElementFinderFactoryTest extends TestCase
 
     /**
      * @dataProvider getDifferentCharsetStylesDataProvider
-     * @param string $html
-     * @param string $bodyText
+     * @throws Exception
      */
     public function testDifferentCharsetStyles(string $html, string $bodyText, array $headers = []): void
     {

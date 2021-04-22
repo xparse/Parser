@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Test\Xparse\Parser\Helper;
 
+use Exception;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Xparse\ElementFinder\ElementFinder;
@@ -74,6 +75,7 @@ class HtmlEncodingConverterTest extends TestCase
 
     /**
      * @dataProvider getDifferentCharsetStylesDataProvider
+     * @throws Exception
      */
     public function testDifferentCharsetStyles(string $html, string $bodyText, array $headers = [])
     {
