@@ -139,24 +139,24 @@ class ParserTest extends TestCase
     public function testRetrieveElementFinderFactory(): void
     {
         $parser = new Parser();
-        static::assertNotNull($parser->getElementFinderFactory());
+        self::assertNotNull($parser->getElementFinderFactory());
     }
 
 
     public function testGetInvalidUrl(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        self::expectException(InvalidArgumentException::class);
         $parser = new Parser($this->getDemoClient());
-        static::assertNotEmpty($parser);
+        self::assertNotEmpty($parser);
         $parser->get('');
     }
 
 
     public function testPostWithInvalidParams(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        self::expectException(InvalidArgumentException::class);
         $parser = new Parser($this->getDemoClient());
-        static::assertNotEmpty($parser);
+        self::assertNotEmpty($parser);
         $parser->post('', ['someData']);
     }
 

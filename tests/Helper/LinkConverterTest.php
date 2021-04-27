@@ -105,7 +105,7 @@ class LinkConverterTest extends TestCase
         $page = (new RelativeToAbsoluteLinkConverter())->convert($page, $url);
 
         $body = $page->content('//body')->first();
-        static::assertEquals($expect, $body);
+        self::assertEquals($expect, $body);
     }
 
 }
