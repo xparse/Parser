@@ -26,9 +26,9 @@
     "xparse/expression-translator": "0.0.*"
   },
   "require-dev": {
-    "phpunit/phpunit": "^8.5",
-    "roave/security-advisories": "dev-latest",
-    "ext-iconv": "*"
+    "ext-iconv": "*",
+    "phpunit/phpunit": "^9.3",
+    "roave/security-advisories": "dev-latest"
   },
   "autoload": {
     "psr-4": {
