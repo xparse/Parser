@@ -22,7 +22,6 @@ class ParserTest extends TestCase
 
     public function testInit(): void
     {
-
         $parser = new Parser();
         self::assertEquals(get_class(new Client()), get_class($parser->getClient()));
     }
@@ -30,7 +29,6 @@ class ParserTest extends TestCase
 
     public function testGet(): void
     {
-
         $client = $this->getDemoClient();
         $parser = new Parser($client);
 
@@ -38,12 +36,9 @@ class ParserTest extends TestCase
 
         $page = $parser->get('http://test.com');
 
-        self::assertInstanceOf(get_class(new ElementFinder('<html><a>1</a></html>')), $page);
         self::assertEquals($page, $parser->getLastPage());
     }
 
-    /**
-     */
     protected function getDemoClient(): Client
     {
         $mock = new MockHandler(
@@ -71,7 +66,6 @@ class ParserTest extends TestCase
 
     public function testPost(): void
     {
-
         $client = $this->getDemoClient();
         $parser = new Parser($client);
 
@@ -79,7 +73,6 @@ class ParserTest extends TestCase
 
         $page = $parser->post('http://test.com/info', [RequestOptions::FORM_PARAMS => ['123']]);
 
-        self::assertInstanceOf(get_class(new ElementFinder('<html></html>')), $page);
         self::assertEquals($page, $parser->getLastPage());
     }
 
@@ -138,35 +131,30 @@ class ParserTest extends TestCase
             CookieJarInterface::class,
             (new Parser())->getClient()->getConfig('cookies')
         );
-
     }
 
 
     public function testRetrieveElementFinderFactory(): void
     {
         $parser = new Parser();
-        static::assertNotNull($parser->getElementFinderFactory());
+        self::assertNotNull($parser->getElementFinderFactory());
     }
 
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testGetInvalidUrl(): void
     {
+        self::expectException(InvalidArgumentException::class);
         $parser = new Parser($this->getDemoClient());
-        static::assertNotEmpty($parser);
+        self::assertNotEmpty($parser);
         $parser->get('');
     }
 
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testPostWithInvalidParams(): void
     {
+        self::expectException(InvalidArgumentException::class);
         $parser = new Parser($this->getDemoClient());
-        static::assertNotEmpty($parser);
+        self::assertNotEmpty($parser);
         $parser->post('', ['someData']);
     }
 

@@ -26,8 +26,9 @@ class ToUtfConverter implements EncodingConverterInterface
         } elseif (preg_match("!.*<meta.*charset=[\"']?[ \t]*([A-Za-z0-9-]{4,})[ \t]*[\"']!mi", $html, $metaContentType) === 1) {
             $encoding = $metaContentType[1];
         }
-        $encoding = strtolower($encoding);
+        $encoding = mb_strtolower($encoding);
         if ($encoding !== '' && in_array($encoding, $this->getSupportedEncodings(), true)) {
+            /** @noinspection CallableParameterUseCaseInTypeContextInspection */
             $html = mb_convert_encoding($html, 'utf-8', $encoding);
         }
 
@@ -43,12 +44,12 @@ class ToUtfConverter implements EncodingConverterInterface
             $this->supportedEncodings = [];
             $findAliases = function_exists('mb_encoding_aliases');
             foreach (mb_list_encodings() as $encoding) {
-                $encoding = strtolower($encoding);
+                $encoding = mb_strtolower($encoding);
                 if ($encoding !== 'utf-8' && $encoding !== 'utf8') {
                     $this->supportedEncodings[] = $encoding;
                     if ($findAliases) {
                         foreach (mb_encoding_aliases($encoding) as $encodingAlias) {
-                            $encodingAlias = strtolower($encodingAlias);
+                            $encodingAlias = mb_strtolower($encodingAlias);
                             $this->supportedEncodings[] = $encodingAlias;
                         }
                     }

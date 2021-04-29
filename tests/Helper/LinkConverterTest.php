@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Test\Xparse\Parser\Helper;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Xparse\ElementFinder\ElementFinder;
 use Xparse\Parser\Helper\RelativeToAbsoluteLinkConverter;
@@ -95,9 +94,8 @@ class LinkConverterTest extends TestCase
 
     /**
      * @dataProvider getConvertRelativeUrlToAbsolute
-     * @throws Exception
      */
-    public function testConvertRelativeUrlToAbsolute(string $html, string $expect, string $url)
+    public function testConvertRelativeUrlToAbsolute(string $html, string $expect, string $url): void
     {
 
         $page = new ElementFinder($html);
@@ -105,7 +103,7 @@ class LinkConverterTest extends TestCase
         $page = (new RelativeToAbsoluteLinkConverter())->convert($page, $url);
 
         $body = $page->content('//body')->first();
-        static::assertEquals($expect, $body);
+        self::assertEquals($expect, $body);
     }
 
 }

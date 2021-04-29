@@ -70,8 +70,6 @@ class ElementFinderFactoryTest extends TestCase
 
     /**
      * @dataProvider getDifferentCharsetStylesDataProvider
-     * @param string $html
-     * @param string $bodyText
      */
     public function testDifferentCharsetStyles(string $html, string $bodyText, array $headers = []): void
     {
