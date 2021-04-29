@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Test\Xparse\Parser\Helper;
 
-use Exception;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Xparse\ElementFinder\ElementFinder;
 use Xparse\Parser\Helper\ToUtfConverter;
+
 /**
  * @author Ivan Shcherbak <alotofall@gmail.com>
  */
@@ -75,9 +75,8 @@ class HtmlEncodingConverterTest extends TestCase
 
     /**
      * @dataProvider getDifferentCharsetStylesDataProvider
-     * @throws Exception
      */
-    public function testDifferentCharsetStyles(string $html, string $bodyText, array $headers = [])
+    public function testDifferentCharsetStyles(string $html, string $bodyText, array $headers = []): void
     {
         $contentType = (new Response(200, $headers, $html))->getHeaderLine('content-type');
         $html = (new ToUtfConverter())->convert($html, $contentType);

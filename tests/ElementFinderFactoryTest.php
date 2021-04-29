@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Test\Xparse\Parser;
 
-use Exception;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Xparse\ElementFinder\ElementFinder;

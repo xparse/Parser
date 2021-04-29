@@ -39,8 +39,6 @@ class ParserTest extends TestCase
         self::assertEquals($page, $parser->getLastPage());
     }
 
-    /**
-     */
     protected function getDemoClient(): Client
     {
         $mock = new MockHandler(
