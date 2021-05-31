@@ -2,7 +2,10 @@
 All Notable changes to `Parser` will be documented in this file
 
 ## Planned changes
-- Upgrade to php 7.3
+Create the release of version 1.0.0.
+
+## 0.5.0-alpha [2021-04-29]
+- Move to php 7.3
 - Add php 8.0 support
 
 ## 0.4.1 [2019-05-14]
