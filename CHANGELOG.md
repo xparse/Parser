@@ -3,6 +3,9 @@ All Notable changes to `Parser` will be documented in this file
 
 ## Planned changes
 
+## 1.0.1 [2021-06-01]
+- Return support of guzzlehttp/guzzle ^6.3
+
 ## 1.0.0 [2021-05-31]
 - No breaking changes.
 
