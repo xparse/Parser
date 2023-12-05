@@ -17,7 +17,7 @@
   ],
   "minimum-stability": "alpha",
   "require": {
-    "php": "^7.3 || ^8.0",
+    "php": "^8.0",
     "ext-dom": "*",
     "ext-mbstring": "*",
     "guzzlehttp/guzzle": "^6.3 || ^7.3",
