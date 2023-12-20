@@ -51,7 +51,7 @@ class ConvertUrlElementFinderModifier implements DomNodeListActionInterface
                 if ($this->baseUrl !== '' && !preg_match('!^(/|http)!i', $relative)) {
                     $relative = UriResolver::resolve(new Uri($this->baseUrl), new Uri($relative));
                 }
-                $url = UriResolver::resolve($affected, new Uri($relative));
+                $url = UriResolver::resolve($affected, new Uri((string)$relative));
                 $element->setAttribute($attribute, (string)$url);
             }
         }
