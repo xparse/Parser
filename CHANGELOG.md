@@ -3,6 +3,12 @@ All Notable changes to `Parser` will be documented in this file
 
 ## Planned changes
 
+## 1.0.3 [2023-12-20]
+- Updated minimum required version for guzzlehttp/psr7 to 2.4.5
+
+## 1.0.2 [2023-12-5]
+- Minimum supported php version is now php 8.0
+
 ## 1.0.1 [2021-06-01]
 - Return support of guzzlehttp/guzzle ^6.3
 
