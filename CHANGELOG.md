@@ -2,8 +2,6 @@
 All Notable changes to `Parser` will be documented in this file
 
 ## Planned changes
-
-## 1.0.3 [2023-12-20]
 - Updated minimum required version for guzzlehttp/psr7 to 2.4.5
 
 ## 1.0.2 [2023-12-5]
