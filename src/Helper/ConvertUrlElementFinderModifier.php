@@ -17,14 +17,8 @@ use Xparse\ElementFinder\DomNodeListAction\DomNodeListActionInterface;
 class ConvertUrlElementFinderModifier implements DomNodeListActionInterface
 {
 
-    private string $affectedUrl;
-
-    public function __construct(
-        string $affectedUrl,
-        private string $baseUrl
-    )
+    public function __construct(private string $affectedUrl, private string $baseUrl)
     {
-        $this->affectedUrl = $affectedUrl;
     }
 
 
