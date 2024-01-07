@@ -28,15 +28,9 @@ class Parser implements ParserInterface
      */
     protected $lastPage;
 
-    /**
-     * @var ClientInterface
-     */
-    protected $client;
+    protected ?ClientInterface $client;
 
-    /**
-     * @var ElementFinderFactoryInterface
-     */
-    protected $elementFinderFactory;
+    protected ElementFinderFactoryInterface $elementFinderFactory;
 
     /**
      * @var null|ResponseInterface

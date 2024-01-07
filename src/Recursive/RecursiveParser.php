@@ -15,32 +15,14 @@ use Xparse\Parser\ParserInterface;
 class RecursiveParser implements IteratorAggregate
 {
     /**
-     * @var array<string>
-     */
-    private array $links = [];
-
-    /**
-     * @var ParserInterface
-     */
-    private ParserInterface $parser;
-
-    /**
-     * @var string[]
-     */
-    private array $expressions = [];
-
-
-    /**
-     * @param ParserInterface $parser
      * @param string[] $expressions
      * @param string[] $links
-     * @throws InvalidArgumentException
      */
-    public function __construct(ParserInterface $parser, array $expressions, array $links = [])
-    {
-        $this->parser = $parser;
-        $this->expressions = $expressions;
-        $this->links = $links;
+    public function __construct(
+        private ParserInterface $parser,
+        private array $expressions,
+        private array $links = []
+    ) {
     }
 
     /**
