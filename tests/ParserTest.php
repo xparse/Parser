@@ -23,7 +23,7 @@ class ParserTest extends TestCase
     public function testInit(): void
     {
         $parser = new Parser();
-        self::assertEquals(get_class(new Client()), get_class($parser->getClient()));
+        self::assertEquals((new Client())::class, $parser->getClient()::class);
     }
 
 

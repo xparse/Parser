@@ -22,20 +22,11 @@ use Xparse\Parser\Helper\ToUtfConverter;
 class ElementFinderFactory implements ElementFinderFactoryInterface
 {
 
-    /**
-     * @var LinkConverterInterface
-     */
-    private $linkConverter;
+    private ?LinkConverterInterface $linkConverter;
 
-    /**
-     * @var EncodingConverterInterface
-     */
-    private $encodingConverter;
+    private ?EncodingConverterInterface $encodingConverter;
 
-    /**
-     * @var ExpressionTranslatorInterface
-     */
-    private $expressionTranslator;
+    private ?ExpressionTranslatorInterface $expressionTranslator;
 
 
     /**
