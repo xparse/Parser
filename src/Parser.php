@@ -23,31 +23,23 @@ class Parser implements ParserInterface
 {
 
     /**
-     *
      * @var ElementFinder|null
      */
     protected $lastPage;
-
-    protected ?ClientInterface $client;
-
-    protected ElementFinderFactoryInterface $elementFinderFactory;
 
     /**
      * @var null|ResponseInterface
      */
     protected $lastResponse;
 
-
-    public function __construct(ClientInterface $client = null, ElementFinderFactoryInterface $elementFinderFactory = null)
+    public function __construct(
+        protected ClientInterface $client = new Client([
+            RequestOptions::ALLOW_REDIRECTS => true,
+            RequestOptions::COOKIES => new CookieJar(),
+        ]),
+        protected ElementFinderFactoryInterface $elementFinderFactory = new ElementFinderFactory()
+    )
     {
-        if ($client === null) {
-            $client = new Client([
-                RequestOptions::ALLOW_REDIRECTS => true,
-                RequestOptions::COOKIES => new CookieJar(),
-            ]);
-        }
-        $this->client = $client;
-        $this->elementFinderFactory = $elementFinderFactory ?? new ElementFinderFactory();
     }
 
 

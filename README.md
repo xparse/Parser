@@ -47,6 +47,40 @@ Here is an example of `__invoke()` method in your custom Middleware
   }
 ```
 
+# Recursive Parser
+
+Recursive Parser allows you to parse website pages recursively.
+You need to pass link from where to start and set next page expression (xPath, css, etc).
+
+## Basic Usage
+
+Try to find all links to the repositories on github. Our query will be `xparse`.
+With recursive pagination we can traverse all pagination links and process each resulting page to fetch repositories links.
+
+```php
+  use Xparse\Parser\Parser;
+  use Xparse\Parser\RecursiveParser;
+  
+  # init Parser
+  $parser = new Parser();
+
+  # set expression to pagination links and initial page url
+  $pages = new RecursiveParser(
+       $parser,
+       ["//*[@class='pagination']//a/@href"],
+       ['https://github.com/search?q=xparse']
+  );
+
+  $allLinks = [];
+  foreach($pages as $page){
+    # set expression to fetch repository links
+    $adsList = $page->value("//*[@class='repo-list-name']//a/@href")->all();
+    # merge and remove duplicates
+    $allLinks = array_values(array_unique(array_merge($allLinks, $adsList)));
+  }
+  print_r($allLinks);
+```
+
 ## Testing
 
 ``` bash
