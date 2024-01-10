@@ -23,9 +23,9 @@ class ElementFinderFactory implements ElementFinderFactoryInterface
 {
 
     public function __construct(
-        private ?ExpressionTranslatorInterface $expressionTranslator = new XpathExpression(),
-        private ?LinkConverterInterface $linkConverter = new RelativeToAbsoluteLinkConverter(),
-        private ?EncodingConverterInterface $encodingConverter = new ToUtfConverter()
+        private readonly ?ExpressionTranslatorInterface $expressionTranslator = new XpathExpression(),
+        private readonly ?LinkConverterInterface $linkConverter = new RelativeToAbsoluteLinkConverter(),
+        private readonly ?EncodingConverterInterface $encodingConverter = new ToUtfConverter()
     )
     {
     }

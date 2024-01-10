@@ -19,8 +19,8 @@ class RecursiveParser implements IteratorAggregate
      * @param string[] $links
      */
     public function __construct(
-        private ParserInterface $parser,
-        private array $expressions,
+        private readonly ParserInterface $parser,
+        private readonly array $expressions,
         private array $links = []
     ) {
     }
