@@ -1,7 +1,7 @@
 # Changelog
 All Notable changes to `Parser` will be documented in this file
 
-## Planned changes
+## 2.0.0 [2024-01-11]
 - ElementFinderFactory now accept use `Xparse\ElementFinder\ExpressionTranslator\ExpressionTranslatorInterface`
 - Updated minimum required php version to 8.1
 - Add `RecursiveParser` (merged from the [xparse/recursive-pagination](https://github.com/xparse/RecursivePagination) repository)
