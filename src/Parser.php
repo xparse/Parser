@@ -21,7 +21,6 @@ use Xparse\ElementFinder\ElementFinderInterface;
  */
 class Parser implements ParserInterface
 {
-
     /**
      * @var ElementFinder|null
      */
@@ -38,10 +37,8 @@ class Parser implements ParserInterface
             RequestOptions::COOKIES => new CookieJar(),
         ]),
         protected ElementFinderFactoryInterface $elementFinderFactory = new ElementFinderFactory()
-    )
-    {
+    ) {
     }
-
 
     /**
      * @throws InvalidArgumentException
@@ -59,11 +56,10 @@ class Parser implements ParserInterface
 
     public function send(RequestInterface $request, array $options = []): ElementFinderInterface
     {
-
-        $prevCallback = !empty($options['on_stats']) ? $options['on_stats'] : null;
+        $prevCallback = ! empty($options['on_stats']) ? $options['on_stats'] : null;
 
         $effectiveUrl = '';
-        $options['on_stats'] = function (TransferStats $stats) use (&$effectiveUrl, $prevCallback) {
+        $options['on_stats'] = function (TransferStats $stats) use (&$effectiveUrl, $prevCallback): void {
             $effectiveUrl = $stats->getEffectiveUri()->__toString();
             if ($prevCallback !== null) {
                 /** @var callable $prevCallback */
@@ -118,5 +114,4 @@ class Parser implements ParserInterface
     {
         return $this->elementFinderFactory;
     }
-
 }

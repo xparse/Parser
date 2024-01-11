@@ -14,12 +14,10 @@ use Xparse\ElementFinder\ElementFinderInterface;
  */
 interface LinkConverterInterface
 {
-
     /**
      * Convert relative links, images src and form actions to absolute
      *
      * @throws Exception
      */
     public function convert(ElementFinderInterface $finder, string $affectedUrl = ''): ElementFinderInterface;
-
 }

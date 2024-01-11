@@ -14,27 +14,33 @@ use Xparse\Parser\Helper\ToUtfConverter;
  */
 class HtmlEncodingConverterTest extends TestCase
 {
-
-    /**
-     */
     public function getDifferentCharsetStylesDataProvider(): array
     {
         return [
             [
                 '<body></body>',
                 '',
-                ['content-type' => 'df'],
+                [
+                    'content-type' => 'df',
+                ],
             ],
             [
                 iconv('UTF-8', 'WINDOWS-1251', '<meta charset=\' windows-1251 \'><body>Текст текст text</body>'),
                 'Текст текст text',
-                ['content-type' => 'df'],
+                [
+                    'content-type' => 'df',
+                ],
             ],
             [
-                iconv('UTF-8', 'WINDOWS-1251', '<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" /><body>Текст текст text</body>'
+                iconv(
+                    'UTF-8',
+                    'WINDOWS-1251',
+                    '<meta http-equiv="Content-Type" content="text/html; charset=windows-1251" /><body>Текст текст text</body>'
                 ),
                 'Текст текст text',
-                ['content-type' => 'text/html; charset=windows-1251'],
+                [
+                    'content-type' => 'text/html; charset=windows-1251',
+                ],
             ],
             [
                 iconv('UTF-8', 'WINDOWS-1251', '<meta http-equiv="Content-Type" content=\'text/html; charset=windows-1251\' /><body>Текст текст text</body>'),
@@ -72,7 +78,6 @@ class HtmlEncodingConverterTest extends TestCase
         ];
     }
 
-
     /**
      * @dataProvider getDifferentCharsetStylesDataProvider
      */
@@ -87,5 +92,4 @@ class HtmlEncodingConverterTest extends TestCase
         self::assertInstanceOf(ElementFinder::class, $page);
         self::assertEquals($bodyText, $pageBodyText);
     }
-
 }

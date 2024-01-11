@@ -6,9 +6,7 @@ namespace Xparse\Parser\Recursive;
 
 use Exception;
 use Generator;
-use InvalidArgumentException;
 use IteratorAggregate;
-use PhpParser\Node\Expr\Array_;
 use Xparse\ElementFinder\ElementFinderInterface;
 use Xparse\Parser\ParserInterface;
 

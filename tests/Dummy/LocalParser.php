@@ -10,8 +10,8 @@ use Xparse\Parser\ParserInterface;
 
 class LocalParser implements ParserInterface
 {
-
     private ?ElementFinderInterface $last = null;
+
     /**
      * @var callable
      */

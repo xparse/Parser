@@ -11,11 +11,9 @@ use Xparse\ElementFinder\ElementFinderInterface;
  */
 interface ParserInterface
 {
-
     public function get(string $url): ElementFinderInterface;
 
     public function post(string $url, array $options): ElementFinderInterface;
 
     public function getLastPage(): ?ElementFinderInterface;
-
 }

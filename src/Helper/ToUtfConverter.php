@@ -11,12 +11,10 @@ namespace Xparse\Parser\Helper;
  */
 class ToUtfConverter implements EncodingConverterInterface
 {
-
     /**
      * @var null|string[]
      */
     private $supportedEncodings;
-
 
     public function convert(string $html, string $contentType = ''): string
     {
@@ -35,9 +33,6 @@ class ToUtfConverter implements EncodingConverterInterface
         return $html;
     }
 
-
-    /**
-     */
     private function getSupportedEncodings(): array
     {
         if ($this->supportedEncodings === null) {
@@ -58,5 +53,4 @@ class ToUtfConverter implements EncodingConverterInterface
         }
         return $this->supportedEncodings;
     }
-
 }

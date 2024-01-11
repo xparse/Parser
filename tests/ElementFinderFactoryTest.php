@@ -14,16 +14,15 @@ use Xparse\Parser\ElementFinderFactory;
  */
 class ElementFinderFactoryTest extends TestCase
 {
-
-    /**
-     */
     public function getDifferentCharsetStylesDataProvider(): array
     {
         return [
             [
                 '<body></body>',
                 '',
-                ['content-type' => 'df'],
+                [
+                    'content-type' => 'df',
+                ],
             ],
             [
                 iconv('UTF-8', 'WINDOWS-1251', '<meta http-equiv="Content-Type" content=\'text/html; charset=windows-1251\' /><body>Текст текст text</body>'),
@@ -56,17 +55,23 @@ class ElementFinderFactoryTest extends TestCase
             [
                 '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-5" /><body>Текст текст text</body>',
                 'Текст текст text',
-                ['content-type' => 'text/html; charset=utf-8'],
+                [
+                    'content-type' => 'text/html; charset=utf-8',
+                ],
             ],
             [
-                iconv('UTF-8', 'WINDOWS-1251', '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><body>Текст текст text</body>'
+                iconv(
+                    'UTF-8',
+                    'WINDOWS-1251',
+                    '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><body>Текст текст text</body>'
                 ),
                 'Текст текст text',
-                ['content-type' => 'text/html; charset=windows-1251'],
+                [
+                    'content-type' => 'text/html; charset=windows-1251',
+                ],
             ],
         ];
     }
-
 
     /**
      * @dataProvider getDifferentCharsetStylesDataProvider
@@ -79,5 +84,4 @@ class ElementFinderFactoryTest extends TestCase
         self::assertInstanceOf(ElementFinder::class, $page);
         self::assertEquals($bodyText, $pageBodyText);
     }
-
 }

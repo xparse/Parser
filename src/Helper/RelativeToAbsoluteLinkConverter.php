@@ -11,7 +11,6 @@ use Xparse\ElementFinder\ElementFinderInterface;
  */
 class RelativeToAbsoluteLinkConverter implements LinkConverterInterface
 {
-
     public function convert(ElementFinderInterface $finder, string $affectedUrl = ''): ElementFinderInterface
     {
         $modifier = new ConvertUrlElementFinderModifier(
@@ -20,5 +19,4 @@ class RelativeToAbsoluteLinkConverter implements LinkConverterInterface
         );
         return $finder->modify('//*[@src] | //*[@href] | //form[@action]', $modifier);
     }
-
 }
