@@ -9,7 +9,8 @@ on:
   pull_request:
     branches:
       - master
-
+env:
+  PHP_MIN: 8.1
 jobs:
   run:
     runs-on: ubuntu-latest
@@ -45,7 +46,9 @@ jobs:
         run: ./vendor/bin/phpunit
 
       - name: Run rector
+        if: matrix.php-version == env.PHP_MIN && matrix.composer-flag == ''
         run: ./vendor/bin/rector --dry-run
 
       - name: Run code style check
+        if: matrix.php-version == env.PHP_MIN && matrix.composer-flag == ''
         run: ./vendor/bin/ecs
