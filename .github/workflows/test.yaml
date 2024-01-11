@@ -9,42 +9,46 @@ on:
   pull_request:
     branches:
       - master
-
+env:
+  PHP_MIN: 8.1
 jobs:
   run:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
-    name: PHP ${{ matrix.php-versions }}
+        php-version: ['8.1', '8.2', '8.3']
+        composer-flag: ['--prefer-lowest', '']
+    name: PHP ${{ matrix.php-version }} ${{ matrix.composer-flag }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
 
       - name: Get Composer Cache Directory
         id: composer-cache
         run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v2
+          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ matrix.composer-flag }}
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --dev
+      - name: Install dependencies ${{ matrix.composer-flag }}
+        run: composer update --prefer-install=dist ${{ matrix.composer-flag }} --dev
 
       - name: Run tests
         run: ./vendor/bin/phpunit
 
       - name: Run rector
+        if: matrix.php-version == env.PHP_MIN && matrix.composer-flag == ''
         run: ./vendor/bin/rector --dry-run
 
       - name: Run code style check
+        if: matrix.php-version == env.PHP_MIN && matrix.composer-flag == ''
         run: ./vendor/bin/ecs
