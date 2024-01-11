@@ -15,9 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['8.1', '8.2', '8.3']
-        composer-flags: ['--prefer-lowest', '']
-    name: PHP ${{ matrix.php-versions }} ${{ matrix.composer-flags }}
+        php-version: ['8.1', '8.2', '8.3']
+        composer-flag: ['--prefer-lowest', '']
+    name: PHP ${{ matrix.php-version }} ${{ matrix.composer-flag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -25,7 +25,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php-version }}
 
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -34,12 +34,12 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ matrix.composer-flag }}
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Install dependencies ${{ matrix.composer-flags }}
-        run: composer update --prefer-install=dist ${{ matrix.composer-flags }} --dev
+      - name: Install dependencies ${{ matrix.composer-flag }}
+        run: composer update --prefer-install=dist ${{ matrix.composer-flag }} --dev
 
       - name: Run tests
         run: ./vendor/bin/phpunit
