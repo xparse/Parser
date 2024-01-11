@@ -32,13 +32,13 @@ class LinkConverterTest extends TestCase
                 'url' => 'http://funivan.com/userName',
             ],
             [
-                'html' => '<img src="/hello.jpg"/>',
-                'expect' => '<img src="http://funivan.com/hello.jpg"/>',
+                'html' => '<img src="/hello.jpg">',
+                'expect' => '<img src="http://funivan.com/hello.jpg">',
                 'url' => 'http://funivan.com/userName',
             ],
             [
-                'html' => '<img src="hello.jpg"/>',
-                'expect' => '<img src="http://funivan.com/userName/hello.jpg"/>',
+                'html' => '<img src="hello.jpg">',
+                'expect' => '<img src="http://funivan.com/userName/hello.jpg">',
                 'url' => 'http://funivan.com/userName/',
             ],
             [
@@ -68,14 +68,14 @@ class LinkConverterTest extends TestCase
             ],
             [
                 'html' => '<head><base href="http://www.example.com/images/" target="_blank"></head>
-                     <body><img src="stickman.gif" width="24" height="39" alt="Stickman"/></body>',
-                'expect' => '<img src="http://www.example.com/images/stickman.gif" width="24" height="39" alt="Stickman"/>',
+                     <body><img src="stickman.gif" width="24" height="39" alt="Stickman"></body>',
+                'expect' => '<img src="http://www.example.com/images/stickman.gif" width="24" height="39" alt="Stickman">',
                 'url' => 'http://www.example.com/',
             ],
             [
                 'html' => '<head><base href="http://www.example.com/data/images/" target="_blank"></head>
-                     <body><img src="../stickman.gif" width="24" height="39" alt="Stickman"/></body>',
-                'expect' => '<img src="http://www.example.com/data/stickman.gif" width="24" height="39" alt="Stickman"/>',
+                     <body><img src="../stickman.gif" width="24" height="39" alt="Stickman"></body>',
+                'expect' => '<img src="http://www.example.com/data/stickman.gif" width="24" height="39" alt="Stickman">',
                 'url' => 'http://www.example.com/',
             ],
             [
