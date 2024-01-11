@@ -2,9 +2,10 @@
 All Notable changes to `Parser` will be documented in this file
 
 ## Planned changes
-- Updated minimum required version for guzzlehttp/psr7 to 2.4.5
+- ElementFinderFactory now accept use `Xparse\ElementFinder\ExpressionTranslator\ExpressionTranslatorInterface`
 - Updated minimum required php version to 8.1
 - Add `RecursiveParser` (merged from the [xparse/recursive-pagination](https://github.com/xparse/RecursivePagination) repository)
+- Updated minimum required version for guzzlehttp/psr7 to 2.4.5
 
 ## 1.0.2 [2023-12-5]
 - Minimum supported php version is now php 8.0
