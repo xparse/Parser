@@ -16,11 +16,11 @@ use Xparse\ElementFinder\DomNodeListAction\DomNodeListActionInterface;
  */
 class ConvertUrlElementFinderModifier implements DomNodeListActionInterface
 {
-
-    public function __construct(private readonly string $affectedUrl, private readonly string $baseUrl)
-    {
+    public function __construct(
+        private readonly string $affectedUrl,
+        private readonly string $baseUrl
+    ) {
     }
-
 
     final public function execute(DOMNodeList $nodeList): void
     {
@@ -33,9 +33,9 @@ class ConvertUrlElementFinderModifier implements DomNodeListActionInterface
             if (
                 $isValid
                 &&
-                !preg_match('!^\s*javascript\s*:\s*!', $relative)
+                ! preg_match('!^\s*javascript\s*:\s*!', $relative)
             ) {
-                if ($this->baseUrl !== '' && !preg_match('!^(/|http)!i', $relative)) {
+                if ($this->baseUrl !== '' && ! preg_match('!^(/|http)!i', $relative)) {
                     $relative = UriResolver::resolve(new Uri($this->baseUrl), new Uri($relative))->__toString();
                 }
                 $url = UriResolver::resolve($affected, new Uri($relative))->__toString();
@@ -44,16 +44,14 @@ class ConvertUrlElementFinderModifier implements DomNodeListActionInterface
         }
     }
 
-
     private function attributeName(DOMElement $element): string
     {
         $name = 'href';
         if ($element->tagName === 'form' && $element->hasAttribute('action') === true) {
             $name = 'action';
-        } else if ($element->hasAttribute('src') === true) {
+        } elseif ($element->hasAttribute('src') === true) {
             $name = 'src';
         }
         return $name;
     }
-
 }

@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Test\Xparse\Parser\Recursive;
 
+use PHPUnit\Framework\TestCase;
 use Test\Xparse\Parser\Dummy\LocalParser;
 use Xparse\Parser\Recursive\RecursiveParser;
-use PHPUnit\Framework\TestCase;
 
 final class RecursiveParserTest extends TestCase
 {
     public function testAllLinks(): void
     {
         $links = [];
-        $logger = function ($link) use (&$links) {
+        $logger = function ($link) use (&$links): void {
             $links[] = $link;
         };
         $pages = new RecursiveParser(
@@ -25,13 +25,14 @@ final class RecursiveParserTest extends TestCase
         foreach ($pages as $page) {
             $h1[] = $page->content('//h1')->replace('!\s!', '')->first();
         }
-        self::assertSame([
-            'a.html', 'b.html', 'c.html', 'd.html'],
+        self::assertSame(
+            [
+                'a.html', 'b.html', 'c.html', 'd.html'],
             $links
         );
-        self::assertSame(['a', 'b', 'c', 'd'],
+        self::assertSame(
+            ['a', 'b', 'c', 'd'],
             $h1
         );
     }
-
 }

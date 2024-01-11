@@ -13,9 +13,6 @@ use Xparse\Parser\Helper\RelativeToAbsoluteLinkConverter;
  */
 class LinkConverterTest extends TestCase
 {
-
-    /**
-     */
     public function getConvertRelativeUrlToAbsolute(): array
     {
         return [
@@ -88,16 +85,13 @@ class LinkConverterTest extends TestCase
                 'url' => 'http://www.example.com/',
             ],
         ];
-
     }
-
 
     /**
      * @dataProvider getConvertRelativeUrlToAbsolute
      */
     public function testConvertRelativeUrlToAbsolute(string $html, string $expect, string $url): void
     {
-
         $page = new ElementFinder($html);
 
         $page = (new RelativeToAbsoluteLinkConverter())->convert($page, $url);
@@ -105,5 +99,4 @@ class LinkConverterTest extends TestCase
         $body = $page->content('//body')->first();
         self::assertEquals($expect, $body);
     }
-
 }

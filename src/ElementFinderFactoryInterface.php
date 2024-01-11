@@ -12,7 +12,5 @@ use Xparse\ElementFinder\ElementFinderInterface;
  */
 interface ElementFinderFactoryInterface
 {
-
     public function create(ResponseInterface $response, string $affectedUrl = ''): ElementFinderInterface;
-
 }

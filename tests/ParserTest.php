@@ -19,13 +19,11 @@ use Xparse\Parser\Parser;
  */
 class ParserTest extends TestCase
 {
-
     public function testInit(): void
     {
         $parser = new Parser();
         self::assertEquals((new Client())::class, $parser->getClient()::class);
     }
-
 
     public function testGet(): void
     {
@@ -61,7 +59,9 @@ class ParserTest extends TestCase
             ]
         );
 
-        return new Client(['handler' => $mock]);
+        return new Client([
+            'handler' => $mock,
+        ]);
     }
 
     public function testPost(): void
@@ -71,7 +71,9 @@ class ParserTest extends TestCase
 
         self::assertEquals($client, $parser->getClient());
 
-        $page = $parser->post('http://test.com/info', [RequestOptions::FORM_PARAMS => ['123']]);
+        $page = $parser->post('http://test.com/info', [
+            RequestOptions::FORM_PARAMS => ['123'],
+        ]);
 
         self::assertEquals($page, $parser->getLastPage());
     }
@@ -86,14 +88,15 @@ class ParserTest extends TestCase
         self::assertEquals('OK', $response->getReasonPhrase());
     }
 
-
     public function testGetEffectiveUrlFromHeaders(): void
     {
         $mock = new MockHandler(
             [
                 new Response(
                     200,
-                    ['X-GUZZLE-EFFECTIVE-URL' => 'http://test.com/effective-url/'],
+                    [
+                        'X-GUZZLE-EFFECTIVE-URL' => 'http://test.com/effective-url/',
+                    ],
                     '<!DOCTYPE html>
               <html>
                 <head lang="en">
@@ -105,14 +108,15 @@ class ParserTest extends TestCase
                 ),
             ]
         );
-        $parser = new Parser(new Client(['handler' => $mock]));
+        $parser = new Parser(new Client([
+            'handler' => $mock,
+        ]));
         $url = 'http://test.com/url/';
         $parser->get($url);
         $effectiveUrl = $parser->getLastResponse()->getHeaderLine('X-GUZZLE-EFFECTIVE-URL');
         self::assertNotEquals($url, $effectiveUrl);
         self::assertEquals('http://test.com/effective-url/', $effectiveUrl);
     }
-
 
     public function testConvertElementFinderUrls(): void
     {
@@ -124,7 +128,6 @@ class ParserTest extends TestCase
         self::assertEquals($url . 'index.html', $firstUrl);
     }
 
-
     public function testDefaultClientConfiguration(): void
     {
         self::assertInstanceOf(
@@ -133,13 +136,11 @@ class ParserTest extends TestCase
         );
     }
 
-
     public function testRetrieveElementFinderFactory(): void
     {
         $parser = new Parser();
         self::assertNotNull($parser->getElementFinderFactory());
     }
-
 
     public function testGetInvalidUrl(): void
     {
@@ -149,7 +150,6 @@ class ParserTest extends TestCase
         $parser->get('');
     }
 
-
     public function testPostWithInvalidParams(): void
     {
         self::expectException(InvalidArgumentException::class);
@@ -157,5 +157,4 @@ class ParserTest extends TestCase
         self::assertNotEmpty($parser);
         $parser->post('', ['someData']);
     }
-
 }

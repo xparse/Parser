@@ -21,22 +21,19 @@ use Xparse\Parser\Helper\ToUtfConverter;
  */
 class ElementFinderFactory implements ElementFinderFactoryInterface
 {
-
     public function __construct(
         private readonly ?ExpressionTranslatorInterface $expressionTranslator = new XpathExpression(),
         private readonly ?LinkConverterInterface $linkConverter = new RelativeToAbsoluteLinkConverter(),
         private readonly ?EncodingConverterInterface $encodingConverter = new ToUtfConverter()
-    )
-    {
+    ) {
     }
-
 
     /**
      * @throws Exception
      */
     public function create(ResponseInterface $response, string $affectedUrl = ''): ElementFinderInterface
     {
-        $html = StringHelper::safeEncodeStr((string)$response->getBody());
+        $html = StringHelper::safeEncodeStr((string) $response->getBody());
         $html = $this->encodingConverter->convert($html, $response->getHeaderLine('content-type'));
         $elementFinder = new ElementFinder($html, null, $this->expressionTranslator);
         if ($affectedUrl !== '') {
@@ -45,5 +42,4 @@ class ElementFinderFactory implements ElementFinderFactoryInterface
 
         return $elementFinder;
     }
-
 }
