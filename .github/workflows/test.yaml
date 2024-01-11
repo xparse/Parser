@@ -16,6 +16,7 @@ jobs:
     strategy:
       matrix:
         php-versions: ['8.1', '8.2', '8.3']
+        composer-flags: ['--prefer-lowest', '']
     name: PHP ${{ matrix.php-versions }}
     steps:
       - name: Checkout
@@ -33,12 +34,12 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Install dependencies
-        run: composer install --prefer-dist --dev
+      - name: Install dependencies ${{ matrix.composer-flags }}
+        run: composer update --prefer-install=dist ${{ matrix.composer-flags }} --dev
 
       - name: Run tests
         run: ./vendor/bin/phpunit
