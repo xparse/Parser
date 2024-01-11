@@ -44,8 +44,7 @@ class ToUtfConverter implements EncodingConverterInterface
                     $this->supportedEncodings[] = $encoding;
                     if ($findAliases) {
                         foreach (mb_encoding_aliases($encoding) as $encodingAlias) {
-                            $encodingAlias = mb_strtolower($encodingAlias);
-                            $this->supportedEncodings[] = $encodingAlias;
+                            $this->supportedEncodings[] = mb_strtolower($encodingAlias);
                         }
                     }
                 }
