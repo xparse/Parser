@@ -14,7 +14,7 @@ class ToUtfConverter implements EncodingConverterInterface
     /**
      * @var null|string[]
      */
-    private $supportedEncodings;
+    private ?array $supportedEncodings = null;
 
     public function convert(string $html, string $contentType = ''): string
     {

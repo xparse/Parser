@@ -22,12 +22,12 @@ use Xparse\ElementFinder\ElementFinderInterface;
 class Parser implements ParserInterface
 {
     /**
-     * @var ElementFinder|null
+     * @var ElementFinderInterface|null
      */
     protected $lastPage;
 
     /**
-     * @var null|ResponseInterface
+     * @var ResponseInterface|null
      */
     protected $lastResponse;
 
