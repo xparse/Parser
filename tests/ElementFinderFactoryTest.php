@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Test\Xparse\Parser;
 
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Xparse\ElementFinder\ElementFinder;
 use Xparse\Parser\ElementFinderFactory;
@@ -14,7 +15,7 @@ use Xparse\Parser\ElementFinderFactory;
  */
 class ElementFinderFactoryTest extends TestCase
 {
-    public function getDifferentCharsetStylesDataProvider(): array
+    public static function getDifferentCharsetStylesDataProvider(): array
     {
         return [
             [
@@ -73,9 +74,7 @@ class ElementFinderFactoryTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getDifferentCharsetStylesDataProvider
-     */
+    #[DataProvider('getDifferentCharsetStylesDataProvider')]
     public function testDifferentCharsetStyles(string $html, string $bodyText, array $headers = []): void
     {
         $response = new Response(200, $headers, $html);

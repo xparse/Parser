@@ -16,8 +16,23 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-version: ['8.1', '8.2', '8.3']
-        composer-flag: ['--prefer-lowest', '']
+        include:
+        - php-version: '8.1'
+          main: true
+          composer-flag: '--prefer-lowest'
+        - php-version: '8.1'
+          composer-flag: ''
+        - php-version: '8.2'
+          composer-flag: '--prefer-lowest'
+        - php-version: '8.2'
+          composer-flag: ''
+        - php-version: '8.3'
+          composer-flag: '--prefer-lowest'
+        - php-version: '8.3'
+          composer-flag: ''
+        - php-version: '8.4'
+          nightly: true
+
     name: PHP ${{ matrix.php-version }} ${{ matrix.composer-flag }}
     steps:
       - name: Checkout
@@ -26,29 +41,39 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
+          coverage: pcov
           php-version: ${{ matrix.php-version }}
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: |
-          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
       - uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}-${{ matrix.composer-flag }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies ${{ matrix.composer-flag }}
         run: composer update --prefer-install=dist ${{ matrix.composer-flag }} --dev
 
       - name: Run tests
+        continue-on-error: ${{ matrix.nightly }}
         run: ./vendor/bin/phpunit
 
+      - name: Run code style check
+        if: ${{ matrix.main }}
+        run: ./vendor/bin/ecs
+
       - name: Run rector
-        if: matrix.php-version == env.PHP_MIN && matrix.composer-flag == ''
+        if: ${{ matrix.main }}
         run: ./vendor/bin/rector --dry-run
 
-      - name: Run code style check
-        if: matrix.php-version == env.PHP_MIN && matrix.composer-flag == ''
-        run: ./vendor/bin/ecs
+      - name: Upload coverage reports to Codecov
+        if: ${{ matrix.main }}
+        uses: codecov/codecov-action@v3
+        with:
+          fail_ci_if_error: true
+          files: ./.tmp/clover.xml
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
