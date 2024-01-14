@@ -2,3 +2,5 @@
 build
 vendor
 composer.lock
+*.cache
+/.tmp/
