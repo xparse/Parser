@@ -22,10 +22,13 @@ use Xparse\Parser\Helper\ToUtfConverter;
 class ElementFinderFactory implements ElementFinderFactoryInterface
 {
     public function __construct(
-        private readonly ?ExpressionTranslatorInterface $expressionTranslator = new XpathExpression(),
-        private readonly ?LinkConverterInterface $linkConverter = new RelativeToAbsoluteLinkConverter(),
-        private readonly ?EncodingConverterInterface $encodingConverter = new ToUtfConverter()
+        private ?ExpressionTranslatorInterface $expressionTranslator = null,
+        private ?LinkConverterInterface $linkConverter = null,
+        private ?EncodingConverterInterface $encodingConverter = null
     ) {
+        $this->expressionTranslator ??= new XpathExpression();
+        $this->linkConverter ??= new RelativeToAbsoluteLinkConverter();
+        $this->encodingConverter ??= new ToUtfConverter();
     }
 
     /**
