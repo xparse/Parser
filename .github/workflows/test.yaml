@@ -10,18 +10,13 @@ on:
     branches:
       - master
 env:
-  PHP_MIN: 8.1
+  PHP_MIN: 8.2
 jobs:
   run:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
-        - php-version: '8.1'
-          main: true
-          composer-flag: '--prefer-lowest'
-        - php-version: '8.1'
-          composer-flag: ''
         - php-version: '8.2'
           composer-flag: '--prefer-lowest'
         - php-version: '8.2'
