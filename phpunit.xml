@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php" colors="true" cacheResultFile=".tmp/.phpunit.result.cache" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd">
-  <coverage>
-    <report>
-      <clover outputFile=".tmp/clover.xml"/>
-    </report>
-  </coverage>
-  <testsuites>
-    <testsuite name="Test Suite">
-      <directory>tests</directory>
-    </testsuite>
-  </testsuites>
-  <source>
-    <include>
-      <directory>src/</directory>
-    </include>
-  </source>
+<phpunit
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        bootstrap="vendor/autoload.php"
+        colors="true"
+        cacheResultFile=".tmp/.phpunit.result.cache"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.0/phpunit.xsd"
+        displayDetailsOnTestsThatTriggerDeprecations="true"
+        displayDetailsOnTestsThatTriggerErrors="true"
+        displayDetailsOnTestsThatTriggerNotices="true"
+        displayDetailsOnTestsThatTriggerWarnings="true"
+>
+    <coverage>
+        <report>
+            <clover outputFile=".tmp/clover.xml"/>
+        </report>
+    </coverage>
+    <testsuites>
+        <testsuite name="Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>src/</directory>
+        </include>
+    </source>
 </phpunit>
