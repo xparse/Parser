@@ -35,12 +35,19 @@ class ToUtfConverter implements EncodingConverterInterface
 
     private function getSupportedEncodings(): array
     {
+        $excludedEncodings = [
+            "base64",
+            "uuencode",
+            "quoted-printable",
+            "html-entities",
+        ];
+
         if ($this->supportedEncodings === null) {
             $this->supportedEncodings = [];
             $findAliases = function_exists('mb_encoding_aliases');
             foreach (mb_list_encodings() as $encoding) {
                 $encoding = mb_strtolower($encoding);
-                if ($encoding !== 'utf-8' && $encoding !== 'utf8') {
+                if ($encoding !== 'utf-8' && $encoding !== 'utf8' && !in_array($encoding, $excludedEncodings)) {
                     $this->supportedEncodings[] = $encoding;
                     if ($findAliases) {
                         foreach (mb_encoding_aliases($encoding) as $encodingAlias) {
