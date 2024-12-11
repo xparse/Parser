@@ -11,6 +11,16 @@ namespace Xparse\Parser\Helper;
  */
 class ToUtfConverter implements EncodingConverterInterface
 {
+
+    private const EXCLUDED_ENCODINGS = [
+        "utf-8",
+        "utf8",
+        "base64",
+        "uuencode",
+        "quoted-printable",
+        "html-entities",
+    ];
+
     /**
      * @var null|string[]
      */
@@ -35,19 +45,12 @@ class ToUtfConverter implements EncodingConverterInterface
 
     private function getSupportedEncodings(): array
     {
-        $excludedEncodings = [
-            "base64",
-            "uuencode",
-            "quoted-printable",
-            "html-entities",
-        ];
-
         if ($this->supportedEncodings === null) {
             $this->supportedEncodings = [];
             $findAliases = function_exists('mb_encoding_aliases');
             foreach (mb_list_encodings() as $encoding) {
                 $encoding = mb_strtolower($encoding);
-                if ($encoding !== 'utf-8' && $encoding !== 'utf8' && !in_array($encoding, $excludedEncodings)) {
+                if (!in_array($encoding, self::EXCLUDED_ENCODINGS)) {
                     $this->supportedEncodings[] = $encoding;
                     if ($findAliases) {
                         foreach (mb_encoding_aliases($encoding) as $encodingAlias) {
