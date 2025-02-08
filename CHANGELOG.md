@@ -1,6 +1,6 @@
 # Changelog
 All Notable changes to `Parser` will be documented in this file
-## 3.0.0 [Unreleased]
+## 3.0.0 [2025-02-08]
 - Minimum required php version is now php 8.2
 
 ## 2.0.0 [2024-01-11]
