@@ -11,7 +11,6 @@ namespace Xparse\Parser\Helper;
  */
 class ToUtfConverter implements EncodingConverterInterface
 {
-
     private const EXCLUDED_ENCODINGS = [
         "utf-8",
         "utf8",
@@ -50,7 +49,7 @@ class ToUtfConverter implements EncodingConverterInterface
             $findAliases = function_exists('mb_encoding_aliases');
             foreach (mb_list_encodings() as $encoding) {
                 $encoding = mb_strtolower($encoding);
-                if (!in_array($encoding, self::EXCLUDED_ENCODINGS)) {
+                if (! in_array($encoding, self::EXCLUDED_ENCODINGS)) {
                     $this->supportedEncodings[] = $encoding;
                     if ($findAliases) {
                         foreach (mb_encoding_aliases($encoding) as $encodingAlias) {
