@@ -19,6 +19,7 @@ jobs:
         include:
         - php-version: '8.2'
           composer-flag: '--prefer-lowest'
+          main: true
         - php-version: '8.2'
           composer-flag: ''
         - php-version: '8.3'
